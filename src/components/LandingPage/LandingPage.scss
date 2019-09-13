@@ -1,3 +1,5 @@
+/* General */
+
 .landing-page {
   position: absolute;
   height: 100%;
@@ -44,4 +46,24 @@
   position: relative;
   top: 15px;
   font-size: 50px;
+}
+
+/* Mobile */
+
+@media only screen and (max-width: 1200px) {
+  .landing-page-title {
+    transform: translateY(150%);
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .landing-page-title {
+    transform: translateY(100%);
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .landing-page-title {
+    transform: translateY(50%);
+  }
 }
