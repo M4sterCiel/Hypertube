@@ -6,17 +6,42 @@
   background-size: cover;
 }
 
-.big-title {
-  transform: translateY(1000%);
+.landing-page-title {
+  transform: translateY(200%);
   margin: auto;
   width: 80%;
   font-weight: bold;
   text-align: center;
+  color: white;
+  font-size: 50px;
 
   span {
-      width: 100%;
-      font-family: 'Roboto Condensed', sans-serif;
-      color: white;
-      font-size: 9vw;
+    width: 100%;
+    font-family: "Roboto Condensed", sans-serif;
+    color: white;
+    font-size: 9vw;
   }
+}
+
+.landing-page-content {
+  transform: translateY(70%);
+  margin: auto;
+  text-align: center;
+}
+
+.landing-page-content-text {
+  color: red;
+  font-size: 30px;
+}
+
+.landing-page-content-title-second {
+  margin-top: 20px;
+  color: white;
+  font-size: 30px;
+}
+
+.landing-page-content-title-icon {
+  position: relative;
+  top: 15px;
+  font-size: 50px;
 }
