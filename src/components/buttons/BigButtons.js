@@ -11,7 +11,8 @@ const LpBigButton = () => {
         className="btn-regular btn-big modal-trigger"
       >
         <span className="btn-regular-text">
-          Try it now<i class="material-icons btn-big-icon">arrow_forward_ios</i>
+          Try it now
+          <i className="material-icons btn-big-icon">arrow_forward_ios</i>
         </span>
       </Button>
     </NavLink>

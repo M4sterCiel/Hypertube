@@ -20,7 +20,7 @@ class LandingPage extends Component {
               Only a few clicks away from your daily entertainment...
             </div>
             <div className="landing-page-content-title-second">
-              <i class="material-icons landing-page-content-title-icon">
+              <i className="material-icons landing-page-content-title-icon">
                 money_off
               </i>
               No credit card required - it's free

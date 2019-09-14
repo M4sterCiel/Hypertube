@@ -10,3 +10,41 @@
   position: absolute;
   right: 10px;
 }
+
+/* Mobile menu button */
+
+.nav-mobile-links {
+  display: none;
+}
+
+.nav-mobile-menu-btn {
+  height: 100%;
+  color: red;
+  display: none;
+  background-color: transparent;
+  margin-top: -10px;
+}
+
+.nav-mobile-menu-btn:hover {
+  background-color: rgba(255, 0, 0, 0.3);
+}
+
+.nav-mobile-menu-btn:focus {
+  background-color: rgba(255, 0, 0, 0.1);
+}
+
+/* Responsive */
+
+@media only screen and (max-width: 992px) {
+  .nav-mobile-links {
+    display: inline;
+  }
+
+  .nav-mobile-menu-btn {
+    display: inline;
+  }
+
+  .brand-logo {
+    display: inline;
+  }
+}
