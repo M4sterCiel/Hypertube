@@ -25,3 +25,17 @@
   margin-left: 20px;
   font-size: 50px;
 }
+
+@media only screen and (max-width: 600px) {
+  .btn-big {
+    width: 250px;
+    height: 85px;
+    font-size: 20px;
+    font-weight: 200;
+  }
+
+  .btn-big-icon {
+    margin-left: 15px;
+    font-size: 35px;
+  }
+}

@@ -24,8 +24,8 @@ class LandingPage extends Component {
                 money_off
               </i>
               No credit card required - it's free
-              <LpBigButton />
             </div>
+            <LpBigButton />
           </div>
         </div>
       </div>
