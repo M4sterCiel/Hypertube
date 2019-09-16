@@ -5,7 +5,7 @@ import "./LandingPage.scss";
 import Navbar from "../navbar/NavBar";
 import { LpBigButton } from "../buttons/BigButtons";
 import { withRouter } from "react-router-dom";
-
+  
 class LandingPage extends Component {
   render() {
     return (
