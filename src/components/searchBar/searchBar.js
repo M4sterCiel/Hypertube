@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Search = ({ search }) => {
   const [searchValue, setSearchValue] = useState("");
