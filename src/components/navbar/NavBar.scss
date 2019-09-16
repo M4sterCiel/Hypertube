@@ -51,6 +51,10 @@
 /* Responsive */
 
 @media only screen and (max-width: 992px) {
+  .nav-btns-right {
+    display: none;
+  }
+
   .nav-mobile-menu {
     display: inline;
   }

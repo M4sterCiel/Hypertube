@@ -1,3 +1,5 @@
+/* General */
+
 html {
   height: 100%;
   font-family: "Helvetica Neue";
@@ -9,4 +11,45 @@ html {
 
 .m5 {
   margin: 5px;
+}
+
+.App {
+  width: 100%;
+}
+
+.root {
+  width: 1000px;
+  margin: auto;
+}
+
+/* Cards UI */
+
+.card-panel {
+  border-radius: 5px;
+  border: solid 2px rgba(255, 0, 0, 0.2);
+  background-color: rgba(64, 64, 64, 0.5);
+  margin: auto;
+}
+
+/* Icons */
+
+i.material-icons {
+  color: red;
+}
+
+/* Titles */
+
+.title-page {
+  font-size: 35px;
+  font-weight: bold;
+  text-align: left;
+  color: white;
+  margin-bottom: 20px;
+}
+
+/* Forms */
+
+.form-input-fields {
+  color: white;
+  border-bottom: solid 1px white !important;
 }

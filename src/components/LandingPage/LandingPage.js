@@ -9,7 +9,7 @@ import { withRouter } from "react-router-dom";
 class LandingPage extends Component {
   render() {
     return (
-      <div>
+      <div className="App">
         <Navbar />
         <div className="landing-page">
           <div className="landing-page-title row">
