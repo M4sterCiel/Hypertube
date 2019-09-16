@@ -59,22 +59,22 @@ class NavBar extends Component {
           onClick={toggleMenu(menu, false)}
           onKeyDown={toggleMenu(menu, false)}
         >
-          <h5 style={{ textAlign: "center", color: "#ffb6d3" }}>Menu</h5>
+          <h5 style={{ textAlign: "center", color: "red" }}>Menu</h5>
           <List>
             <ListItem>
-              <NavLink className="mobile-menu-links" to="/users/login">
-                <i className="material-icons link-icon mobile-menu-icons">
+              <NavLink className="nav-mobile-menu-links" to="/users/login">
+                <i className="material-icons link-icon nav-mobile-menu-icons">
                   account_box
                 </i>
-                <span className="mobile-menu-notif-text">Log in</span>
+                <span className="nav-mobile-menu-text">Log in</span>
               </NavLink>
             </ListItem>
             <ListItem>
-              <NavLink className="mobile-menu-links" to="/users/register">
-                <i className="material-icons link-icon mobile-menu-icons">
+              <NavLink className="nav-mobile-menu-links" to="/users/register">
+                <i className="material-icons link-icon nav-mobile-menu-icons">
                   person_add
                 </i>
-                <span className="mobile-menu-notif-text">Register</span>
+                <span className="nav-mobile-menu-text">Register</span>
               </NavLink>
             </ListItem>
           </List>
@@ -82,7 +82,7 @@ class NavBar extends Component {
       );
 
       return (
-        <div className="nav-mobile-links">
+        <div className="nav-mobile-menu">
           <Button
             className="nav-mobile-menu-btn"
             onClick={toggleMenu("left", true)}
