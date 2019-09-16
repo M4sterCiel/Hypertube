@@ -2,7 +2,7 @@
 
 html {
   height: 100%;
-  font-family: "Helvetica Neue";
+  font-family: 'Helvetica Neue';
 }
 
 .modal {
@@ -28,7 +28,7 @@ html {
   position: absolute;
   height: 100%;
   width: 100%;
-  background: url("./assets/landing.jpg");
+  background: url('./assets/landing.jpg');
   background-size: cover;
 }
 
@@ -65,15 +65,15 @@ i.material-icons {
   margin: 10px 0px !important;
 }
 
-input[type="text"]:not(.browser-default):focus:not([readonly]) + label {
+input[type='text']:not(.browser-default):focus:not([readonly]) + label {
   color: red !important;
 }
 
-input[type="email"]:not(.browser-default):focus:not([readonly]) + label {
+input[type='email']:not(.browser-default):focus:not([readonly]) + label {
   color: red !important;
 }
 
-input[type="password"]:not(.browser-default):focus:not([readonly]) + label {
+input[type='password']:not(.browser-default):focus:not([readonly]) + label {
   color: red !important;
 }
 
@@ -81,7 +81,7 @@ textarea:not(.browser-default):focus:not([readonly]) + label {
   color: red !important;
 }
 
-input[type="submit"] {
+input[type='submit'] {
   margin-top: 20px;
   margin-bottom: 20px;
   background-color: red;
