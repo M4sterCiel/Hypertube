@@ -1,17 +1,40 @@
 /* General */
 
-.login-page {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  background: url("../../assets/landing.jpg");
-  background-size: cover;
-}
-
 /* Card */
 
 .auth-card {
   width: 500px;
   margin-top: 100px !important;
   padding: 50px;
+}
+
+/* Links */
+
+.register-login-link {
+  margin-top: 20px;
+  margin-bottom: 5px;
+  font-size: 12px;
+  color: white;
+}
+
+.red-link {
+  color: red;
+}
+
+/* Responsive */
+
+@media only screen and (max-width: 600px) {
+  .auth-card {
+    margin-top: 50px !important;
+    width: 100%;
+    background-color: black !important;
+    border: none !important;
+    border-radius: 0px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .auth-card {
+    margin-top: 0px !important;
+  }
 }

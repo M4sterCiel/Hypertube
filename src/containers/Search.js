@@ -53,9 +53,9 @@ const SearchView = () => {
   }, []);
 
   // you can add this to the onClick listener of the Header component
-//   const refreshPage = () => {
-//     window.location.reload();
-//   };
+  //   const refreshPage = () => {
+  //     window.location.reload();
+  //   };
 
   const search = searchValue => {
     dispatch({
@@ -82,7 +82,7 @@ const SearchView = () => {
   const { movies, errorMessage, loading } = state;
 
   return (
-    <div className="SearchView">
+    <div className="SearchView container-background">
       {/* <Header text="HOOKED" /> */}
       <Search search={search} />
       <p className="SearchView-intro">A selection just for you</p>

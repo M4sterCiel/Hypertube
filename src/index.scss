@@ -17,9 +17,19 @@ html {
   width: 100%;
 }
 
-.root {
-  width: 1000px;
+.row {
   margin: auto;
+  max-width: 1000px;
+}
+
+/* Container background */
+
+.container-background {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: url("./assets/landing.jpg");
+  background-size: cover;
 }
 
 /* Cards UI */
@@ -44,7 +54,7 @@ i.material-icons {
   font-weight: bold;
   text-align: left;
   color: white;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 /* Forms */
@@ -52,4 +62,42 @@ i.material-icons {
 .form-input-fields {
   color: white;
   border-bottom: solid 1px white !important;
+  margin: 10px 0px !important;
+}
+
+input[type="text"]:not(.browser-default):focus:not([readonly]) + label {
+  color: red !important;
+}
+
+input[type="email"]:not(.browser-default):focus:not([readonly]) + label {
+  color: red !important;
+}
+
+input[type="password"]:not(.browser-default):focus:not([readonly]) + label {
+  color: red !important;
+}
+
+textarea:not(.browser-default):focus:not([readonly]) + label {
+  color: red !important;
+}
+
+input[type="submit"] {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: red;
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  height: 50px;
+}
+
+/* Responsive */
+
+@media only screen and (max-width: 600px) {
+  .container-background {
+    background: none;
+    background-color: black !important;
+  }
 }

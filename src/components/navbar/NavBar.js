@@ -62,7 +62,7 @@ class NavBar extends Component {
           <h5 style={{ textAlign: "center", color: "red" }}>Menu</h5>
           <List>
             <ListItem>
-              <NavLink className="nav-mobile-menu-links" to="/users/login">
+              <NavLink className="nav-mobile-menu-links" to="/login">
                 <i className="material-icons link-icon nav-mobile-menu-icons">
                   account_box
                 </i>
@@ -70,7 +70,7 @@ class NavBar extends Component {
               </NavLink>
             </ListItem>
             <ListItem>
-              <NavLink className="nav-mobile-menu-links" to="/users/register">
+              <NavLink className="nav-mobile-menu-links" to="/register">
                 <i className="material-icons link-icon nav-mobile-menu-icons">
                   person_add
                 </i>

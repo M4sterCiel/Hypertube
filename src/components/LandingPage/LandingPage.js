@@ -5,13 +5,13 @@ import "./LandingPage.scss";
 import Navbar from "../navbar/NavBar";
 import { LpBigButton } from "../buttons/BigButtons";
 import { withRouter } from "react-router-dom";
-  
+
 class LandingPage extends Component {
   render() {
     return (
       <div className="App">
         <Navbar />
-        <div className="landing-page">
+        <div className="container-background-image">
           <div className="landing-page-title row">
             Enjoy movies and series on HyperFlix
           </div>
