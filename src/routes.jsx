@@ -4,6 +4,8 @@ import App from "./containers/App";
 import Login from "./containers/login/Login";
 import Register from "./containers/register/Register";
 import Search from "./containers/Search";
+import ResetPassword from "./containers/resetPassword/ResetPassword";
+import ForgotPassword from "./containers/forgotPassword/ForgotPassword";
 
 export default function MainRouter() {
   return (
@@ -14,6 +16,8 @@ export default function MainRouter() {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/search" component={Search} />
+          <Route exact path="/forgot-password" component={ForgotPassword} />
+          <Route exact path="/reset-password" component={ResetPassword} />
         </Switch>
       </div>
     </Router>

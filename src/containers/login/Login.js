@@ -24,6 +24,10 @@ class Login extends Component {
     this._isMounted = true;
   }
 
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   handleChange = e => {
     const isLogin = e.target.id === "user-login";
     const isPwd = e.target.id === "user-password";
@@ -60,7 +64,6 @@ class Login extends Component {
         <div className="container-background">
           <div className="row">
             <div className="card-panel center auth-card">
-              {" "}
               <div className="title-page">Log in</div>
               <form className="login-form" onSubmit={this.handleSubmit}>
                 <div className="input-field col s12">

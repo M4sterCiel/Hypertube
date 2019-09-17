@@ -1,29 +1,14 @@
 import React, { Component } from "react";
-import "materialize-css/dist/css/materialize.min.css";
-import "./Register.scss";
 import NavBar from "../../components/navbar/NavBar";
-import { NavLink } from "react-router-dom";
 import ValidateInput from "../../services/ValidateInput";
 
-class Register extends Component {
+class ResetPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstname: "",
-      lastname: "",
-      username: "",
-      email: "",
       pwd1: "",
       pwd2: "",
-      lastnameError: "",
-      firstnameError: "",
-      usernameError: "",
-      emailError: "",
       pwd2Error: "",
-      lastnameValid: false,
-      firstnameValid: false,
-      usernameValid: false,
-      emailValid: false,
       pwd1Valid: false,
       pwd1VerifyBox: "box-disabled",
       pwdHasLowercase: false,
@@ -46,9 +31,8 @@ class Register extends Component {
     let result;
     if (e.target.id === "pwd1") {
       result = ValidateInput.user("passwordHard", e.target.value);
-    } else if (e.target.id !== "pwd2") {
-      result = ValidateInput.user(e.target.id, e.target.value);
     }
+
     this._isMounted &&
       this.setState({ [e.target.id]: e.target.value, ...result });
   };
@@ -63,61 +47,12 @@ class Register extends Component {
         <NavBar />
         <div className="container-background">
           <div className="row">
-            {" "}
             <div className="card-panel center auth-card">
-              {" "}
-              <div className="title-page">Register</div>
-              <form className="register-form" onSubmit={this.handleSubmit}>
-                <div className="input-field col s12">
-                  <input
-                    type="text"
-                    id="username"
-                    className="form-input-fields"
-                    value={this.state.username}
-                    onChange={this.handleChange}
-                  ></input>
-                  <div className="register-error">
-                    {this.state.usernameError}
-                  </div>
-                  <label htmlFor="username">Username</label>
-                </div>
-                <div className="input-field col s6">
-                  <input
-                    type="text"
-                    id="firstname"
-                    className="form-input-fields"
-                    value={this.state.firstname}
-                    onChange={this.handleChange}
-                  ></input>
-                  <div className="register-error">
-                    {this.state.firstnameError}
-                  </div>
-                  <label htmlFor="firstname">Firstname</label>
-                </div>
-                <div className="input-field col s6">
-                  <input
-                    type="text"
-                    id="lastname"
-                    className="form-input-fields"
-                    value={this.state.lastname}
-                    onChange={this.handleChange}
-                  ></input>
-                  <div className="register-error">
-                    {this.state.lastnameError}
-                  </div>
-                  <label htmlFor="lastname">Lastname</label>
-                </div>
-                <div className="input-field col s12">
-                  <input
-                    type="email"
-                    id="email"
-                    className="form-input-fields"
-                    value={this.state.email}
-                    onChange={this.handleChange}
-                  ></input>
-                  <div className="register-error">{this.state.emailError}</div>
-                  <label htmlFor="email">Email</label>
-                </div>
+              <div className="title-page">Reset password</div>
+              <form
+                className="reset-password-form"
+                onSubmit={this.handleSubmit}
+              >
                 <div className="input-field col s12">
                   <input
                     type="password"
@@ -189,24 +124,13 @@ class Register extends Component {
                 <input
                   type="submit"
                   name="submit"
-                  value="Register"
+                  value="Reset"
                   className="btn btn-submit-form"
                   disabled={
-                    !this.state.lastnameValid ||
-                    !this.state.firstnameValid ||
-                    !this.state.usernameValid ||
-                    !this.state.emailValid ||
-                    !this.state.pwd1Valid ||
-                    this.state.pwd2 !== this.state.pwd1
+                    !this.state.pwd1Valid || this.state.pwd2 !== this.state.pwd1
                   }
                 />
               </form>
-              <p className="register-login-link link-right">
-                Already have an account?{" "}
-                <NavLink className="red-link" to="/login">
-                  Login
-                </NavLink>
-              </p>
             </div>
           </div>
         </div>
@@ -215,4 +139,4 @@ class Register extends Component {
   }
 }
 
-export default Register;
+export default ResetPassword;
