@@ -17,19 +17,18 @@
   display: none;
 }
 
-.nav-mobile-menu-btn {
+.btn.nav-mobile-menu-btn {
   height: 100%;
   color: red;
-  display: none;
   background-color: transparent;
   margin-top: -10px;
 }
 
-.nav-mobile-menu-btn:hover {
+.btn.nav-mobile-menu-btn:hover {
   background-color: rgba(255, 0, 0, 0.3);
 }
 
-.nav-mobile-menu-btn:focus {
+.btn.nav-mobile-menu-btn:focus {
   background-color: rgba(255, 0, 0, 0.1);
 }
 
@@ -51,11 +50,11 @@
 /* Responsive */
 
 @media only screen and (max-width: 992px) {
-  .nav-mobile-menu {
-    display: inline;
+  .nav-btns-right {
+    display: none;
   }
 
-  .nav-mobile-menu-btn {
+  .nav-mobile-menu {
     display: inline;
   }
 
