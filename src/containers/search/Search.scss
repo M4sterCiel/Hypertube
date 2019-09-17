@@ -3,22 +3,16 @@
     position: absolute;
   height: 100%;
   width: 100%;
-  background: url("../assets/landing.jpg");
+  background: url("../../assets/landing.jpg");
   background-size: cover;
   color: white;
   
   }
-  
+
   .spinner {
     height: 80px;
     margin: auto;
   }
-  
-  .App-intro {
-    font-size: large;
-  }
-  
-  /* new css for movie component */
   
   * {
     box-sizing: border-box;
@@ -28,10 +22,6 @@
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-  }
-  
-  .App-header h2 {
-    margin: 0;
   }
   
   .add-movies {

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./searchBar.scss";
 
 const Search = ({ search }) => {
   const [searchValue, setSearchValue] = useState("");
@@ -18,15 +19,18 @@ const Search = ({ search }) => {
   };
 
   return (
-    <form className="search">
+    <div class="row">
+      <form className="search">  
         <input
           value={searchValue}
           onChange={handleSearchInputChanges}
           type="text"
-          class="form-control col-sm-3"
+          class="input-field s1"
+          placeholder="What movie are you looking for?"
         />
-        <button onClick={callSearchFunction} type="submit" class="btn btn-dark" value="SEARCH">SEARCH</button>
-    </form>
+        <button onClick={callSearchFunction} type="submit" class="btn btn-medium waves-effect" value="SEARCH">SEARCH</button>  
+      </form>
+    </div>
   );
 };
 

@@ -1,9 +1,10 @@
 import React, { useReducer, useEffect } from "react";
 import "./Search.scss";
 // import Header from "./Header";
-import spinner from "../spinner.gif";
-import Movie from "../components/movie/movie";
-import Search from "../components/searchBar/searchBar";
+import spinner from "../../spinner.gif";
+import Movie from "../../components/movie/movie";
+import Search from "../../components/searchBar/searchBar";
+import Navbar from "../../components/navbar/NavBar";
 
 const MOVIE_API_URL = "https://www.omdbapi.com/?s=man&apikey=4a3b711b";
 
@@ -83,9 +84,9 @@ const SearchView = () => {
 
   return (
     <div className="SearchView">
-      {/* <Header text="HOOKED" /> */}
+      <Navbar />
+      {/* <Header text="HyperFlix" /> */}
       <Search search={search} />
-      <p className="SearchView-intro">A selection just for you</p>
       <div className="movies">
         {loading && !errorMessage ? (
           <img className="spinner" src={spinner} alt="Loading spinner" />
