@@ -1,4 +1,5 @@
-var userModel = require("../models/userModel");
+const mongoose = require("mongoose");
+const User = require("../schemas/User");
 
 module.exports = {
   lastname: data => {
@@ -28,18 +29,9 @@ module.exports = {
     if (/\s/.test(data)) return { error: "cannot contain spaces" };
     if (!data.match(regex)) return { error: "is invalid" };
     if (data.length < 3 || data.length > 30) return { error: "incorrect size" };
-
     //Check db for already existing username
-    var result = await userModel.findOne("username", data);
+    var result = await User.find({ username: data });
     if (result != "") return { error: "already exists" };
-    else return { status: "valid" };
-  },
-
-  bio: data => {
-    if (data.length > 140) return { error: "incorrect size" };
-    if (/^\s+/.test(data)) return { error: "cannot start with space" };
-    if (/\s+$/.test(data)) return { error: "cannot end with space" };
-    if (/\s\s+/.test(data)) return { error: "cannot have multiple spaces" };
     else return { status: "valid" };
   },
 
@@ -50,7 +42,7 @@ module.exports = {
     var mailPattern = /^([a-zA-Z0-9]+(?:[\.\-\_]?[a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[\.\-\_]?[a-zA-Z0-9]+)*)\.([a-zA-Z]{2,})+$/;
     if (!mailPattern.test(data)) return { error: "doesn't match pattern" };
     //Check db for already existing mail
-    var result = await userModel.findOne("mail", data);
+    var result = await User.find({ email: data });
     if (result != "") return { error: "already exists" };
     else return { status: "valid" };
   },
