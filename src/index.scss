@@ -2,7 +2,7 @@
 
 html {
   height: 100%;
-  font-family: 'Helvetica Neue';
+  font-family: "Helvetica Neue";
 }
 
 .modal {
@@ -28,7 +28,7 @@ html {
   position: absolute;
   height: 100%;
   width: 100%;
-  background: url('./assets/landing.jpg');
+  background: url("./assets/landing.jpg");
   background-size: cover;
 }
 
@@ -65,23 +65,23 @@ i.material-icons {
   margin: 10px 0px !important;
 }
 
-input[type='text']:not(.browser-default):focus:not([readonly]) + label {
-  color: red !important;
+input[type="text"]:not(.browser-default):focus:not([readonly]) + label {
+  color: white !important;
 }
 
-input[type='email']:not(.browser-default):focus:not([readonly]) + label {
-  color: red !important;
+input[type="email"]:not(.browser-default):focus:not([readonly]) + label {
+  color: white !important;
 }
 
-input[type='password']:not(.browser-default):focus:not([readonly]) + label {
-  color: red !important;
+input[type="password"]:not(.browser-default):focus:not([readonly]) + label {
+  color: white !important;
 }
 
 textarea:not(.browser-default):focus:not([readonly]) + label {
-  color: red !important;
+  color: white !important;
 }
 
-input[type='submit'] {
+input[type="submit"] {
   margin-top: 20px;
   margin-bottom: 20px;
   background-color: red;
@@ -91,6 +91,28 @@ input[type='submit'] {
   border-radius: 5px;
   width: 100%;
   height: 50px;
+}
+
+label {
+  position: absolute;
+  left: 5px;
+  top: 10px;
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
+}
+
+input:focus ~ label,
+input:not([value=""]) ~ label {
+  top: -20px;
+  font-size: 14px;
+  color: white;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  color: white !important;
+  background-color: red !important;
 }
 
 /* Responsive */
