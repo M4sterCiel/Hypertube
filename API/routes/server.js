@@ -49,11 +49,12 @@ app.use(
       maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
     },
     store: store,
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     unset: "destroy"
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
 

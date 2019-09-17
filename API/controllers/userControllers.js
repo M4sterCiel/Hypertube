@@ -81,25 +81,20 @@ module.exports = {
     err = await inputService.mail(req.body.email);
     if (err.error) return res.status(400).json({ error: "mail " + err.error });
 
-    User.register(
-      new User({
-        username: req.body.username,
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        email: req.body.email,
-        activationKey:
-          new Date().getTime() +
-          Math.floor(Math.random() * 10000 + 1).toString(16)
-      }),
-      req.body.pwd1
-      /* user => {
-        if (err) console.log(err);
-        mailService.sendActivation(user);
-        res.json({ status: "success", content: req.body });
-      } */
-    );
+    var uniqid =
+      new Date().getTime() + Math.floor(Math.random() * 10000 + 1).toString(16);
 
-    mailService.sendActivation(req.body);
+    var user = new User({
+      username: req.body.username,
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      email: req.body.email,
+      activationKey: uniqid
+    });
+
+    User.register(user, req.body.pwd1);
+
+    mailService.sendActivation(user);
 
     return res.status(200).json({ status: "success" });
   },
@@ -108,5 +103,20 @@ module.exports = {
     req.logout();
     req.session = null;
     res.status(200).json({ message: "Loggued out!" });
+  },
+
+  getProfile: async (req, res, next) => {
+    if (!req.session.user)
+      return res.status(401).json({ error: "You are not logged in!" });
+    return res.status(200).json({ message: "blabla" });
+  },
+
+  getSession: async (req, res, next) => {
+    if (typeof req.session.user !== "undefined") {
+      User.findOne({ _id: req.session.user._id }, (err, user) => {
+        if (user) req.session.user.language = user.language;
+        return res.json(req.session.user);
+      });
+    } else return res.json({ error: "No session for user" });
   }
 };

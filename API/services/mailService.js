@@ -11,8 +11,8 @@ module.exports = {
 
     let message = "",
       search = {
-        username: "*Username*",
-        link: "linkactivation"
+        username: "^^username^^",
+        link: "^^linkactivation^^"
       },
       replace = {
         username: user.username,
@@ -26,17 +26,14 @@ module.exports = {
     fs.readFile("API/templates/activationMail.html", (err, data) => {
       if (err) return console.error(err);
       message = data.toString();
-      message = message
-        .replace(search.username, replace.username)
-        .replace(search.username, replace.link);
-
       transporter.sendMail(
         {
           from: "no-reply@hyperflix.com",
           to: user.email,
           subject: "Welcome to HyperFlix",
-          html: message,
-          contentType: "text/html"
+          html: message
+            .replace(search.username, replace.username)
+            .replace(search.link, replace.link)
         },
         (err, info) => {
           console.log(info.envelope);
