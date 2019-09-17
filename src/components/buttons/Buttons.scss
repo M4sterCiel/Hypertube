@@ -8,6 +8,27 @@
 .btn-regular:hover {
   background-color: rgba(255, 0, 0, 0.5);
 }
+/* Secondary button */
+
+.btn-secondary {
+  background-color: rgba(102, 65, 65, 0);
+  border: 1px solid white;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.219);
+}
+
+.btn-secondary:focus {
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.btn-secondary:disabled {
+  background-color: rgba(102, 65, 65, 0) !important;
+  color: rgba(255, 255, 255, 0.486) !important;
+  border: 1px solid white;
+}
 
 /* Big buttons */
 

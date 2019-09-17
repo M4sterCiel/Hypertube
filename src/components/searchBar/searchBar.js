@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../buttons/Buttons.scss";
 import "./searchBar.scss";
 
 const Search = ({ search }) => {
@@ -28,7 +29,13 @@ const Search = ({ search }) => {
           class="input-field s1"
           placeholder="What movie are you looking for?"
         />
-        <button disabled={!searchValue} onClick={callSearchFunction} type="submit" class="btn btn-medium waves-effect" value="SEARCH">SEARCH</button>  
+        <button disabled={!searchValue}
+                onClick={callSearchFunction} 
+                type="submit" 
+                class="btn btn-secondary btn-medium waves-effect" 
+                value="SEARCH">
+          SEARCH
+        </button>  
       </form>
     </div>
   );
