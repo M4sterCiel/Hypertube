@@ -1,7 +1,6 @@
-export default {
-  user: {
-    // Checking login format is valid
-    login: value => {
+const user = (type, value) => {
+  switch (type) {
+    case "login":
       let loginError = "";
       let regexLogin = /^[a-zA-Z0-9]*-?[a-zA-Z0-9]*$/;
       let regexEmail = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/;
@@ -19,9 +18,8 @@ export default {
       } else if (value !== "") {
         return { loginError, loginValid: true };
       }
-    },
-    // Checking firstname format is valid
-    firstname: value => {
+      break;
+    case "firstname":
       const firstnameRegex = /^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*-?[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*$/;
 
       if (/\s/.test(value)) {
@@ -44,9 +42,7 @@ export default {
         firstnameError: "",
         firstnameValid: true
       };
-    },
-    // Checking lastname format is valid
-    lastname: value => {
+    case "lastname":
       const lastnameRegex = /^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*-?[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*$/;
 
       if (/\s/.test(value)) {
@@ -69,9 +65,7 @@ export default {
         lastnameError: "",
         lastnameValid: true
       };
-    },
-    // Checking username format is valid
-    username: value => {
+    case "username":
       const usernameRegex = /^[a-zA-Z0-9]*-?[a-zA-Z0-9]*$/;
 
       if (/\s/.test(value)) {
@@ -100,9 +94,7 @@ export default {
         usernameError: "",
         usernameValid: true
       };
-    },
-    // Checking email format is valid
-    email: value => {
+    case "email":
       const emailRegex = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/;
 
       if (/\s/.test(value)) {
@@ -130,8 +122,7 @@ export default {
         emailError: "",
         emailValid: true
       };
-    },
-    passwordSimple: value => {
+    case "passwordSimple":
       let pwdError = "";
 
       if (value.length < 8 || value.includes(" ")) {
@@ -145,8 +136,8 @@ export default {
       } else if (value) {
         return { pwdValid: true, pwdError };
       }
-    },
-    passwordHard: value => {
+      break;
+    case "passwordHard":
       let pwdHasLowercase = false;
       let pwdHasUppercase = false;
       let pwdHasNumber = false;
@@ -170,18 +161,13 @@ export default {
         pwdHasNumber = false;
       }
 
-      if (this.state.pwd1.length >= 8 && this.state.pwd1.length <= 30) {
+      if (value.length >= 8 && value.length <= 30) {
         pwdHasMinLen = true;
       } else {
         pwdHasMinLen = false;
       }
 
-      if (
-        this.state.pwdHasLowercase &&
-        this.state.pwdHasUppercase &&
-        this.state.pwdHasNumber &&
-        this.state.pwdHasMinLen
-      ) {
+      if (pwdHasLowercase && pwdHasUppercase && pwdHasNumber && pwdHasMinLen) {
         pwd1Valid = true;
       } else {
         pwd1Valid = false;
@@ -194,6 +180,9 @@ export default {
         pwdHasMinLen,
         pwd1Valid
       };
-    }
+    default:
+      return false;
   }
 };
+
+export default { user };

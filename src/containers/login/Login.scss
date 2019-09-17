@@ -23,8 +23,10 @@
 
 /* Errors */
 
-.login-error {
+.login-error,
+.register-error {
   color: red;
+  font-size: 0.8em;
 }
 
 /* Responsive */

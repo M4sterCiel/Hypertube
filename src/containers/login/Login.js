@@ -29,7 +29,7 @@ class Login extends Component {
     const isPwd = e.target.id === "user-password";
 
     if (isLogin) {
-      let result = ValidateInput.user.login(e.target.value);
+      let result = ValidateInput.user("login", e.target.value);
       this._isMounted &&
         this.setState({
           login: e.target.value,
@@ -39,7 +39,7 @@ class Login extends Component {
     }
 
     if (isPwd) {
-      let result = ValidateInput.user.passwordSimple(e.target.value);
+      let result = ValidateInput.user("passwordSimple", e.target.value);
       this._isMounted &&
         this.setState({
           password: e.target.value,
