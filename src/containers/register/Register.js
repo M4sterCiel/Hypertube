@@ -79,7 +79,9 @@ class Register extends Component {
                   <div className="register-error">
                     {this.state.usernameError}
                   </div>
-                  <label htmlFor="username">Username</label>
+                  <label className="label-form" htmlFor="username">
+                    Username
+                  </label>
                 </div>
                 <div className="input-field col s6">
                   <input
@@ -92,7 +94,9 @@ class Register extends Component {
                   <div className="register-error">
                     {this.state.firstnameError}
                   </div>
-                  <label htmlFor="firstname">Firstname</label>
+                  <label className="label-form" htmlFor="firstname">
+                    Firstname
+                  </label>
                 </div>
                 <div className="input-field col s6">
                   <input
@@ -105,7 +109,9 @@ class Register extends Component {
                   <div className="register-error">
                     {this.state.lastnameError}
                   </div>
-                  <label htmlFor="lastname">Lastname</label>
+                  <label className="label-form" htmlFor="lastname">
+                    Lastname
+                  </label>
                 </div>
                 <div className="input-field col s12">
                   <input
@@ -116,7 +122,9 @@ class Register extends Component {
                     onChange={this.handleChange}
                   ></input>
                   <div className="register-error">{this.state.emailError}</div>
-                  <label htmlFor="email">Email</label>
+                  <label className="label-form" htmlFor="email">
+                    Email
+                  </label>
                 </div>
                 <div className="input-field col s12">
                   <input
@@ -168,7 +176,9 @@ class Register extends Component {
                       Minimum <b>8 characters</b>
                     </p>
                   </div>
-                  <label htmlFor="pwd1">Password</label>
+                  <label className="label-form" htmlFor="pwd1">
+                    Password
+                  </label>
                 </div>
                 <div className="input-field col s12">
                   <input
@@ -184,7 +194,9 @@ class Register extends Component {
                       ? "Passwords don't match"
                       : ""}
                   </div>
-                  <label htmlFor="pwd2">Repeat password</label>
+                  <label className="label-form" htmlFor="pwd2">
+                    Repeat password
+                  </label>
                 </div>
                 <input
                   type="submit"

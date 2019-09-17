@@ -6,6 +6,7 @@ import Register from "./containers/register/Register";
 import Search from "./containers/Search";
 import ResetPassword from "./containers/resetPassword/ResetPassword";
 import ForgotPassword from "./containers/forgotPassword/ForgotPassword";
+import UserCompletePicture from "./containers/userCompletePicture/UserCompletePicture";
 
 export default function MainRouter() {
   return (
@@ -18,6 +19,11 @@ export default function MainRouter() {
           <Route exact path="/search" component={Search} />
           <Route exact path="/forgot-password" component={ForgotPassword} />
           <Route exact path="/reset-password" component={ResetPassword} />
+          <Route
+            exact
+            path="/user-complete-picture"
+            component={UserCompletePicture}
+          />
         </Switch>
       </div>
     </Router>

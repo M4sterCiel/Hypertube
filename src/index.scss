@@ -43,8 +43,12 @@ html {
 
 /* Icons */
 
-i.material-icons {
+i.material-icons .icons-red {
   color: red;
+}
+
+i.material-icons .icons-white {
+  color: white;
 }
 
 /* Titles */
@@ -55,6 +59,7 @@ i.material-icons {
   text-align: left;
   color: white;
   margin-bottom: 15px;
+  margin-left: 5px;
 }
 
 /* Forms */
@@ -84,6 +89,7 @@ textarea:not(.browser-default):focus:not([readonly]) + label {
 input[type="submit"] {
   margin-top: 20px;
   margin-bottom: 20px;
+  margin-left: 0px;
   background-color: red;
   color: white;
   font-size: 18px;
@@ -93,7 +99,7 @@ input[type="submit"] {
   height: 50px;
 }
 
-label {
+label.label-form {
   position: absolute;
   left: 5px;
   top: 10px;

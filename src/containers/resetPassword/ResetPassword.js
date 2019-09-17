@@ -103,7 +103,9 @@ class ResetPassword extends Component {
                       Minimum <b>8 characters</b>
                     </p>
                   </div>
-                  <label htmlFor="pwd1">Password</label>
+                  <label className="label-form" htmlFor="pwd1">
+                    Password
+                  </label>
                 </div>
                 <div className="input-field col s12">
                   <input
@@ -119,7 +121,9 @@ class ResetPassword extends Component {
                       ? "Passwords don't match"
                       : ""}
                   </div>
-                  <label htmlFor="pwd2">Repeat password</label>
+                  <label className="label-form" htmlFor="pwd2">
+                    Repeat password
+                  </label>
                 </div>
                 <input
                   type="submit"

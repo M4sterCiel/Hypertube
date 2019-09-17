@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import NavBar from "../../components/navbar/NavBar";
-import ValidateInput from "../../services/ValidateInput";
+import UserPictureModify from "../../components/pictures/UserPictureModify";
 
-class ForgotPassword extends Component {
+class UserCompletePicture extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      login: "",
-      loginError: "",
-      loginValid: false
+      pictureValid: false
     };
     this._isMounted = false;
   }
@@ -22,13 +20,7 @@ class ForgotPassword extends Component {
   }
 
   handleChange = e => {
-    let result = ValidateInput.user("login", e.target.value);
-    this._isMounted &&
-      this.setState({
-        login: e.target.value,
-        loginValid: result.loginValid,
-        loginError: result.loginError
-      });
+    console.log(e);
   };
 
   handleSubmit = async e => {
@@ -42,28 +34,18 @@ class ForgotPassword extends Component {
         <div className="container-background">
           <div className="row">
             <div className="card-panel center auth-card">
-              <div className="title-page">Forgot password</div>
+              <div className="title-page">Add picture</div>
               <form
-                className="forgot-password-form"
+                className="user-complete-picture"
                 onSubmit={this.handleSubmit}
               >
                 <div className="input-field col s12">
-                  <input
-                    type="text"
-                    id="user-login"
-                    className="form-input-fields"
-                    value={this.state.login}
-                    onChange={this.handleChange}
-                  ></input>
-                  <div className="login-error">{this.state.loginError}</div>
-                  <label className="label-form" htmlFor="user-login">
-                    Username or email
-                  </label>
+                  <UserPictureModify />
                 </div>
                 <input
                   type="submit"
                   name="submit"
-                  value="Retrieve"
+                  value="Complete profile"
                   className="btn btn-submit-form"
                   disabled={!this.state.loginValid}
                 />
@@ -76,4 +58,4 @@ class ForgotPassword extends Component {
   }
 }
 
-export default ForgotPassword;
+export default UserCompletePicture;

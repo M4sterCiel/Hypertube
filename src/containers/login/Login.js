@@ -75,7 +75,9 @@ class Login extends Component {
                     onChange={this.handleChange}
                   ></input>
                   <div className="login-error">{this.state.loginError}</div>
-                  <label htmlFor="user-login">Username or email</label>
+                  <label className="label-form" htmlFor="user-login">
+                    Username or email
+                  </label>
                 </div>
                 <div className="input-field col s12">
                   <input
@@ -86,7 +88,9 @@ class Login extends Component {
                     onChange={this.handleChange}
                   ></input>
                   <div className="login-error">{this.state.pwdError}</div>
-                  <label htmlFor="user-password">Password</label>
+                  <label className="label-form" htmlFor="user-password">
+                    Password
+                  </label>
                 </div>
                 <input
                   type="submit"
