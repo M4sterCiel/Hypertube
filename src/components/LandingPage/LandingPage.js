@@ -15,6 +15,15 @@ class LandingPage extends Component {
   authGoogle = () => {
     window.location.replace("http://localhost:5000/auth/google");
   };
+  authFacebook = () => {
+    window.location.replace("http://localhost:5000/auth/facebook");
+  };
+  authGithub = () => {
+    window.location.replace("http://localhost:5000/auth/github");
+  };
+  auth42 = () => {
+    window.location.replace("http://localhost:5000/auth/42");
+  };
   render() {
     return (
       <div className="App">
@@ -35,6 +44,8 @@ class LandingPage extends Component {
             </div>
             <LpBigButton />
             <button onClick={this.authGoogle}>Login with Google</button>
+            <button onClick={this.authGithub}>Login with Github</button>
+            <button onClick={this.auth42}>Login with 42</button>
           </div>
         </div>
       </div>

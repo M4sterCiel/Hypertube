@@ -92,11 +92,11 @@ module.exports = {
       activationKey: uniqid
     });
 
-    User.register(user, req.body.pwd1);
-
-    mailService.sendActivation(user);
-
-    return res.status(200).json({ status: "success" });
+    User.register(user, req.body.pwd1, (err, result) => {
+      if (err) return res.status(400).json({ error: err.message });
+      mailService.sendActivation(user);
+      return res.status(200).json({ status: "success" });
+    });
   },
 
   logout: async (req, res, next) => {

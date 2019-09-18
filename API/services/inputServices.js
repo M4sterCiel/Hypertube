@@ -31,7 +31,7 @@ module.exports = {
     if (data.length < 3 || data.length > 30) return { error: "incorrect size" };
     //Check db for already existing username
     var result = await User.find({ username: data });
-    if (result != "") return { error: "already exists" };
+    if (result != "") return { error: "is already registered" };
     else return { status: "valid" };
   },
 

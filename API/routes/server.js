@@ -6,6 +6,7 @@ const userRoutes = require("./userRoutes");
 const passport = require("passport");
 const bodyParser = require("body-parser");
 const User = require("../schemas/User");
+const flash = require("connect-flash");
 
 const mongoose = require("mongoose");
 
@@ -54,6 +55,7 @@ app.use(
     unset: "destroy"
   })
 );
+app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
