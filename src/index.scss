@@ -110,7 +110,6 @@ label.label-form {
 
 input:focus ~ label,
 input:not([value=""]) ~ label {
-  top: -20px;
   font-size: 14px;
   color: white;
 }
