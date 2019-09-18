@@ -63,4 +63,6 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 /* Routes for API */
+app.use("/auth", require("../controllers/auth"));
+//app.use("/auth", userRoutes.router);
 app.use("/users", userRoutes.router);

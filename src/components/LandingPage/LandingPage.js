@@ -5,8 +5,13 @@ import "./LandingPage.scss";
 import Navbar from "../navbar/NavBar";
 import { LpBigButton } from "../buttons/BigButtons";
 import { withRouter } from "react-router-dom";
+//import FacebookLogin from "react-facebook-login";
 
 class LandingPage extends Component {
+  responseFacebook = response => {
+    console.log(response);
+  };
+
   render() {
     return (
       <div>
@@ -26,6 +31,15 @@ class LandingPage extends Component {
               No credit card required - it's free
             </div>
             <LpBigButton />
+            {/* <FacebookLogin
+              appId="424805585055711"
+              autoLoad={true}
+              fields="name,email,picture"
+              callback={this.responseFacebook}
+              cssClass="my-facebook-button-class"
+              icon="fa-facebook"
+            /> */}
+            <a href="/auth/facebook">Login with Facebook</a>
           </div>
         </div>
       </div>
