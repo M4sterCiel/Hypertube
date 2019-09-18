@@ -12,7 +12,6 @@ const usersSchema = mongoose.Schema({
   language: { type: String, default: "en" },
   token: String,
   oauthID: String,
-  facebook: JSON,
   google: JSON,
   github: JSON,
   42: JSON

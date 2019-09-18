@@ -4,6 +4,7 @@ import "materialize-css/dist/css/materialize.min.css";
 import NavBar from "../../components/navbar/NavBar";
 import { NavLink } from "react-router-dom";
 import ValidateInput from "../../services/ValidateInput";
+import axios from "axios";
 
 class Login extends Component {
   constructor(props) {
@@ -50,7 +51,18 @@ class Login extends Component {
   };
 
   handleSubmit = async e => {
-    console.log("Submit");
+    e.preventDefault();
+    axios
+      .post("/users/login", {
+        username: this.state.login,
+        password: this.state.password
+      })
+      .then(res => {
+        if (res.data.status === "success") this.props.history.push("/home");
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   render() {

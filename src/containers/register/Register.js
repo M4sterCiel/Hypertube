@@ -4,6 +4,7 @@ import "./Register.scss";
 import NavBar from "../../components/navbar/NavBar";
 import { NavLink } from "react-router-dom";
 import ValidateInput from "../../services/ValidateInput";
+import axios from "axios";
 
 class Register extends Component {
   constructor(props) {
@@ -50,6 +51,22 @@ class Register extends Component {
       this.setState({ [e.target.id]: e.target.value, ...result });
   };
 
+  handleSubmit = e => {
+    e.preventDefault();
+    axios
+      .post("/users/register", {
+        username: this.state.username,
+        firstname: this.state.firstname,
+        lastname: this.state.lastname,
+        email: this.state.email,
+        pwd1: this.state.pwd1,
+        pwd2: this.state.pwd2
+      })
+      .then(res => {
+        if (res.data.status === "success") this.props.history.push("/login");
+      });
+  };
+
   render() {
     return (
       <div className="App">
@@ -60,7 +77,7 @@ class Register extends Component {
             <div className="card-panel center auth-card">
               {" "}
               <div className="title-page">Register</div>
-              <form className="register-form">
+              <form className="register-form" onSubmit={this.handleSubmit}>
                 <div className="input-field col s12">
                   <input
                     type="text"
