@@ -125,7 +125,7 @@ passport.use(
             user = new User({
               username: profile.displayName ? profile.displayName : "",
               email: profile.emails[0] ? profile.emails[0].value : "",
-              language: profile._json.locale,
+              language: profile._json.locale ? profile._json.locale : "en",
               firstname: profile.name.givenName ? profile.name.givenName : "",
               lastname: profile.name.familyName ? profile.name.familyName : "",
               img: profile.photos[0] ? profile.photos[0].value : "",
