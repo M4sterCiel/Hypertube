@@ -1,13 +1,5 @@
 /* General */
 
-.landing-page {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  background: url("../../assets/landing.jpg");
-  background-size: cover;
-}
-
 .landing-page-title {
   position: relative;
   top: 150px;
@@ -20,7 +12,7 @@
 
   span {
     width: 100%;
-    font-family: "Roboto Condensed", sans-serif;
+    font-family: 'Roboto Condensed', sans-serif;
     color: white;
     font-size: 9vw;
   }
@@ -44,10 +36,19 @@
   font-size: 30px;
 }
 
-.landing-page-content-title-icon {
+.material-icons.landing-page-content-title-icon {
   position: relative;
   top: 15px;
   font-size: 50px;
+  color: white;
+}
+
+.container-background-image {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: url('../../assets/landing.jpg');
+  background-size: cover;
 }
 
 /* Mobile */

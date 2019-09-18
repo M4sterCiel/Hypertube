@@ -12,11 +12,14 @@ class LandingPage extends Component {
     console.log(response);
   };
 
+  authGoogle = () => {
+    window.location.replace("http://localhost:5000/auth/google");
+  };
   render() {
     return (
-      <div>
+      <div className="App">
         <Navbar />
-        <div className="landing-page">
+        <div className="container-background-image">
           <div className="landing-page-title row">
             Enjoy movies and series on HyperFlix
           </div>
@@ -31,20 +34,11 @@ class LandingPage extends Component {
               No credit card required - it's free
             </div>
             <LpBigButton />
-            {/* <FacebookLogin
-              appId="424805585055711"
-              autoLoad={true}
-              fields="name,email,picture"
-              callback={this.responseFacebook}
-              cssClass="my-facebook-button-class"
-              icon="fa-facebook"
-            /> */}
-            <a href="/auth/facebook">Login with Facebook</a>
+            <button onClick={this.authGoogle}>Login with Google</button>
           </div>
         </div>
       </div>
     );
   }
 }
-
 export default withRouter(LandingPage);

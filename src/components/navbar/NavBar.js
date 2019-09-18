@@ -1,14 +1,13 @@
-import React, { Component } from "react";
-import "materialize-css/dist/css/materialize.min.css";
-import "./NavBar.scss";
-import { withRouter, NavLink } from "react-router-dom";
-import { LoginButton, RegisterButton } from "../buttons/Buttons";
-import { Button } from "react-materialize";
-import { makeStyles } from "@material-ui/core/styles";
-import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import logo from "../../assets/hyperflix_logo2.png";
+import React, { Component } from 'react';
+import './NavBar.scss';
+import { withRouter, NavLink } from 'react-router-dom';
+import { LoginButton, RegisterButton } from '../buttons/Buttons';
+import { Button } from 'react-materialize';
+import { makeStyles } from '@material-ui/core/styles';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import logo from '../../assets/hyperflix_logo2.png';
 
 class NavBar extends Component {
   constructor(props) {
@@ -41,8 +40,8 @@ class NavBar extends Component {
       const toggleMenu = (menu, open) => event => {
         if (
           event &&
-          event.type === "keydown" &&
-          (event.key === "Tab" || event.key === "Shift")
+          event.type === 'keydown' &&
+          (event.key === 'Tab' || event.key === 'Shift')
         ) {
           return;
         }
@@ -59,22 +58,22 @@ class NavBar extends Component {
           onClick={toggleMenu(menu, false)}
           onKeyDown={toggleMenu(menu, false)}
         >
-          <h5 style={{ textAlign: "center", color: "#ffb6d3" }}>Menu</h5>
+          <h5 style={{ textAlign: 'center', color: 'red' }}>Menu</h5>
           <List>
             <ListItem>
-              <NavLink className="mobile-menu-links" to="/users/login">
-                <i className="material-icons link-icon mobile-menu-icons">
+              <NavLink className="nav-mobile-menu-links" to="/login">
+                <i className="material-icons link-icon nav-mobile-menu-icons">
                   account_box
                 </i>
-                <span className="mobile-menu-notif-text">Log in</span>
+                <span className="nav-mobile-menu-text">Log in</span>
               </NavLink>
             </ListItem>
             <ListItem>
-              <NavLink className="mobile-menu-links" to="/users/register">
-                <i className="material-icons link-icon mobile-menu-icons">
+              <NavLink className="nav-mobile-menu-links" to="/register">
+                <i className="material-icons link-icon nav-mobile-menu-icons">
                   person_add
                 </i>
-                <span className="mobile-menu-notif-text">Register</span>
+                <span className="nav-mobile-menu-text">Register</span>
               </NavLink>
             </ListItem>
           </List>
@@ -82,20 +81,20 @@ class NavBar extends Component {
       );
 
       return (
-        <div className="nav-mobile-links">
+        <div className="nav-mobile-menu">
           <Button
             className="nav-mobile-menu-btn"
-            onClick={toggleMenu("left", true)}
+            onClick={toggleMenu('left', true)}
           >
             <i className="material-icons">menu</i>
           </Button>
           <SwipeableDrawer
             anchor="left"
             open={this.state.left}
-            onClose={toggleMenu("left", false)}
-            onOpen={toggleMenu("left", true)}
+            onClose={toggleMenu('left', false)}
+            onOpen={toggleMenu('left', true)}
           >
-            {MobileMenuLoggedOut("left")}
+            {MobileMenuLoggedOut('left')}
           </SwipeableDrawer>
         </div>
       );

@@ -25,11 +25,9 @@ const saveToSession = (req, res) => {
 
   req.session.save(err => {
     if (err) throw err;
-    res.redirect("/");
+    res.redirect("http://localhost:3000");
   });
 };
-
-console.log("ca passe dans auth.js");
 
 /* Facebook Authentication */
 passport.use(
@@ -104,9 +102,9 @@ passport.use(
   new GoogleStrategy(
     {
       clientID:
-        "145149806397-ldpgusv17htfi73hooms2louohnfo2j1.apps.googleusercontent.com",
-      clientSecret: "U0zfQdwS0S8rpNNCHdpLIJsd",
-      callbackURL: "http://localhost:3000/"
+        "784800871977-tfb75n389g6f7hpvug0hmfrdh1ku8ojn.apps.googleusercontent.com",
+      clientSecret: "6rBvGJbcjXGOZku2VTkI8Bxv",
+      callbackURL: "http://localhost:5000/auth/google/callback"
     },
     function(token, tokenSecret, profile, done) {
       User.findOne(
@@ -122,21 +120,16 @@ passport.use(
               new Date().getTime() +
               Math.floor(Math.random() * 10000 + 1).toString(16);
 
+            console.log("blabla");
+
             user = new User({
-              username: profile._json.displayName
-                ? profile._json.displayName
-                : "",
-              email: profile._json.emails[0]
-                ? profile._json.emails[0].value
-                : "",
-              firstname: profile._json.name.givenName
-                ? profile._json.name.givenName
-                : "",
-              lastname: profile._json.name.familyName
-                ? profile._json.name.familyName
-                : "",
+              username: profile.displayName ? profile.displayName : "",
+              email: profile.emails[0] ? profile.emails[0].value : "",
+              language: profile._json.locale,
+              firstname: profile.name.givenName ? profile.name.givenName : "",
+              lastname: profile.name.familyName ? profile.name.familyName : "",
               img: profile.photos[0] ? profile.photos[0].value : "",
-              activationKey: randomKey,
+              activationKey: uniqid,
               active: true,
               oauthID: profile.id,
               google: profile._json ? profile._json : {}
@@ -157,16 +150,15 @@ passport.use(
 router.get(
   "/google",
   passport.authenticate("google", {
-    scope: [
-      "https://www.googleapis.com/auth/plus.login",
-      "https://www.googleapis.com/auth/plus.profile.emails.read"
-    ]
+    scope: ["profile", "email"]
   })
 );
 
 router.get(
   "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
+  passport.authenticate("google", {
+    failureRedirect: "http://localhost:3000/login"
+  }),
   function(req, res) {
     saveToSession(req, res);
   }

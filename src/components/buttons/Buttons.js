@@ -7,7 +7,7 @@ const LoginButton = () => {
   return (
     <NavLink to="/login">
       <Button tooltip="Log on HyperFlix" className="btn-regular modal-trigger">
-        <span className="btn-regular-text">Login</span>
+        <span className="btn-regular-text">Log In</span>
       </Button>
     </NavLink>
   );
