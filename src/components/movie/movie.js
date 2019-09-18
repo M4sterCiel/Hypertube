@@ -17,7 +17,7 @@ const Movie = ({ movie }) => {
           src={poster}
         />
       </div>
-      <p>({movie.year})</p>
+      <p>{movie.year} / {movie.rating} ☆</p>
     </div>
   );
 };
