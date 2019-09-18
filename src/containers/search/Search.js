@@ -6,7 +6,7 @@ import Movie from "../../components/movie/movie";
 import Search from "../../components/searchBar/searchBar";
 import Navbar from "../../components/navbar/NavBar";
 
-const MOVIE_API_URL = "https://yts.lt/api/v2/list_movies.json?query_term=man"; // https://yts.lt/api/v2/list_movies.json?query_term=man https://www.omdbapi.com/?s=man&apikey=4a3b711b
+const MOVIE_API_URL = "https://yts.lt/api/v2/list_movies.json?minimum_rating=8.5&order_by=asc"; // https://yts.lt/api/v2/list_movies.json?query_term=man https://www.omdbapi.com/?s=man&apikey=4a3b711b
 
 const initialState = {
   loading: true,
