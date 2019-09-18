@@ -6,7 +6,7 @@ import Movie from "../../components/movie/movie";
 import Search from "../../components/searchBar/searchBar";
 import Navbar from "../../components/navbar/NavBar";
 
-const MOVIE_API_URL = "https://www.omdbapi.com/?s=man&apikey=4a3b711b";
+const MOVIE_API_URL = "https://yts.lt/api/v2/list_movies.json?query_term=man"; // https://yts.lt/api/v2/list_movies.json?query_term=man https://www.omdbapi.com/?s=man&apikey=4a3b711b
 
 const initialState = {
   loading: true,
@@ -48,7 +48,7 @@ const SearchView = () => {
       .then(jsonResponse => {
         dispatch({
           type: "SEARCH_MOVIES_SUCCESS",
-          payload: jsonResponse.Search
+          payload: jsonResponse.data.movies
         });
       });
   }, []);
@@ -63,13 +63,13 @@ const SearchView = () => {
       type: "SEARCH_MOVIES_REQUEST"
     });
 
-    fetch(`https://www.omdbapi.com/?s=${searchValue}&apikey=4a3b711b`)
+    fetch(`https://yts.lt/api/v2/list_movies.json?query_term=${searchValue}`) 
       .then(response => response.json())
       .then(jsonResponse => {
-        if (jsonResponse.Response === "True") {
+        if (jsonResponse.status_message === "Query was successful") {
           dispatch({
             type: "SEARCH_MOVIES_SUCCESS",
-            payload: jsonResponse.Search
+            payload: jsonResponse.data.movies
           });
         } else {
           dispatch({
@@ -94,7 +94,7 @@ const SearchView = () => {
           <div className="errorMessage">{errorMessage}</div>
         ) : (
           movies.map((movie, index) => (
-            <Movie key={`${index}-${movie.Title}`} movie={movie} />
+            <Movie key={`${index}-${movie.title}`} movie={movie} />
           ))
         )}
       </div>
