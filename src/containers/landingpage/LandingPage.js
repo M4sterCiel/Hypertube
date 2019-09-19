@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import "materialize-css";
+import "materialize-css/dist/css/materialize.min.css";
 import "./LandingPage.scss";
 import Navbar from "../../components/navbar/NavBar";
 import { LpBigButton } from "../../components/buttons/BigButtons";
@@ -30,5 +32,4 @@ class LandingPage extends Component {
     );
   }
 }
-
 export default withRouter(LandingPage);

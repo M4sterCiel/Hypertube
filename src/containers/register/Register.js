@@ -4,6 +4,11 @@ import "./Register.scss";
 import NavBar from "../../components/navbar/NavBar";
 import { NavLink } from "react-router-dom";
 import ValidateInput from "../../services/ValidateInput";
+import TwitterLogo from "../../assets/Twitter_Logo_WhiteOnBlue.png";
+import GoogleLogo from "../../assets/Google_Logo.png";
+import GithubLogo from "../../assets/Github_Logo.png";
+
+import axios from "axios";
 
 class Register extends Component {
   constructor(props) {
@@ -41,6 +46,18 @@ class Register extends Component {
   componentWillUnmount() {
     this._isMounted = false;
   }
+  authGoogle = () => {
+    window.location.replace("http://localhost:5000/auth/google");
+  };
+  authGithub = () => {
+    window.location.replace("http://localhost:5000/auth/github");
+  };
+  auth42 = () => {
+    window.location.replace("http://localhost:5000/auth/42");
+  };
+  authTwitter = () => {
+    window.location.replace("http://localhost:5000/auth/twitter");
+  };
 
   handleChange = e => {
     let result;
@@ -53,8 +70,23 @@ class Register extends Component {
       this.setState({ [e.target.id]: e.target.value, ...result });
   };
 
-  handleSubmit = async e => {
-    console.log("Submit");
+  handleSubmit = e => {
+    e.preventDefault();
+    axios
+      .post("/users/register", {
+        username: this.state.username,
+        firstname: this.state.firstname,
+        lastname: this.state.lastname,
+        email: this.state.email,
+        pwd1: this.state.pwd1,
+        pwd2: this.state.pwd2
+      })
+      .then(res => {
+        if (res.data.status === "success") this.props.history.push("/login");
+      })
+      .catch(err => {
+        console.log(err.response.data.error);
+      });
   };
 
   render() {
@@ -213,6 +245,30 @@ class Register extends Component {
                   }
                 />
               </form>
+              <img
+                onClick={this.auth42}
+                src="https://www.42.fr/wp-content/themes/42/images/42_logo_black.svg"
+                alt="42 logo"
+                className="third-party-logo"
+              ></img>
+              <img
+                onClick={this.authTwitter}
+                src={TwitterLogo}
+                alt="twitter logo"
+                className="third-party-logo"
+              ></img>
+              <img
+                onClick={this.authGoogle}
+                src={GoogleLogo}
+                alt="google logo"
+                className="third-party-logo"
+              ></img>
+              <img
+                onClick={this.authGithub}
+                src={GithubLogo}
+                alt="github logo"
+                className="third-party-logo"
+              ></img>
               <p className="register-login-link link-right">
                 Already have an account?{" "}
                 <NavLink className="red-link" to="/login">
