@@ -8,6 +8,7 @@ import ValidateInput from '../../services/ValidateInput';
 import TwitterLogo from '../../assets/Twitter_Logo_WhiteOnBlue.png';
 import GoogleLogo from '../../assets/Google_Logo.png';
 import GithubLogo from '../../assets/Github_Logo.png';
+import SchoolLogo from '../../assets/42_Logo.png';
 import axios from 'axios';
 
 class Login extends Component {
@@ -134,7 +135,7 @@ class Login extends Component {
                 <p className="register-login-social-text">Or log with</p>
                 <img
                   onClick={this.auth42}
-                  src="https://www.42.fr/wp-content/themes/42/images/42_logo_black.svg"
+                  src={SchoolLogo}
                   alt="42 logo"
                   className="third-party-logo"
                 ></img>
