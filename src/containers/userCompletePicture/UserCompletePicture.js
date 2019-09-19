@@ -6,13 +6,16 @@ class UserCompletePicture extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pictureValid: false
+      pictureValid: false,
+      pictureUrl: ""
     };
     this._isMounted = false;
+    this.handlePicture = this.handlePicture.bind(this);
   }
 
   componentDidMount() {
     this._isMounted = true;
+    console.log(this.state.pictureValid);
   }
 
   componentWillUnmount() {
@@ -21,6 +24,14 @@ class UserCompletePicture extends Component {
 
   handleChange = e => {
     console.log(e);
+  };
+
+  handlePicture = picture => {
+    this._isMounted &&
+      this.setState({
+        pictureValid: picture.status,
+        pictureUrl: picture.url
+      });
   };
 
   handleSubmit = async e => {
@@ -40,14 +51,14 @@ class UserCompletePicture extends Component {
                 onSubmit={this.handleSubmit}
               >
                 <div className="input-field col s12">
-                  <UserPictureModify />
+                  <UserPictureModify pictureToParent={this.handlePicture} />
                 </div>
                 <input
                   type="submit"
                   name="submit"
                   value="Complete profile"
                   className="btn btn-submit-form"
-                  disabled={!this.state.loginValid}
+                  disabled={!this.state.pictureValid}
                 />
               </form>
             </div>

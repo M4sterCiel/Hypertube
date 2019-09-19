@@ -4,7 +4,7 @@ import ValidatePicture from "../../services/ValidatePicture";
 import ErrorToast from "../../services/toasts/ErrorToasts";
 import DefaultUserPic from "../../assets/default_user.png";
 
-const UserPictureModify = () => {
+const UserPictureModify = props => {
   const [pictureValid, setPictureValid] = useState(false);
   const [picture, setPicture] = useState(DefaultUserPic);
 
@@ -12,13 +12,10 @@ const UserPictureModify = () => {
     let file = e.target.files[0];
 
     if (file === undefined) {
-      setPictureValid(false);
       return;
     }
     if (!ValidatePicture.picture.format(file)) {
       ErrorToast.custom.error("Please upload a correct image format", 1400);
-      setPictureValid(false);
-      setPicture(DefaultUserPic);
       return;
     }
     if (!ValidatePicture.picture.size(file)) {
@@ -26,8 +23,6 @@ const UserPictureModify = () => {
         "Please upload a correct image (less than 2mb)",
         1400
       );
-      setPictureValid(false);
-      setPicture(DefaultUserPic);
       return;
     }
 
@@ -35,8 +30,6 @@ const UserPictureModify = () => {
     pic.src = window.URL.createObjectURL(file);
     pic.onerror = () => {
       ErrorToast.custom.error("Please upload a correct image", 1400);
-      setPictureValid(false);
-      setPicture(DefaultUserPic);
       return;
     };
     pic.onload = () => {
@@ -50,6 +43,7 @@ const UserPictureModify = () => {
         };
         reader.readAsDataURL(file);
         setPictureValid(true);
+        props.pictureToParent({ status: true, url: picture });
       }
     };
   };
