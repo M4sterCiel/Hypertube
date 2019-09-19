@@ -9,7 +9,7 @@ const Movie = ({ movie }) => {
     movie.large_cover_image === "N/A" ? DEFAULT_PLACEHOLDER_IMAGE : movie.large_cover_image;
   return (
     <div className="movie">
-      <h2><strong>{movie.title}</strong></h2>
+      {/* <h2><strong>{movie.title}</strong></h2> */}
       <div>
         <img
           width="200"
