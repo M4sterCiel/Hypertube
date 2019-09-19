@@ -8,22 +8,6 @@ import { withRouter } from "react-router-dom";
 //import FacebookLogin from "react-facebook-login";
 
 class LandingPage extends Component {
-  responseFacebook = response => {
-    console.log(response);
-  };
-
-  authGoogle = () => {
-    window.location.replace("http://localhost:5000/auth/google");
-  };
-  authFacebook = () => {
-    window.location.replace("http://localhost:5000/auth/facebook");
-  };
-  authGithub = () => {
-    window.location.replace("http://localhost:5000/auth/github");
-  };
-  auth42 = () => {
-    window.location.replace("http://localhost:5000/auth/42");
-  };
   render() {
     return (
       <div className="App">
@@ -43,9 +27,6 @@ class LandingPage extends Component {
               No credit card required - it's free
             </div>
             <LpBigButton />
-            <button onClick={this.authGoogle}>Login with Google</button>
-            <button onClick={this.authGithub}>Login with Github</button>
-            <button onClick={this.auth42}>Login with 42</button>
           </div>
         </div>
       </div>

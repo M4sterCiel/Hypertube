@@ -10,7 +10,7 @@ exports.router = (() => {
   userRouter.route("/login").post(userController.login);
   userRouter.route("/logout").get(userController.logout);
   userRouter.route("/profile").get(userController.getProfile);
-  userRouter.route("/get_session").get(userController.getSession);
+  userRouter.route("/session").get(userController.getSession);
 
   return userRouter;
 })();

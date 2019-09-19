@@ -21,6 +21,17 @@
   color: red;
 }
 
+/* Third party Logos */
+
+.third-party-logo {
+  border-radius: 50%;
+  width: 5em;
+  margin-right: 2%;
+}
+
+.third-party-logo:hover {
+  cursor: pointer;
+}
 /* Errors */
 
 .login-error,

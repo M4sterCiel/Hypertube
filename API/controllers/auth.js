@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const request = require("request");
-const FacebookStrategy = require("passport-facebook").Strategy;
+const jwtService = require("../services/jwtService");
 const TwitterStrategy = require("passport-twitter").Strategy;
 const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 const GitHubStrategy = require("passport-github2").Strategy;
@@ -49,6 +49,7 @@ passport.use(
           if (err) {
             return done(err);
           }
+          var token = jwtService.tokenGenerator();
           if (!user) {
             var uniqid =
               new Date().getTime() +
@@ -63,6 +64,7 @@ passport.use(
               img: profile.photos[0] ? profile.photos[0].value : "",
               activationKey: uniqid,
               active: true,
+              token: token,
               oauthID: profile.id,
               google: profile._json ? profile._json : {}
             });
@@ -71,6 +73,9 @@ passport.use(
               return done(err, user);
             });
           } else {
+            User.findOneAndUpdate({ _id: user._id }, { token: token }, err => {
+              if (err) console.log(err);
+            });
             return done(err, user);
           }
         }
@@ -96,6 +101,72 @@ router.get(
   }
 );
 
+// TWITTER
+passport.use(
+  new TwitterStrategy(
+    {
+      consumerKey: "t2ncc93Na5XNNVtiOhjS3gvma",
+      consumerSecret: "ZEs1taRDwz0dsKG9hxhtPI4BFw93rEwlkcJI4UpxZYPcD8Mgcm",
+      callbackURL: "http://localhost:5000/auth/twitter/callback",
+      includeEmail: true
+    },
+    function(token, tokenSecret, profile, done) {
+      User.findOne(
+        {
+          oauthID: profile.id
+        },
+        function(err, user) {
+          if (err) {
+            return done(err);
+          }
+          var token = jwtService.tokenGenerator();
+          if (!user) {
+            var uniqid =
+              new Date().getTime() +
+              Math.floor(Math.random() * 10000 + 1).toString(16);
+
+            user = new User({
+              username: profile._json.screen_name
+                ? profile._json.screen_name
+                : "",
+              email: profile._json.email ? profile._json.email : "",
+              firstname: profile._json.name ? profile._json.name : "",
+              lastname: "",
+              img: profile.photos[0] ? profile.photos[0].value : "",
+              activationKey: uniqid,
+              token: token,
+              active: true,
+              oauthID: profile.id,
+              twitter: profile._json ? profile._json : {}
+            });
+            user.save(function(err) {
+              if (err) console.error(err);
+              return done(err, user);
+            });
+          } else {
+            User.findOneAndUpdate({ _id: user._id }, { token: token }, err => {
+              if (err) console.log(err);
+            });
+            return done(err, user);
+          }
+        }
+      );
+    }
+  )
+);
+
+router.get("/twitter", passport.authenticate("twitter"));
+
+router.get(
+  "/twitter/callback",
+  passport.authenticate("twitter", {
+    failureRedirect: "http://localhost:3000/login"
+  }),
+  (req, res) => {
+    saveToSession(req, res);
+  }
+);
+
 /* Github */
 passport.use(
   new GitHubStrategy(
@@ -114,6 +185,7 @@ passport.use(
           if (err) {
             return done(err);
           }
+          var token = jwtService.tokenGenerator();
           if (!user) {
             var uniqid =
               new Date().getTime() +
@@ -127,6 +199,7 @@ passport.use(
               img: profile._json.avatar_url ? profile._json.avatar_url : "",
               activationKey: uniqid,
               active: true,
+              token: token,
               oauthID: profile.id,
               github: profile._json ? profile._json : ""
             });
@@ -135,6 +208,9 @@ passport.use(
               return done(err, user);
             });
           } else {
+            User.findOneAndUpdate({ _id: user._id }, { token: token }, err => {
+              if (err) console.log(err);
+            });
             return done(err, user);
           }
         }
@@ -187,6 +263,7 @@ passport.use(
               if (err) {
                 return done(err);
               }
+              var token = jwtService.tokenGenerator();
               if (!user) {
                 var uniqid =
                   new Date().getTime() +
@@ -200,6 +277,7 @@ passport.use(
                   img: profile.image_url ? profile.image_url : "",
                   activationKey: uniqid,
                   active: true,
+                  token: token,
                   oauthID: profile.id,
                   42: profile ? profile : {}
                 });
@@ -208,6 +286,13 @@ passport.use(
                   return done(err, user);
                 });
               } else {
+                User.findOneAndUpdate(
+                  { _id: user._id },
+                  { token: token },
+                  err => {
+                    if (err) console.log(err);
+                  }
+                );
                 return done(err, user);
               }
             }

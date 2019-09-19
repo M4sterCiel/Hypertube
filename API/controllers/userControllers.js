@@ -1,5 +1,6 @@
 const User = require("../schemas/User");
 const inputService = require("../services/inputServices");
+const jwtService = require("../services/jwtService");
 const mailService = require("../services/mailService");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
@@ -23,8 +24,6 @@ passport.use(
 
 module.exports = {
   login: async (req, res, next) => {
-    var user = req.body;
-
     passport.authenticate("local", (err, user, info) => {
       if (err) {
         return res.json({ status: "error", msg: "Error while logging in." });
@@ -39,6 +38,15 @@ module.exports = {
         }
 
         if (user.active === true) {
+          var token = jwtService.tokenGenerator();
+          User.findOneAndUpdate({ _id: user._id }, { token: token }, err => {
+            if (err)
+              return res.json({
+                status: "error",
+                msg: "Error while logging in."
+              });
+          });
+
           const payload = {
             _id: user._id,
             username: user.username,
@@ -100,12 +108,19 @@ module.exports = {
   },
 
   logout: async (req, res, next) => {
-    req.logout();
-    req.session = null;
-    res.status(200).json({ message: "Loggued out!" });
+    var token = jwtService.parseAuthorization(req.headers.authorization);
+    if (jwtService.verifyToken(token)) {
+      User.findOneAndUpdate({ token: token }, { token: null }, err => {
+        if (err) console.log(err);
+      });
+      req.logout();
+      req.session = null;
+      return res.status(200).json({ message: "Loggued out!" });
+    }
   },
 
   getProfile: async (req, res, next) => {
+    console.log(req.headers.authorization);
     if (!req.session.user)
       return res.status(401).json({ error: "You are not logged in!" });
     return res.status(200).json({ message: "blabla" });
