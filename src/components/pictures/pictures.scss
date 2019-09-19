@@ -9,6 +9,9 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   overflow: hidden;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 /* Upload */
@@ -54,17 +57,6 @@
   margin: auto;
   font-size: 32px;
 }
-
-/* .upload-options span {
-  display: inline-block;
-  width: 50%;
-  height: 100%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  vertical-align: middle;
-  text-align: center;
-} */
 
 /* Responsive */
 

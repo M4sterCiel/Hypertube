@@ -56,9 +56,10 @@ const UserPictureModify = () => {
 
   return (
     <div className="user-picture-modify">
-      <div className="user-picture-box">
-        <img src={picture} alt="profile" />
-      </div>
+      <div
+        className="user-picture-box"
+        style={{ backgroundImage: "url(" + picture + ")" }}
+      ></div>
       <div className="upload-options" onChange={e => handlePictureUpload(e)}>
         <label>
           <input type="file" className="image-upload" accept="image/*" />
