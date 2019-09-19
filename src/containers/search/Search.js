@@ -5,6 +5,7 @@ import spinner from "../../spinner.gif";
 import Movie from "../../components/movie/movie";
 import Search from "../../components/searchBar/searchBar";
 import Navbar from "../../components/navbar/NavBar";
+import Filter from "../../components/filter/Filter";
 
 const MOVIE_API_URL = "https://yts.lt/api/v2/list_movies.json?minimum_rating=8.5&order_by=asc"; // https://yts.lt/api/v2/list_movies.json?query_term=man https://www.omdbapi.com/?s=man&apikey=4a3b711b
 
@@ -32,7 +33,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        errorMessage: action.error
+        errorMessage: 'No movies found'
       };
     default:
       return state;
@@ -66,7 +67,7 @@ const SearchView = () => {
     fetch(`https://yts.lt/api/v2/list_movies.json?query_term=${searchValue}`) 
       .then(response => response.json())
       .then(jsonResponse => {
-        if (jsonResponse.status_message === "Query was successful") {
+        if (jsonResponse.status_message === "Query was successful" && jsonResponse.data.movie_count > 0) {
           dispatch({
             type: "SEARCH_MOVIES_SUCCESS",
             payload: jsonResponse.data.movies
@@ -77,7 +78,7 @@ const SearchView = () => {
             error: jsonResponse.Error
           });
         }
-        console.log(jsonResponse.data.movies);
+        console.log(jsonResponse);
       });
   };
 
@@ -88,7 +89,7 @@ const SearchView = () => {
       <div class="layer">
         <Navbar />
         {/* <Header text="HyperFlix" /> */}
-        <Search search={search} />
+        <Search search={search}/>
         <div className="movies">
           {loading && !errorMessage ? (
             <img className="spinner" src={spinner} alt="Loading spinner" />

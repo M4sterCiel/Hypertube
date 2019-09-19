@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Filter from "../../components/filter/Filter";
 import "../buttons/Buttons.scss";
 import "./searchBar.scss";
 
@@ -29,13 +30,14 @@ const Search = ({ search }) => {
           class="input-field s1"
           placeholder="What movie are you looking for?"
         />
-        <button disabled={!searchValue}
+        <button disabled={searchValue.length < 2}
                 onClick={callSearchFunction} 
                 type="submit" 
                 class="btn btn-secondary btn-medium waves-effect" 
                 value="SEARCH">
           SEARCH
-        </button>  
+        </button>
+        <Filter />  
       </form>
     </div>
   );
