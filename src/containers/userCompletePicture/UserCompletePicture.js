@@ -15,16 +15,11 @@ class UserCompletePicture extends Component {
 
   componentDidMount() {
     this._isMounted = true;
-    console.log(this.state.pictureValid);
   }
 
   componentWillUnmount() {
     this._isMounted = false;
   }
-
-  handleChange = e => {
-    console.log(e);
-  };
 
   handlePicture = picture => {
     this._isMounted &&
