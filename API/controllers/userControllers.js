@@ -128,12 +128,19 @@ module.exports = {
   },
 
   getSession: async (req, res, next) => {
-    if (typeof req.session.user !== "undefined") {
-      User.findOne({ _id: req.session.user._id }, (err, user) => {
-        if (user) req.session.user.language = user.language;
-        return res.json(req.session.user);
-      });
-    } else return res.json({ error: "No session for user" });
+    var token = req.headers.authorization;
+    token = jwtService.parseAuthorization(token);
+    var stillValid = User.find({ token: token });
+    stillValid = stillValid.length > 0 ? true : false;
+
+    if (jwtService.verifyToken(token) && stillValid) {
+      if (typeof req.session.user !== "undefined") {
+        User.findOne({ _id: req.session.user._id }, (err, user) => {
+          if (user) req.session.user.language = user.language;
+          return res.json(req.session.user);
+        });
+      } else return res.json({ error: "No session for user" });
+    } else return res.json({ error: "Invalid token" });
   },
 
   activateAccount: async (req, res, next) => {

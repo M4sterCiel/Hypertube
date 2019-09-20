@@ -7,6 +7,8 @@ import ValidateInput from "../../services/ValidateInput";
 import TwitterLogo from "../../assets/Twitter_Logo_WhiteOnBlue.png";
 import GoogleLogo from "../../assets/Google_Logo.png";
 import GithubLogo from "../../assets/Github_Logo.png";
+import SchoolLogo from "../../assets/42_Logo.png";
+import ErrorToast from "../../services/toasts/ErrorToasts";
 
 import axios from "axios";
 
@@ -43,6 +45,9 @@ class Register extends Component {
     this._isMounted = true;
   }
 
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
   authGoogle = () => {
     window.location.replace("http://localhost:5000/auth/google");
   };
@@ -60,8 +65,7 @@ class Register extends Component {
     let result;
     if (e.target.id === "pwd1") {
       result = ValidateInput.user("passwordHard", e.target.value);
-    } else if (e.target.id === "pwd2") {
-    } else {
+    } else if (e.target.id !== "pwd2") {
       result = ValidateInput.user(e.target.id, e.target.value);
     }
     this._isMounted &&
@@ -80,10 +84,12 @@ class Register extends Component {
         pwd2: this.state.pwd2
       })
       .then(res => {
-        if (res.data.status === "success") this.props.history.push("/login");
+        if (res.data.status === "success") {
+          this.props.history.push("/login");
+        }
       })
       .catch(err => {
-        console.log(err.response.data.error);
+        ErrorToast.custom.error(err.response.data.error, 4000);
       });
   };
 
@@ -109,7 +115,9 @@ class Register extends Component {
                   <div className="register-error">
                     {this.state.usernameError}
                   </div>
-                  <label htmlFor="username">Username</label>
+                  <label className="label-form" htmlFor="username">
+                    Username
+                  </label>
                 </div>
                 <div className="input-field col s6">
                   <input
@@ -122,7 +130,9 @@ class Register extends Component {
                   <div className="register-error">
                     {this.state.firstnameError}
                   </div>
-                  <label htmlFor="firstname">Firstname</label>
+                  <label className="label-form" htmlFor="firstname">
+                    Firstname
+                  </label>
                 </div>
                 <div className="input-field col s6">
                   <input
@@ -135,7 +145,9 @@ class Register extends Component {
                   <div className="register-error">
                     {this.state.lastnameError}
                   </div>
-                  <label htmlFor="lastname">Lastname</label>
+                  <label className="label-form" htmlFor="lastname">
+                    Lastname
+                  </label>
                 </div>
                 <div className="input-field col s12">
                   <input
@@ -146,7 +158,9 @@ class Register extends Component {
                     onChange={this.handleChange}
                   ></input>
                   <div className="register-error">{this.state.emailError}</div>
-                  <label htmlFor="email">Email</label>
+                  <label className="label-form" htmlFor="email">
+                    Email
+                  </label>
                 </div>
                 <div className="input-field col s12">
                   <input
@@ -198,7 +212,9 @@ class Register extends Component {
                       Minimum <b>8 characters</b>
                     </p>
                   </div>
-                  <label htmlFor="pwd1">Password</label>
+                  <label className="label-form" htmlFor="pwd1">
+                    Password
+                  </label>
                 </div>
                 <div className="input-field col s12">
                   <input
@@ -214,7 +230,9 @@ class Register extends Component {
                       ? "Passwords don't match"
                       : ""}
                   </div>
-                  <label htmlFor="pwd2">Repeat password</label>
+                  <label className="label-form" htmlFor="pwd2">
+                    Repeat password
+                  </label>
                 </div>
                 <input
                   type="submit"
@@ -231,30 +249,33 @@ class Register extends Component {
                   }
                 />
               </form>
-              <img
-                onClick={this.auth42}
-                src="https://www.42.fr/wp-content/themes/42/images/42_logo_black.svg"
-                alt="42 logo"
-                className="third-party-logo"
-              ></img>
-              <img
-                onClick={this.authTwitter}
-                src={TwitterLogo}
-                alt="twitter logo"
-                className="third-party-logo"
-              ></img>
-              <img
-                onClick={this.authGoogle}
-                src={GoogleLogo}
-                alt="google logo"
-                className="third-party-logo"
-              ></img>
-              <img
-                onClick={this.authGithub}
-                src={GithubLogo}
-                alt="github logo"
-                className="third-party-logo"
-              ></img>
+              <div className="register-login-with-social">
+                <p className="register-login-social-text">Or register with</p>
+                <img
+                  onClick={this.auth42}
+                  src={SchoolLogo}
+                  alt="42 logo"
+                  className="third-party-logo"
+                ></img>
+                <img
+                  onClick={this.authTwitter}
+                  src={TwitterLogo}
+                  alt="twitter logo"
+                  className="third-party-logo"
+                ></img>
+                <img
+                  onClick={this.authGoogle}
+                  src={GoogleLogo}
+                  alt="google logo"
+                  className="third-party-logo"
+                ></img>
+                <img
+                  onClick={this.authGithub}
+                  src={GithubLogo}
+                  alt="github logo"
+                  className="third-party-logo"
+                ></img>
+              </div>
               <p className="register-login-link link-right">
                 Already have an account?{" "}
                 <NavLink className="red-link" to="/login">

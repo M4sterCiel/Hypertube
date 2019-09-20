@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "materialize-css/dist/css/materialize.min.css";
 import NavBar from "../../components/navbar/NavBar";
+import ErrorToast from "../../services/toasts/ErrorToasts";
 import axios from "axios";
 
 class Activation extends Component {
@@ -26,10 +27,11 @@ class Activation extends Component {
       })
       .then(res => {
         console.log(res.data);
+        if (res.data.message) ErrorToast.custom.error(res.data.message, 4000);
         this.props.history.push("/login");
       })
       .catch(err => {
-        console.log(err.response.data.status);
+        ErrorToast.custom.error(err.response.data.error, 4000);
         this.props.history.push("/login");
       });
   }

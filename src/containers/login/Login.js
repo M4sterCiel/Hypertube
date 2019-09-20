@@ -3,11 +3,14 @@ import "./Login.scss";
 import "materialize-css/dist/css/materialize.min.css";
 import NavBar from "../../components/navbar/NavBar";
 import { NavLink } from "react-router-dom";
+import AuthService from "../../services/AuthService";
 import ValidateInput from "../../services/ValidateInput";
 import TwitterLogo from "../../assets/Twitter_Logo_WhiteOnBlue.png";
 import GoogleLogo from "../../assets/Google_Logo.png";
 import GithubLogo from "../../assets/Github_Logo.png";
+import SchoolLogo from "../../assets/42_Logo.png";
 import axios from "axios";
+import ErrorToast from "../../services/toasts/ErrorToasts";
 
 class Login extends Component {
   constructor(props) {
@@ -21,6 +24,7 @@ class Login extends Component {
       pwdValid: false,
       responseToPost: ""
     };
+    this.Auth = new AuthService();
     this._isMounted = false;
   }
 
@@ -28,6 +32,9 @@ class Login extends Component {
     this._isMounted = true;
   }
 
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
   authGoogle = () => {
     window.location.replace("http://localhost:5000/auth/google");
   };
@@ -74,10 +81,13 @@ class Login extends Component {
         password: this.state.password
       })
       .then(res => {
-        if (res.data.status === "success") this.props.history.push("/home");
+        if (res.data.status === "success") {
+          this.props.history.push("/home");
+          this.Auth.setToken(res.data.token);
+        } else ErrorToast.custom.error(res.data.msg, 4000);
       })
       .catch(err => {
-        console.log(err.response.data.error);
+        ErrorToast.custom.error(err.response.data.error, 4000);
       });
   };
 
@@ -88,7 +98,6 @@ class Login extends Component {
         <div className="container-background">
           <div className="row">
             <div className="card-panel center auth-card">
-              {" "}
               <div className="title-page">Log in</div>
               <form className="login-form" onSubmit={this.handleSubmit}>
                 <div className="input-field col s12">
@@ -100,7 +109,9 @@ class Login extends Component {
                     onChange={this.handleChange}
                   ></input>
                   <div className="login-error">{this.state.loginError}</div>
-                  <label htmlFor="user-login">Username or email</label>
+                  <label className="label-form" htmlFor="user-login">
+                    Username or email
+                  </label>
                 </div>
                 <div className="input-field col s12">
                   <input
@@ -111,7 +122,9 @@ class Login extends Component {
                     onChange={this.handleChange}
                   ></input>
                   <div className="login-error">{this.state.pwdError}</div>
-                  <label htmlFor="user-password">Password</label>
+                  <label className="label-form" htmlFor="user-password">
+                    Password
+                  </label>
                 </div>
                 <input
                   type="submit"
@@ -121,30 +134,33 @@ class Login extends Component {
                   disabled={!this.state.loginValid || !this.state.pwdValid}
                 />
               </form>
-              <img
-                onClick={this.auth42}
-                src="https://www.42.fr/wp-content/themes/42/images/42_logo_black.svg"
-                alt="42 logo"
-                className="third-party-logo"
-              ></img>
-              <img
-                onClick={this.authTwitter}
-                src={TwitterLogo}
-                alt="twitter logo"
-                className="third-party-logo"
-              ></img>
-              <img
-                onClick={this.authGoogle}
-                src={GoogleLogo}
-                alt="google logo"
-                className="third-party-logo"
-              ></img>
-              <img
-                onClick={this.authGithub}
-                src={GithubLogo}
-                alt="github logo"
-                className="third-party-logo"
-              ></img>
+              <div className="register-login-with-social">
+                <p className="register-login-social-text">Or log with</p>
+                <img
+                  onClick={this.auth42}
+                  src={SchoolLogo}
+                  alt="42 logo"
+                  className="third-party-logo"
+                ></img>
+                <img
+                  onClick={this.authTwitter}
+                  src={TwitterLogo}
+                  alt="twitter logo"
+                  className="third-party-logo"
+                ></img>
+                <img
+                  onClick={this.authGoogle}
+                  src={GoogleLogo}
+                  alt="google logo"
+                  className="third-party-logo"
+                ></img>
+                <img
+                  onClick={this.authGithub}
+                  src={GithubLogo}
+                  alt="github logo"
+                  className="third-party-logo"
+                ></img>
+              </div>
               <p className="register-login-link link-left">
                 Forgot password?{" "}
                 <NavLink className="red-link" to="/forgot-password">

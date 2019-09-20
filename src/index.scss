@@ -2,7 +2,7 @@
 
 html {
   height: 100%;
-  font-family: "Helvetica Neue";
+  font-family: 'Helvetica Neue';
 }
 
 .modal {
@@ -26,9 +26,9 @@ html {
 
 .container-background {
   position: absolute;
-  height: 100%;
-  width: 100%;
-  background: url("./assets/landing.jpg");
+  min-height: 100%;
+  min-width: 100%;
+  background: url('./assets/landing.jpg');
   background-size: cover;
 }
 
@@ -43,8 +43,12 @@ html {
 
 /* Icons */
 
-i.material-icons {
+i.material-icons .icons-red {
   color: red;
+}
+
+i.material-icons .icons-white {
+  color: white;
 }
 
 /* Titles */
@@ -55,6 +59,7 @@ i.material-icons {
   text-align: left;
   color: white;
   margin-bottom: 15px;
+  margin-left: 5px;
 }
 
 /* Forms */
@@ -65,15 +70,15 @@ i.material-icons {
   margin: 10px 0px !important;
 }
 
-input[type="text"]:not(.browser-default):focus:not([readonly]) + label {
+input[type='text']:not(.browser-default):focus:not([readonly]) + label {
   color: white !important;
 }
 
-input[type="email"]:not(.browser-default):focus:not([readonly]) + label {
+input[type='email']:not(.browser-default):focus:not([readonly]) + label {
   color: white !important;
 }
 
-input[type="password"]:not(.browser-default):focus:not([readonly]) + label {
+input[type='password']:not(.browser-default):focus:not([readonly]) + label {
   color: white !important;
 }
 
@@ -81,9 +86,10 @@ textarea:not(.browser-default):focus:not([readonly]) + label {
   color: white !important;
 }
 
-input[type="submit"] {
+input[type='submit'] {
   margin-top: 20px;
   margin-bottom: 20px;
+  margin-left: 0px;
   background-color: red;
   color: white;
   font-size: 18px;
@@ -93,7 +99,7 @@ input[type="submit"] {
   height: 50px;
 }
 
-label {
+label.label-form {
   position: absolute;
   left: 5px;
   top: 10px;
@@ -103,8 +109,7 @@ label {
 }
 
 input:focus ~ label,
-input:not([value=""]) ~ label {
-  top: -20px;
+input:not([value='']) ~ label {
   font-size: 14px;
   color: white;
 }

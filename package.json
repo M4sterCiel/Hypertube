@@ -13,6 +13,7 @@
     "express-router": "0.0.1",
     "express-session": "^1.16.2",
     "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^2.2.0",
     "materialize-css": "^1.0.0-rc.2",
     "mongo-sanitize": "^1.0.1",
     "mongodb": "^3.3.2",

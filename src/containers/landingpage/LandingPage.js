@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import "materialize-css";
 import "materialize-css/dist/css/materialize.min.css";
 import "./LandingPage.scss";
-import Navbar from "../navbar/NavBar";
-import { LpBigButton } from "../buttons/BigButtons";
+import Navbar from "../../components/navbar/NavBar";
+import { LpBigButton } from "../../components/buttons/BigButtons";
 import { withRouter } from "react-router-dom";
-//import FacebookLogin from "react-facebook-login";
 
 class LandingPage extends Component {
   render() {
@@ -21,7 +20,7 @@ class LandingPage extends Component {
               Only a few clicks away from your daily entertainment...
             </div>
             <div className="landing-page-content-title-second">
-              <i className="material-icons landing-page-content-title-icon">
+              <i className="material-icons icons-red landing-page-content-title-icon">
                 money_off
               </i>
               No credit card required - it's free
