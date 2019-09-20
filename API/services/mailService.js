@@ -23,7 +23,7 @@ module.exports = {
           encodeURIComponent(user.activationKey)
       };
 
-    fs.readFile("API/templates/activationMail.html", (err, data) => {
+    fs.readFile("API/templates/forgotPasswordMail.html", (err, data) => {
       if (err) return console.error(err);
       message = data.toString();
       transporter.sendMail(
