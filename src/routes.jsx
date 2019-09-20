@@ -4,6 +4,7 @@ import App from "./containers/App";
 import Login from "./containers/login/Login";
 import Register from "./containers/register/Register";
 import Search from "./containers/Search";
+import Activation from "./containers/activation/Activation";
 
 export default function MainRouter() {
   return (
@@ -11,6 +12,7 @@ export default function MainRouter() {
       <div>
         <Switch>
           <Route exact path="/" component={App} />
+          <Route path="/activation" component={Activation} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/search" component={Search} />

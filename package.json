@@ -14,6 +14,7 @@
     "express-session": "^1.16.2",
     "jsonwebtoken": "^8.5.1",
     "materialize-css": "^1.0.0-rc.2",
+    "mongo-sanitize": "^1.0.1",
     "mongodb": "^3.3.2",
     "mongoose": "^5.7.1",
     "node-sass": "^4.12.0",

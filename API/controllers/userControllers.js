@@ -4,6 +4,7 @@ const jwtService = require("../services/jwtService");
 const mailService = require("../services/mailService");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const sanitize = require("mongo-sanitize");
 
 passport.use(
   new LocalStrategy(function(username, password, done) {
@@ -93,10 +94,10 @@ module.exports = {
       new Date().getTime() + Math.floor(Math.random() * 10000 + 1).toString(16);
 
     var user = new User({
-      username: req.body.username,
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      email: req.body.email,
+      username: sanitize(req.body.username),
+      firstname: sanitize(req.body.firstname),
+      lastname: sanitize(req.body.lastname),
+      email: sanitize(req.body.email),
       activationKey: uniqid
     });
 
@@ -133,5 +134,34 @@ module.exports = {
         return res.json(req.session.user);
       });
     } else return res.json({ error: "No session for user" });
+  },
+
+  activateAccount: async (req, res, next) => {
+    await User.findOne(
+      { username: sanitize(req.body.username) },
+      (err, response) => {
+        if (response && response.active)
+          return res
+            .status(200)
+            .json({ message: "Account already activated!" });
+        if (err) return res.json({ status: "error" });
+        if (response === null || response.activationKey !== req.body.key)
+          return res.status(400).json({ status: false });
+        User.findOneAndUpdate(
+          {
+            username: sanitize(req.body.username),
+            activationKey: sanitize(req.body.key)
+          },
+          { active: true, activationKey: null },
+          err => {
+            if (err) {
+              console.log(err);
+              return res.status(400).json({ status: false });
+            }
+          }
+        );
+        return res.status(200).json({ status: true });
+      }
+    );
   }
 };
