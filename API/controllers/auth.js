@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const request = require("request");
+const userService = require("../services/userService");
 const jwtService = require("../services/jwtService");
 const TwitterStrategy = require("passport-twitter").Strategy;
 const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
@@ -40,38 +41,55 @@ passport.use(
       clientSecret: "6rBvGJbcjXGOZku2VTkI8Bxv",
       callbackURL: "http://localhost:5000/auth/google/callback"
     },
-    function(token, tokenSecret, profile, done) {
+    async (token, tokenSecret, profile, done) => {
       User.findOne(
         {
           oauthID: profile.id
         },
-        function(err, user) {
+        async (err, user) => {
           if (err) {
             return done(err);
           }
           var token = jwtService.tokenGenerator();
           if (!user) {
-            var uniqid =
-              new Date().getTime() +
-              Math.floor(Math.random() * 10000 + 1).toString(16);
+            if (!(await userService.emailExists(profile.emails[0].value))) {
+              var uniqid =
+                new Date().getTime() +
+                Math.floor(Math.random() * 10000 + 1).toString(16);
 
-            user = new User({
-              username: profile.displayName ? profile.displayName : "",
-              email: profile.emails[0] ? profile.emails[0].value : "",
-              language: profile._json.locale,
-              firstname: profile.name.givenName ? profile.name.givenName : "",
-              lastname: profile.name.familyName ? profile.name.familyName : "",
-              img: profile.photos[0] ? profile.photos[0].value : "",
-              activationKey: uniqid,
-              active: true,
-              token: token,
-              oauthID: profile.id,
-              google: profile._json ? profile._json : {}
-            });
-            user.save(function(err) {
-              if (err) return done(null, false, { error: err.message });
+              user = new User({
+                username: await userService.usernameExists(profile.displayName),
+                email: profile.emails[0] ? profile.emails[0].value : "",
+                language: profile._json.locale,
+                firstname: profile.name.givenName ? profile.name.givenName : "",
+                lastname: profile.name.familyName
+                  ? profile.name.familyName
+                  : "",
+                img: profile.photos[0] ? profile.photos[0].value : "",
+                activationKey: uniqid,
+                active: true,
+                token: token,
+                oauthID: profile.id,
+                google: profile._json ? profile._json : {}
+              });
+              user.save(function(err) {
+                if (err) return done(null, false, { error: err.message });
+                return done(err, user);
+              });
+            } else {
+              User.findOneAndUpdate(
+                { email: profile.emails[0].value },
+                {
+                  token: token,
+                  google: profile._json ? profile._json : "",
+                  oauthID: profile.id
+                },
+                err => {
+                  if (err) console.log(err);
+                }
+              );
               return done(err, user);
-            });
+            }
           } else {
             User.findOneAndUpdate({ _id: user._id }, { token: token }, err => {
               if (err) console.log(err);
@@ -110,39 +128,54 @@ passport.use(
       callbackURL: "http://localhost:5000/auth/twitter/callback",
       includeEmail: true
     },
-    function(token, tokenSecret, profile, done) {
+    async (token, tokenSecret, profile, done) => {
       User.findOne(
         {
           oauthID: profile.id
         },
-        function(err, user) {
+        async (err, user) => {
           if (err) {
             return done(err);
           }
           var token = jwtService.tokenGenerator();
           if (!user) {
-            var uniqid =
-              new Date().getTime() +
-              Math.floor(Math.random() * 10000 + 1).toString(16);
+            if (!(await userService.emailExists(profile._json.email))) {
+              var uniqid =
+                new Date().getTime() +
+                Math.floor(Math.random() * 10000 + 1).toString(16);
 
-            user = new User({
-              username: profile._json.screen_name
-                ? profile._json.screen_name
-                : "",
-              email: profile._json.email ? profile._json.email : "",
-              firstname: profile._json.name ? profile._json.name : "",
-              lastname: "",
-              img: profile.photos[0] ? profile.photos[0].value : "",
-              activationKey: uniqid,
-              token: token,
-              active: true,
-              oauthID: profile.id,
-              twitter: profile._json ? profile._json : {}
-            });
-            user.save(function(err) {
-              if (err) console.error(err);
+              user = new User({
+                username: await userService.usernameExists(
+                  profile._json.screen_name
+                ),
+                email: profile._json.email ? profile._json.email : "",
+                firstname: profile._json.name ? profile._json.name : "",
+                lastname: "",
+                img: profile.photos[0] ? profile.photos[0].value : "",
+                activationKey: uniqid,
+                token: token,
+                active: true,
+                oauthID: profile.id,
+                twitter: profile._json ? profile._json : {}
+              });
+              user.save(function(err) {
+                if (err) console.error(err);
+                return done(err, user);
+              });
+            } else {
+              User.findOneAndUpdate(
+                { email: profile._json.email },
+                {
+                  token: token,
+                  google: profile._json ? profile._json : "",
+                  oauthID: profile.id
+                },
+                err => {
+                  if (err) console.log(err);
+                }
+              );
               return done(err, user);
-            });
+            }
           } else {
             User.findOneAndUpdate({ _id: user._id }, { token: token }, err => {
               if (err) console.log(err);
@@ -176,37 +209,52 @@ passport.use(
       callbackURL: "http://localhost:5000/auth/github/callback",
       scope: ["user:email"]
     },
-    function(accessToken, refreshToken, profile, done) {
+    async (accessToken, refreshToken, profile, done) => {
       User.findOne(
         {
           oauthID: profile.id
         },
-        function(err, user) {
+        async (err, user) => {
           if (err) {
             return done(err);
           }
           var token = jwtService.tokenGenerator();
           if (!user) {
-            var uniqid =
-              new Date().getTime() +
-              Math.floor(Math.random() * 10000 + 1).toString(16);
+            if (!(await userService.emailExists(profile.emails[0].value))) {
+              var uniqid =
+                new Date().getTime() +
+                Math.floor(Math.random() * 10000 + 1).toString(16);
 
-            user = new User({
-              username: profile._json.login ? profile._json.login : "",
-              email: profile.emails[0] ? profile.emails[0].value : "",
-              firstname: "",
-              lastname: "",
-              img: profile._json.avatar_url ? profile._json.avatar_url : "",
-              activationKey: uniqid,
-              active: true,
-              token: token,
-              oauthID: profile.id,
-              github: profile._json ? profile._json : ""
-            });
-            user.save(function(err) {
-              if (err) return done(null, false, { error: err.message });
+              user = new User({
+                username: await userService.usernameExists(profile._json.login),
+                email: profile.emails[0] ? profile.emails[0].value : "",
+                firstname: "",
+                lastname: "",
+                img: profile._json.avatar_url ? profile._json.avatar_url : "",
+                activationKey: uniqid,
+                active: true,
+                token: token,
+                oauthID: profile.id,
+                github: profile._json ? profile._json : ""
+              });
+              user.save(function(err) {
+                if (err) return done(null, false, { error: err.message });
+                return done(err, user);
+              });
+            } else {
+              User.findOneAndUpdate(
+                { email: profile.emails[0].value },
+                {
+                  token: token,
+                  github: profile._json ? profile._json : "",
+                  oauthID: profile.id
+                },
+                err => {
+                  if (err) console.log(err);
+                }
+              );
               return done(err, user);
-            });
+            }
           } else {
             User.findOneAndUpdate({ _id: user._id }, { token: token }, err => {
               if (err) console.log(err);
@@ -251,7 +299,7 @@ passport.use(
         }
       };
 
-      request(options, function(error, response, profile) {
+      request(options, async (error, response, profile) => {
         if (!error && response.statusCode == 200) {
           profile = JSON.parse(profile);
 
@@ -259,32 +307,47 @@ passport.use(
             {
               oauthID: profile.id
             },
-            function(err, user) {
+            async (err, user) => {
               if (err) {
                 return done(err);
               }
               var token = jwtService.tokenGenerator();
               if (!user) {
-                var uniqid =
-                  new Date().getTime() +
-                  Math.floor(Math.random() * 10000 + 1).toString(16);
+                if (!(await userService.emailExists(profile.email))) {
+                  var uniqid =
+                    new Date().getTime() +
+                    Math.floor(Math.random() * 10000 + 1).toString(16);
 
-                user = new User({
-                  username: profile.login ? profile.login : "",
-                  email: profile.email ? profile.email : "",
-                  firstname: profile.first_name ? profile.first_name : "",
-                  lastname: profile.last_name ? profile.last_name : "",
-                  img: profile.image_url ? profile.image_url : "",
-                  activationKey: uniqid,
-                  active: true,
-                  token: token,
-                  oauthID: profile.id,
-                  42: profile ? profile : {}
-                });
-                user.save(function(err) {
-                  if (err) return done(null, false, { error: err.message });
+                  user = new User({
+                    username: await userService.usernameExists(profile.login),
+                    email: profile.email ? profile.email : "",
+                    firstname: profile.first_name ? profile.first_name : "",
+                    lastname: profile.last_name ? profile.last_name : "",
+                    img: profile.image_url ? profile.image_url : "",
+                    activationKey: uniqid,
+                    active: true,
+                    token: token,
+                    oauthID: profile.id,
+                    42: profile ? profile : {}
+                  });
+                  user.save(function(err) {
+                    if (err) return done(null, false, { error: err.message });
+                    return done(err, user);
+                  });
+                } else {
+                  User.findOneAndUpdate(
+                    { email: profile.email },
+                    {
+                      token: token,
+                      github: profile._json ? profile._json : "",
+                      oauthID: profile.id
+                    },
+                    err => {
+                      if (err) console.log(err);
+                    }
+                  );
                   return done(err, user);
-                });
+                }
               } else {
                 User.findOneAndUpdate(
                   { _id: user._id },
