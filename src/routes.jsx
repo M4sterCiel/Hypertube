@@ -8,6 +8,7 @@ import Activation from "./containers/activation/Activation";
 import ResetPassword from "./containers/resetPassword/ResetPassword";
 import ForgotPassword from "./containers/forgotPassword/ForgotPassword";
 import UserCompletePicture from "./containers/userCompletePicture/UserCompletePicture";
+import UserProfile from "./containers/userProfile/UserProfile";
 
 export default function MainRouter() {
   return (
@@ -26,6 +27,7 @@ export default function MainRouter() {
             path="/user-complete-picture"
             component={UserCompletePicture}
           />
+          <Route exact path="/user-profile" component={UserProfile} />
         </Switch>
       </div>
     </Router>
