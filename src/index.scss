@@ -33,6 +33,13 @@ html {
   background-size: cover;
 }
 
+.container-black {
+  position: absolute;
+  min-width: 100%;
+  min-height: 100%;
+  background-color: black;
+}
+
 /* Cards UI */
 
 .card-panel {

@@ -73,12 +73,14 @@ const UserProfile = () => {
   return (
     <div className="App">
       <NavBar />
-      <div className="row">
-        <div className="col s12">
-          <div className="user-profile">
-            <div className="user-profile-picture">
-              <span>{data.username}</span>
-              <UserPictureView picture_url={data.profile_picture} />
+      <div className="container-black">
+        <div className="row">
+          <div className="col s12">
+            <div className="user-profile">
+              <div className="user-profile-picture">
+                <span>{data.username}</span>
+                <UserPictureView picture_url={data.profile_picture} />
+              </div>
             </div>
           </div>
         </div>
