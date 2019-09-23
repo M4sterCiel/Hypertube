@@ -85,22 +85,6 @@ const SearchView = () => {
   const { movies, errorMessage, loading } = state;
 
   return (
-<<<<<<< HEAD:src/containers/Search.js
-    <div className="SearchView container-background">
-      {/* <Header text="HOOKED" /> */}
-      <Search search={search} />
-      <p className="SearchView-intro">A selection just for you</p>
-      <div className="movies">
-        {loading && !errorMessage ? (
-          <img className="spinner" src={spinner} alt="Loading spinner" />
-        ) : errorMessage ? (
-          <div className="errorMessage">{errorMessage}</div>
-        ) : (
-          movies.map((movie, index) => (
-            <Movie key={`${index}-${movie.Title}`} movie={movie} />
-          ))
-        )}
-=======
     <div className="SearchView">
       <div class="layer">
         <Navbar />
@@ -117,7 +101,6 @@ const SearchView = () => {
             ))
           )}
         </div>
->>>>>>> mascagli:src/containers/search/Search.js
       </div>
     </div>
   );

@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-<<<<<<< HEAD
-=======
 import Filter from "../../components/filter/Filter";
 import "../buttons/Buttons.scss";
 import "./searchBar.scss";
 import Slider, { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
->>>>>>> mascagli
 
 const Search = ({ search }) => {
   const [searchValue, setSearchValue] = useState("");
@@ -29,24 +26,6 @@ const Search = ({ search }) => {
   const Range = createSliderWithTooltip(Slider.Range);
 
   return (
-<<<<<<< HEAD
-    <form className="search">
-      <input
-        value={searchValue}
-        onChange={handleSearchInputChanges}
-        type="text"
-        class="form-control col-sm-3"
-      />
-      <button
-        onClick={callSearchFunction}
-        type="submit"
-        class="btn btn-dark"
-        value="SEARCH"
-      >
-        SEARCH
-      </button>
-    </form>
-=======
     <div class="row">
       <form className="search">  
         <input
@@ -67,7 +46,6 @@ const Search = ({ search }) => {
         <Range /> 
       </form>
     </div>
->>>>>>> mascagli
   );
 };
 
