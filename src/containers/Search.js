@@ -4,6 +4,7 @@ import "./Search.scss";
 import spinner from "../spinner.gif";
 import Movie from "../components/movie/movie";
 import Search from "../components/searchBar/searchBar";
+import withAuth from "../services/withAuth";
 
 const MOVIE_API_URL = "https://www.omdbapi.com/?s=man&apikey=4a3b711b";
 
@@ -101,4 +102,4 @@ const SearchView = () => {
   );
 };
 
-export default SearchView;
+export default withAuth(SearchView);
