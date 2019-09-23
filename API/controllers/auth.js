@@ -18,6 +18,8 @@ passport.deserializeUser(function(user, done) {
   done(null, user);
 });
 
+var userToken = jwtService.tokenGenerator();
+
 const saveToSession = (req, res, error) => {
   const payload = {
     _id: req.user._id,
@@ -28,7 +30,7 @@ const saveToSession = (req, res, error) => {
 
   req.session.save(err => {
     if (err) throw err;
-    res.redirect("http://localhost:3000/search");
+    res.redirect("http://localhost:3000/activateOauth?token=" + userToken);
   });
 };
 
@@ -50,7 +52,7 @@ passport.use(
           if (err) {
             return done(err);
           }
-          var token = jwtService.tokenGenerator();
+          //var token = jwtService.tokenGenerator();
           if (!user) {
             if (!(await userService.emailExists(profile.emails[0].value))) {
               var uniqid =
@@ -68,7 +70,7 @@ passport.use(
                 img: profile.photos[0] ? profile.photos[0].value : "",
                 activationKey: uniqid,
                 active: true,
-                token: token,
+                token: userToken,
                 oauthID: profile.id,
                 google: profile._json ? profile._json : {}
               });
@@ -80,7 +82,7 @@ passport.use(
               User.findOneAndUpdate(
                 { email: profile.emails[0].value },
                 {
-                  token: token,
+                  token: userToken,
                   google: profile._json ? profile._json : "",
                   oauthID: profile.id
                 },
@@ -91,9 +93,13 @@ passport.use(
               return done(err, user);
             }
           } else {
-            User.findOneAndUpdate({ _id: user._id }, { token: token }, err => {
-              if (err) console.log(err);
-            });
+            User.findOneAndUpdate(
+              { _id: user._id },
+              { token: userToken },
+              err => {
+                if (err) console.log(err);
+              }
+            );
             return done(err, user);
           }
         }
@@ -137,13 +143,12 @@ passport.use(
           if (err) {
             return done(err);
           }
-          var token = jwtService.tokenGenerator();
+          //var token = jwtService.tokenGenerator();
           if (!user) {
             if (!(await userService.emailExists(profile._json.email))) {
               var uniqid =
                 new Date().getTime() +
                 Math.floor(Math.random() * 10000 + 1).toString(16);
-
               user = new User({
                 username: await userService.usernameExists(
                   profile._json.screen_name
@@ -153,7 +158,7 @@ passport.use(
                 lastname: "",
                 img: profile.photos[0] ? profile.photos[0].value : "",
                 activationKey: uniqid,
-                token: token,
+                token: userToken,
                 active: true,
                 oauthID: profile.id,
                 twitter: profile._json ? profile._json : {}
@@ -166,8 +171,8 @@ passport.use(
               User.findOneAndUpdate(
                 { email: profile._json.email },
                 {
-                  token: token,
-                  google: profile._json ? profile._json : "",
+                  token: userToken,
+                  twitter: profile._json ? profile._json : "",
                   oauthID: profile.id
                 },
                 err => {
@@ -177,9 +182,13 @@ passport.use(
               return done(err, user);
             }
           } else {
-            User.findOneAndUpdate({ _id: user._id }, { token: token }, err => {
-              if (err) console.log(err);
-            });
+            User.findOneAndUpdate(
+              { _id: user._id },
+              { token: userToken },
+              err => {
+                if (err) console.log(err);
+              }
+            );
             return done(err, user);
           }
         }
@@ -218,7 +227,7 @@ passport.use(
           if (err) {
             return done(err);
           }
-          var token = jwtService.tokenGenerator();
+          //var token = jwtService.tokenGenerator();
           if (!user) {
             if (!(await userService.emailExists(profile.emails[0].value))) {
               var uniqid =
@@ -233,7 +242,7 @@ passport.use(
                 img: profile._json.avatar_url ? profile._json.avatar_url : "",
                 activationKey: uniqid,
                 active: true,
-                token: token,
+                token: userToken,
                 oauthID: profile.id,
                 github: profile._json ? profile._json : ""
               });
@@ -245,7 +254,7 @@ passport.use(
               User.findOneAndUpdate(
                 { email: profile.emails[0].value },
                 {
-                  token: token,
+                  token: userToken,
                   github: profile._json ? profile._json : "",
                   oauthID: profile.id
                 },
@@ -256,9 +265,13 @@ passport.use(
               return done(err, user);
             }
           } else {
-            User.findOneAndUpdate({ _id: user._id }, { token: token }, err => {
-              if (err) console.log(err);
-            });
+            User.findOneAndUpdate(
+              { _id: user._id },
+              { token: userToken },
+              err => {
+                if (err) console.log(err);
+              }
+            );
             return done(err, user);
           }
         }
@@ -311,7 +324,7 @@ passport.use(
               if (err) {
                 return done(err);
               }
-              var token = jwtService.tokenGenerator();
+              //var token = jwtService.tokenGenerator();
               if (!user) {
                 if (!(await userService.emailExists(profile.email))) {
                   var uniqid =
@@ -326,7 +339,7 @@ passport.use(
                     img: profile.image_url ? profile.image_url : "",
                     activationKey: uniqid,
                     active: true,
-                    token: token,
+                    token: userToken,
                     oauthID: profile.id,
                     42: profile ? profile : {}
                   });
@@ -338,8 +351,8 @@ passport.use(
                   User.findOneAndUpdate(
                     { email: profile.email },
                     {
-                      token: token,
-                      github: profile._json ? profile._json : "",
+                      token: userToken,
+                      42: profile ? profile : "",
                       oauthID: profile.id
                     },
                     err => {
@@ -351,7 +364,7 @@ passport.use(
               } else {
                 User.findOneAndUpdate(
                   { _id: user._id },
-                  { token: token },
+                  { token: userToken },
                   err => {
                     if (err) console.log(err);
                   }

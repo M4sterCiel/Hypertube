@@ -20,9 +20,7 @@ module.exports = {
     if (token != null) {
       try {
         var jwtToken = jwt.verify(token, PRIVATE_KEY);
-      } catch (err) {
-        console.log("Invalid token");
-      }
+      } catch (err) {}
       //console.log(jwtToken);
       if (jwtToken != null) return true;
       else return false;
