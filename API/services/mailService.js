@@ -57,7 +57,7 @@ module.exports = {
       replace = {
         username: user.username,
         link:
-          "localhost:3000/reset-password?user=" +
+          "http://localhost:3000/reset-password?user=" +
           encodeURIComponent(user.username) +
           "&key=" +
           encodeURIComponent(key)
