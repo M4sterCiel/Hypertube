@@ -13,6 +13,7 @@ const usersSchema = mongoose.Schema({
   token: String,
   oauthID: String,
   google: JSON,
+  twitter: JSON,
   github: JSON,
   42: JSON
 });

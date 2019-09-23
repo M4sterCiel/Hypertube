@@ -42,7 +42,14 @@ export default class AuthService {
   }
 
   // Removing token from local storage
-  logout() {
+  async logout() {
+    const token = this.getToken();
+    if (token)
+      await axios
+        .get("/users/logout", { headers: { Authorization: token } })
+        .then(res => {
+          console.log(res.data);
+        });
     localStorage.removeItem("Token");
   }
 
