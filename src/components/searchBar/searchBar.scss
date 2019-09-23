@@ -1,0 +1,19 @@
+.search {
+    margin-top: 30px;
+}
+
+.btn {
+    margin-left: 20px;
+}
+
+.input-field {
+    color: white;
+}
+
+.input-field::placeholder {
+    color: rgba(255, 255, 255, 0.486);
+}
+
+.search input:focus {
+    border-bottom: 1px solid white !important;
+}

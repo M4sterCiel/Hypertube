@@ -9,6 +9,7 @@ import ResetPassword from "./containers/resetPassword/ResetPassword";
 import ForgotPassword from "./containers/forgotPassword/ForgotPassword";
 import UserCompletePicture from "./containers/userCompletePicture/UserCompletePicture";
 import UserProfile from "./containers/userProfile/UserProfile";
+import Search from "./containers/search/Search";
 
 export default function MainRouter() {
   return (
