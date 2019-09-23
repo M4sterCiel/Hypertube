@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./NavBar.scss";
+import AuthService from "../../services/AuthService";
 import { withRouter, NavLink } from "react-router-dom";
 import { LoginButton, RegisterButton } from "../buttons/Buttons";
 import { Button } from "react-materialize";
@@ -15,6 +16,7 @@ class NavBar extends Component {
     this.state = {
       left: false
     };
+    this.Auth = new AuthService();
   }
 
   componentDidMount() {
@@ -105,6 +107,7 @@ class NavBar extends Component {
         <div>
           <LoginButton />
           <RegisterButton />
+          <button onClick={this.handleLogout}>logout</button>
         </div>
       );
     };
@@ -131,6 +134,11 @@ class NavBar extends Component {
       </div>
     );
   }
+
+  handleLogout = () => {
+    this.Auth.logout();
+    this.props.history.replace("/login");
+  };
 }
 
 export default withRouter(NavBar);
