@@ -111,4 +111,4 @@ const SearchView = () => {
   );
 };
 
-export default withAuth(SearchView);
+export default (SearchView);
