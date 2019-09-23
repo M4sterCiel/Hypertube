@@ -21,7 +21,7 @@ export default function MainRouter() {
           <Route exact path="/register" component={Register} />
           <Route exact path="/search" component={Search} />
           <Route exact path="/forgot-password" component={ForgotPassword} />
-          <Route path="/reset-password/" component={ResetPassword} />
+          <Route path="/reset-password" component={ResetPassword} />
           <Route
             exact
             path="/user-complete-picture"

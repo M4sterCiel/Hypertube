@@ -65,7 +65,6 @@ class ResetPassword extends Component {
         this.props.history.push("/login");
       })
       .catch(err => {
-        console.log(err);
         ErrorToast.custom.error(err.response.data.error, 4000);
       });
   };
