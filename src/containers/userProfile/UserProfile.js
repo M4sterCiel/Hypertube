@@ -93,6 +93,7 @@ const UserProfile = () => {
                   </p>
                 </div>
               </div>
+              <div className="user-profile-movies-seen"></div>
             </div>
           </div>
         </div>

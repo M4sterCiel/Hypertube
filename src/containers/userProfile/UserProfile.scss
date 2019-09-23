@@ -3,7 +3,7 @@
 p {
   color: white;
   margin: 0px;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
 }
 
 /* Profile info */
@@ -12,6 +12,7 @@ p {
   width: 100%;
   border-top: solid 1px white;
   padding: 50px 0px;
+  overflow: hidden;
 }
 
 .user-profile-info-picture {
@@ -33,6 +34,13 @@ p {
 .user-profile-info-text-regular {
   font-size: 25px;
   line-height: 25px;
+}
+
+/* Movies seen */
+
+.user-profile-movies-seen {
+  width: 100%;
+  border-top: solid 1px white;
 }
 
 /* Responsive */
