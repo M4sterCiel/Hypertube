@@ -1,7 +1,54 @@
 /* General */
 
-/* Profile picture */
+p {
+  color: white;
+  margin: 0px;
+  margin-bottom: 25px;
+}
 
-.user-profile-picture {
-  width: 350px;
+/* Profile info */
+
+.user-profile-info {
+  width: 100%;
+  border-top: solid 1px white;
+  padding: 50px 0px;
+}
+
+.user-profile-info-picture {
+  display: inline-block;
+  height: 250px;
+}
+
+.user-profile-info-text {
+  display: inline-block;
+  padding: 0px 50px !important;
+}
+
+.user-profile-info-text-big {
+  font-size: 35px;
+  font-weight: 700;
+  line-height: 25px;
+}
+
+.user-profile-info-text-regular {
+  font-size: 25px;
+  line-height: 25px;
+}
+
+/* Responsive */
+
+@media only screen and (max-width: 600px) {
+  .user-profile-info-text {
+    padding: 20px 0px !important;
+  }
+
+  .user-profile-info-picture {
+    height: 400px;
+  }
+}
+
+@media only screen and (max-width: 440px) {
+  .user-profile-info-picture {
+    height: 300px;
+  }
 }

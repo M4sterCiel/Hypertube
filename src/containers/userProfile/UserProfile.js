@@ -11,12 +11,13 @@ const initialState = {
 };
 
 const testUser = {
-  firstname: "toto",
-  lastname: "martin",
-  username: "toto123",
+  firstname: "Firstname",
+  lastname: "Lastname",
+  username: "Username",
   profile_picture:
     "https://www.cats.org.uk/media/1400/choosing-a-cat.jpg?width=1600",
-  email: "toto@email.tatta"
+  email: "toto@email.tatta",
+  language: "FR"
 };
 
 const reducer = (state, action) => {
@@ -77,9 +78,20 @@ const UserProfile = () => {
         <div className="row">
           <div className="col s12">
             <div className="user-profile">
-              <div className="user-profile-picture">
-                <span>{data.username}</span>
-                <UserPictureView picture_url={data.profile_picture} />
+              <div className="user-profile-info">
+                <div className="user-profile-info-picture col l3 m4 s12 col-padding-zero">
+                  {" "}
+                  <UserPictureView picture_url={data.profile_picture} />
+                </div>
+                <div className="user-profile-info-text col l9 m8 s12">
+                  <p className="user-profile-info-text-big">{data.username}</p>
+                  <p className="user-profile-info-text-regular">
+                    {data.firstname + " " + data.lastname}
+                  </p>
+                  <p className="user-profile-info-text-regular">
+                    {"Preferred language: " + data.language}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
