@@ -1,12 +1,15 @@
 import React, { useReducer, useEffect } from "react";
+import withAuth from "../../services/withAuth";
 import "./Search.scss";
 // import Header from "./Header";
-import spinner from "../spinner.gif";
-import Movie from "../components/movie/movie";
-import Search from "../components/searchBar/searchBar";
-import withAuth from "../services/withAuth";
+import spinner from "../../spinner.gif";
+import Movie from "../../components/movie/movie";
+import Search from "../../components/searchBar/searchBar";
+import Navbar from "../../components/navbar/NavBar";
+import Filter from "../../components/filter/Filter";
 
-const MOVIE_API_URL = "https://www.omdbapi.com/?s=man&apikey=4a3b711b";
+const MOVIE_API_URL =
+  "https://yts.lt/api/v2/list_movies.json?minimum_rating=8.5&order_by=asc"; // https://yts.lt/api/v2/list_movies.json?query_term=man https://www.omdbapi.com/?s=man&apikey=4a3b711b
 
 const initialState = {
   loading: true,
@@ -32,7 +35,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        errorMessage: action.error
+        errorMessage: "No movies found"
       };
     default:
       return state;
@@ -48,7 +51,7 @@ const SearchView = () => {
       .then(jsonResponse => {
         dispatch({
           type: "SEARCH_MOVIES_SUCCESS",
-          payload: jsonResponse.Search
+          payload: jsonResponse.data.movies
         });
       });
   }, []);
@@ -63,13 +66,16 @@ const SearchView = () => {
       type: "SEARCH_MOVIES_REQUEST"
     });
 
-    fetch(`https://www.omdbapi.com/?s=${searchValue}&apikey=4a3b711b`)
+    fetch(`https://yts.lt/api/v2/list_movies.json?query_term=${searchValue}`)
       .then(response => response.json())
       .then(jsonResponse => {
-        if (jsonResponse.Response === "True") {
+        if (
+          jsonResponse.status_message === "Query was successful" &&
+          jsonResponse.data.movie_count > 0
+        ) {
           dispatch({
             type: "SEARCH_MOVIES_SUCCESS",
-            payload: jsonResponse.Search
+            payload: jsonResponse.data.movies
           });
         } else {
           dispatch({
@@ -77,26 +83,29 @@ const SearchView = () => {
             error: jsonResponse.Error
           });
         }
+        console.log(jsonResponse);
       });
   };
 
   const { movies, errorMessage, loading } = state;
 
   return (
-    <div className="SearchView container-background">
-      {/* <Header text="HOOKED" /> */}
-      <Search search={search} />
-      <p className="SearchView-intro">A selection just for you</p>
-      <div className="movies">
-        {loading && !errorMessage ? (
-          <img className="spinner" src={spinner} alt="Loading spinner" />
-        ) : errorMessage ? (
-          <div className="errorMessage">{errorMessage}</div>
-        ) : (
-          movies.map((movie, index) => (
-            <Movie key={`${index}-${movie.Title}`} movie={movie} />
-          ))
-        )}
+    <div className="SearchView">
+      <div className="layer">
+        <Navbar />
+        {/* <Header text="HyperFlix" /> */}
+        <Search search={search} />
+        <div className="movies">
+          {loading && !errorMessage ? (
+            <img className="spinner" src={spinner} alt="Loading spinner" />
+          ) : errorMessage ? (
+            <div className="errorMessage">{errorMessage}</div>
+          ) : (
+            movies.map((movie, index) => (
+              <Movie key={`${index}-${movie.title}`} movie={movie} />
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
