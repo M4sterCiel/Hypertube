@@ -6,18 +6,18 @@ const DEFAULT_PLACEHOLDER_IMAGE =
 
 const Movie = ({ movie }) => {
   const poster =
-    movie.large_cover_image === "N/A" ? DEFAULT_PLACEHOLDER_IMAGE : movie.large_cover_image;
+    movie.large_cover_image === "N/A"
+      ? DEFAULT_PLACEHOLDER_IMAGE
+      : movie.large_cover_image;
   return (
     <div className="movie">
       {/* <h2><strong>{movie.title}</strong></h2> */}
       <div>
-        <img
-          width="200"
-          alt={`The movie titled: ${movie.title}`}
-          src={poster}
-        />
+        <img alt={`The movie titled: ${movie.title}`} src={poster} />
       </div>
-      <p><strong>{movie.year} &nbsp;|&nbsp;</strong> {movie.rating} ☆</p>
+      <p>
+        <strong>{movie.year} &nbsp;|&nbsp;</strong> {movie.rating} ☆
+      </p>
     </div>
   );
 };

@@ -1,15 +1,45 @@
+/* General */
+
 h2 {
-    font-size: 23px;
+  font-size: 23px;
 }
 
 p {
-    font-size: 15px;
+  font-size: 15px;
 }
 
 .movie {
-    padding: 0px;
-    margin-left: 8px;
-    margin-right: 8px;
-    margin-bottom: 15px;
-    background-color: rgba(0, 0, 0, 0.5);
+  padding: 0px;
+  margin-left: 8px;
+  margin-right: 8px;
+  margin-bottom: 15px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.movie img {
+  width: 200px;
+  height: 300px;
+}
+
+/* Responsive */
+
+@media only screen and (max-width: 440px) {
+  .movie img {
+    width: 150px;
+    height: 222.219px;
+  }
+}
+
+@media only screen and (max-width: 360px) {
+  .movie img {
+    width: 120px;
+    height: 177.766px;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .movie img {
+    width: 100%;
+    height: auto !important;
+  }
 }
