@@ -86,7 +86,7 @@ class Register extends Component {
       })
       .then(res => {
         if (res.data.status === "success") {
-          InfoToast.custom.info("An email has been sent!");
+          InfoToast.custom.info("An email has been sent!", 4000);
           this.props.history.push("/login");
         }
       })
