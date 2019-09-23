@@ -33,7 +33,7 @@ const Search = ({ search }) => {
         <button disabled={searchValue.length < 2}
                 onClick={callSearchFunction} 
                 type="submit" 
-                class="btn btn-secondary waves-effect" 
+                class="btn btn-secondary btn-medium waves-effect" 
                 value="SEARCH">
           SEARCH
         </button>
