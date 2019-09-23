@@ -6,6 +6,8 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const sanitize = require("mongo-sanitize");
 
+const mailPattern = /^([a-zA-Z0-9]+(?:[\.\-\_]?[a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[\.\-\_]?[a-zA-Z0-9]+)*)\.([a-zA-Z]{2,})+$/;
+
 passport.use(
   new LocalStrategy(function(username, password, done) {
     User.findOne({ username: username }, function(err, user) {
