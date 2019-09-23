@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import Filter from "../../components/filter/Filter";
 import "../buttons/Buttons.scss";
 import "./searchBar.scss";
-import Slider, { Range } from 'rc-slider';
-import 'rc-slider/assets/index.css';
 
 const Search = ({ search }) => {
   const [searchValue, setSearchValue] = useState("");
@@ -22,9 +20,6 @@ const Search = ({ search }) => {
     resetInputField();
   };
 
-  const createSliderWithTooltip = Slider.createSliderWithTooltip;
-  const Range = createSliderWithTooltip(Slider.Range);
-
   return (
     <div class="row">
       <form className="search">  
@@ -42,9 +37,8 @@ const Search = ({ search }) => {
                 value="SEARCH">
           SEARCH
         </button>
-        <Filter />
-        <Range /> 
       </form>
+      <Filter />
     </div>
   );
 };

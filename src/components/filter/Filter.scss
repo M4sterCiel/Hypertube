@@ -1,6 +1,9 @@
-.both {
-    margin-top: -16px;
-    margin-left: 11px;
+.all {
+    margin-top: 22px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .browser-default {
@@ -11,4 +14,13 @@
     border-radius: 1px;
     color: white;
     cursor: pointer;
+}
+
+.RatingRange,  .YearRange {
+    padding-right: 30px;
+}
+
+label {
+    font-size: 15.5px;
+    color: white;
 }
