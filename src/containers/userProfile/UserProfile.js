@@ -98,7 +98,7 @@ const testUser = {
     },
     {
       id: 3,
-      username: "toto3",
+      username: "totodwedewdewdewdewdwedewdwedwedwed3",
       picture:
         "https://www.petmd.com/sites/default/files/the-cat-which-sleeps-picture-id596060186.jpg"
     },
@@ -203,16 +203,17 @@ const UserProfile = () => {
                   <p className="no-movies-message">No movies seen yet</p>
                 )}
               </div>
-              <div className="user-profile-following">
-                {" "}
-                <p className="user-profile-info-text-big">
-                  Following{" "}
-                  <span className="user-profile-info-text-regular">
-                    {`(${data.following ? data.following.length : 0})`}
-                  </span>
-                </p>
-                {data.following && <UsersList users={data.following} />}
-              </div>
+              {data.following && (
+                <div className="user-profile-following">
+                  <p className="user-profile-info-text-big">
+                    Following{" "}
+                    <span className="user-profile-info-text-regular">
+                      {`(${data.following ? data.following.length : 0})`}
+                    </span>
+                  </p>
+                  <UsersList users={data.following} />
+                </div>
+              )}
             </div>
           </div>
         </div>

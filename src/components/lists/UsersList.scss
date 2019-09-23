@@ -9,8 +9,10 @@
 }
 
 .user-item {
+  width: 100%;
   display: inline-block;
   margin: 20px 0px;
+  overflow: hidden;
 }
 
 .user-item-img {
@@ -26,7 +28,6 @@
   color: white;
   display: inline-block;
   text-align: center;
-  overflow: hidden;
 }
 
 /* Responsive */
