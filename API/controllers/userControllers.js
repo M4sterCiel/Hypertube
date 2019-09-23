@@ -170,5 +170,86 @@ module.exports = {
         return res.status(200).json({ status: true });
       }
     );
+  },
+
+  forgotPassword: async (req, res, next) => {
+    var data = req.body.login;
+    var mailPattern = /^([a-zA-Z0-9]+(?:[\.\-\_]?[a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[\.\-\_]?[a-zA-Z0-9]+)*)\.([a-zA-Z]{2,})+$/;
+
+    if (!mailPattern.test(data)) {
+      var result = await User.find({ username: sanitize(data) });
+      if (result.length < 1)
+        return res.status(400).json({ error: "Invalid username" });
+      else {
+        var uniqid =
+          new Date().getTime() +
+          Math.floor(Math.random() * 10000 + 1).toString(16);
+        await User.findOneAndUpdate(
+          { username: sanitize(data) },
+          {
+            activationKey: uniqid
+          },
+          (err, user) => {
+            if (err) console.log(err);
+            //mailService.sendNewPassword(user);
+          }
+        );
+        mailService.sendNewPassword(result[0], uniqid);
+        return res.status(200).json({ message: "You will receive an email!" });
+      }
+    } else {
+      var result = await User.find({ email: sanitize(data) });
+      if (result.length < 1)
+        return res.status(400).json({ error: "Invalid email" });
+      else {
+        var uniqid =
+          new Date().getTime() +
+          Math.floor(Math.random() * 10000 + 1).toString(16);
+        await User.findOneAndUpdate(
+          { email: sanitize(data) },
+          {
+            activationKey: uniqid
+          },
+          (err, user) => {
+            if (err) console.log(err);
+          }
+        );
+        mailService.sendNewPassword(result[0], uniqid);
+        return res.status(200).json({ message: "You will receive an email!" });
+      }
+    }
+  },
+
+  resetPassword: async (req, res, next) => {
+    if ((err = inputService.password(req.body.pwd1).error))
+      return res.status(400).json({ error: "password " + err });
+    if ((err = inputService.password(req.body.pwd2).error))
+      return res.status(400).json({ error: "password " + err });
+    if (req.body.pwd1 !== req.body.pwd2)
+      return res.status(400).json({ error: "password has to be identical" });
+
+    var result = await User.find({
+      username: sanitize(req.body.username),
+      activationKey: sanitize(req.body.key)
+    });
+    if (result.length < 1)
+      return res.status(400).json({ error: "Impossible to reset password..." });
+    else {
+      User.findOneAndUpdate(
+        { username: sanitize(req.body.username) },
+        {
+          activationKey: null
+        },
+        (err, user) => {
+          if (err) console.log(err);
+          user.setPassword(req.body.pwd1, () => {
+            user.save().catch(err => {
+              console.error(err);
+            });
+            return res.status(200).json({ status: "success" });
+          });
+        }
+      );
+    }
   }
 };

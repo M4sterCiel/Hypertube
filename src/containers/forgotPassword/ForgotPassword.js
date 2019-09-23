@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import NavBar from "../../components/navbar/NavBar";
 import ValidateInput from "../../services/ValidateInput";
+import ErrorToast from "../../services/toasts/ErrorToasts";
+import axios from "axios";
 
 class ForgotPassword extends Component {
   constructor(props) {
@@ -32,7 +34,18 @@ class ForgotPassword extends Component {
   };
 
   handleSubmit = async e => {
-    console.log("Submit");
+    e.preventDefault();
+    axios
+      .post("/users/forgot-password", {
+        login: this.state.login
+      })
+      .then(res => {
+        console.log(res.data);
+        this.props.history.push("/");
+      })
+      .catch(err => {
+        ErrorToast.custom.error(err.response.data.error, 4000);
+      });
   };
 
   render() {

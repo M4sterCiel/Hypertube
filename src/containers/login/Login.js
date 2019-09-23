@@ -82,7 +82,7 @@ class Login extends Component {
       })
       .then(res => {
         if (res.data.status === "success") {
-          this.props.history.push("/home");
+          this.props.history.push("/search");
           this.Auth.setToken(res.data.token);
         } else ErrorToast.custom.error(res.data.msg, 4000);
       })
