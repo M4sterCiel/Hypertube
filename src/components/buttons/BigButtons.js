@@ -12,7 +12,9 @@ const LpBigButton = () => {
       >
         <span className="btn-regular-text">
           Try it now
-          <i className="material-icons btn-big-icon">arrow_forward_ios</i>
+          <i className="material-icons icons-red btn-big-icon">
+            arrow_forward_ios
+          </i>
         </span>
       </Button>
     </NavLink>

@@ -1,4 +1,5 @@
 import React, { useReducer, useEffect } from "react";
+import withAuth from "../../services/withAuth";
 import "./Search.scss";
 // import Header from "./Header";
 import spinner from "../../spinner.gif";
@@ -7,7 +8,8 @@ import Search from "../../components/searchBar/searchBar";
 import Navbar from "../../components/navbar/NavBar";
 import Filter from "../../components/filter/Filter";
 
-const MOVIE_API_URL = "https://yts.lt/api/v2/list_movies.json?minimum_rating=8.5&order_by=asc"; // https://yts.lt/api/v2/list_movies.json?query_term=man https://www.omdbapi.com/?s=man&apikey=4a3b711b
+const MOVIE_API_URL =
+  "https://yts.lt/api/v2/list_movies.json?minimum_rating=8.5&order_by=asc"; // https://yts.lt/api/v2/list_movies.json?query_term=man https://www.omdbapi.com/?s=man&apikey=4a3b711b
 
 const initialState = {
   loading: true,
@@ -33,7 +35,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        errorMessage: 'No movies found'
+        errorMessage: "No movies found"
       };
     default:
       return state;
@@ -55,19 +57,22 @@ const SearchView = () => {
   }, []);
 
   // you can add this to the onClick listener of the Header component
-//   const refreshPage = () => {
-//     window.location.reload();
-//   };
+  //   const refreshPage = () => {
+  //     window.location.reload();
+  //   };
 
   const search = searchValue => {
     dispatch({
       type: "SEARCH_MOVIES_REQUEST"
     });
 
-    fetch(`https://yts.lt/api/v2/list_movies.json?query_term=${searchValue}`) 
+    fetch(`https://yts.lt/api/v2/list_movies.json?query_term=${searchValue}`)
       .then(response => response.json())
       .then(jsonResponse => {
-        if (jsonResponse.status_message === "Query was successful" && jsonResponse.data.movie_count > 0) {
+        if (
+          jsonResponse.status_message === "Query was successful" &&
+          jsonResponse.data.movie_count > 0
+        ) {
           dispatch({
             type: "SEARCH_MOVIES_SUCCESS",
             payload: jsonResponse.data.movies
@@ -86,10 +91,10 @@ const SearchView = () => {
 
   return (
     <div className="SearchView">
-      <div class="layer">
+      <div className="layer">
         <Navbar />
         {/* <Header text="HyperFlix" /> */}
-        <Search search={search}/>
+        <Search search={search} />
         <div className="movies">
           {loading && !errorMessage ? (
             <img className="spinner" src={spinner} alt="Loading spinner" />
@@ -106,4 +111,4 @@ const SearchView = () => {
   );
 };
 
-export default SearchView;
+export default withAuth(SearchView);

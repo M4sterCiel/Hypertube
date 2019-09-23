@@ -1,11 +1,11 @@
 /* Regular button */
 
-.btn-regular {
+.btn.btn-regular {
   background-color: red;
   margin: 0px 10px;
 }
 
-.btn-regular:hover {
+.btn.btn-regular:hover {
   background-color: rgba(255, 0, 0, 0.5);
 }
 /* Secondary button */
@@ -33,7 +33,7 @@
 
 /* Big buttons */
 
-.btn-big {
+.btn.btn-big {
   display: block;
   margin: auto;
   margin-top: 30px;
@@ -43,7 +43,7 @@
   font-weight: 200;
 }
 
-.btn-big-icon {
+.btn.btn-big-icon {
   margin-left: 20px;
   font-size: 50px;
 }
@@ -51,14 +51,14 @@
 /* Responsive */
 
 @media only screen and (max-width: 600px) {
-  .btn-big {
+  .btn.btn-big {
     width: 250px;
     height: 85px;
     font-size: 20px;
     font-weight: 200;
   }
 
-  .btn-big-icon {
+  .btn.btn-big-icon {
     margin-left: 15px;
     font-size: 35px;
   }

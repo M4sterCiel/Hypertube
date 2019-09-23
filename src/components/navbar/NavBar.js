@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import "materialize-css/dist/css/materialize.min.css";
 import "./NavBar.scss";
+import AuthService from "../../services/AuthService";
 import { withRouter, NavLink } from "react-router-dom";
 import { LoginButton, RegisterButton } from "../buttons/Buttons";
 import { Button } from "react-materialize";
@@ -16,6 +16,7 @@ class NavBar extends Component {
     this.state = {
       left: false
     };
+    this.Auth = new AuthService();
   }
 
   componentDidMount() {
@@ -62,16 +63,16 @@ class NavBar extends Component {
           <h5 style={{ textAlign: "center", color: "red" }}>Menu</h5>
           <List>
             <ListItem>
-              <NavLink className="nav-mobile-menu-links" to="/users/login">
-                <i className="material-icons link-icon nav-mobile-menu-icons">
+              <NavLink className="nav-mobile-menu-links" to="/login">
+                <i className="material-icons icons-red link-icon nav-mobile-menu-icons">
                   account_box
                 </i>
                 <span className="nav-mobile-menu-text">Log in</span>
               </NavLink>
             </ListItem>
             <ListItem>
-              <NavLink className="nav-mobile-menu-links" to="/users/register">
-                <i className="material-icons link-icon nav-mobile-menu-icons">
+              <NavLink className="nav-mobile-menu-links" to="/register">
+                <i className="material-icons icons-red link-icon nav-mobile-menu-icons">
                   person_add
                 </i>
                 <span className="nav-mobile-menu-text">Register</span>
@@ -87,7 +88,7 @@ class NavBar extends Component {
             className="nav-mobile-menu-btn"
             onClick={toggleMenu("left", true)}
           >
-            <i className="material-icons">menu</i>
+            <i className="material-icons icons-red">menu</i>
           </Button>
           <SwipeableDrawer
             anchor="left"
@@ -106,6 +107,7 @@ class NavBar extends Component {
         <div>
           <LoginButton />
           <RegisterButton />
+          <button onClick={this.handleLogout}>logout</button>
         </div>
       );
     };
@@ -132,6 +134,11 @@ class NavBar extends Component {
       </div>
     );
   }
+
+  handleLogout = () => {
+    this.Auth.logout();
+    this.props.history.replace("/login");
+  };
 }
 
 export default withRouter(NavBar);
