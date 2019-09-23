@@ -22,7 +22,7 @@ mongoose.set("useNewUrlParser", true);
 mongoose.set("useFindAndModify", false);
 mongoose.set("useCreateIndex", true);
 mongoose.set("useUnifiedTopology", true);
-mongoose.connect("mongodb://localhost/hypertube_db", {
+mongoose.connect("mongodb+srv://Team:Apkm5VCrxWTRPYxK@cluster0-shqxc.mongodb.net/hypertube_db?retryWrites=true&w=majority", {
   useUnifiedTopology: true,
   useNewUrlParser: true
 });
@@ -34,8 +34,8 @@ db.once("open", () => {
 
 /*  creating store */
 var store = new MongoDBStore({
-  uri: "mongodb://localhost/hypertube_db",
-  collection: "mySessions"
+  uri: "mongodb+srv://Team:Apkm5VCrxWTRPYxK@cluster0-shqxc.mongodb.net/hypertube_db?retryWrites=true&w=majority",
+  collection: "users"
 });
 
 /* Middleware */
