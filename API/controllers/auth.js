@@ -28,7 +28,7 @@ const saveToSession = (req, res, error) => {
 
   req.session.save(err => {
     if (err) throw err;
-    res.redirect("http://localhost:3000/home");
+    res.redirect("http://localhost:3000/search");
   });
 };
 

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import NavBar from "../../components/navbar/NavBar";
 import ValidateInput from "../../services/ValidateInput";
+import ErrorToast from "../../services/toasts/ErrorToasts";
+import Axios from "axios";
 
 class ResetPassword extends Component {
   constructor(props) {
@@ -14,13 +16,27 @@ class ResetPassword extends Component {
       pwdHasLowercase: false,
       pwdHasUppercase: false,
       pwdHasNumber: false,
-      pwdHasMinLen: false
+      pwdHasMinLen: false,
+      username: "",
+      key: ""
     };
     this._isMounted = false;
   }
 
   componentDidMount() {
     this._isMounted = true;
+    if (
+      document.location.href.includes("user=") &&
+      document.location.href.includes("&key=")
+    ) {
+      let key = document.location.href;
+      key = key.split("=");
+      key = key[key.length - 1];
+      let username = document.location.href;
+      username = username.split("=");
+      username = username[username.length - 2].split("&", -1)[0];
+      this._isMounted && this.setState({ username: username, key: key });
+    }
   }
 
   componentWillUnmount() {
@@ -38,7 +54,20 @@ class ResetPassword extends Component {
   };
 
   handleSubmit = async e => {
-    console.log("Submit");
+    e.preventDefault();
+    Axios.post("/users/reset-password", {
+      username: this.state.username,
+      key: this.state.key,
+      pwd1: this.state.pwd1,
+      pwd2: this.state.pwd2
+    })
+      .then(res => {
+        this.props.history.push("/login");
+      })
+      .catch(err => {
+        console.log(err);
+        ErrorToast.custom.error(err.response.data.error, 4000);
+      });
   };
 
   render() {
