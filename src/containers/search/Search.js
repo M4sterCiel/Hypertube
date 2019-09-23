@@ -95,16 +95,18 @@ const SearchView = () => {
         <Navbar />
         {/* <Header text="HyperFlix" /> */}
         <Search search={search} />
-        <div className="movies">
-          {loading && !errorMessage ? (
-            <img className="spinner" src={spinner} alt="Loading spinner" />
-          ) : errorMessage ? (
-            <div className="errorMessage">{errorMessage}</div>
-          ) : (
-            movies.map((movie, index) => (
-              <Movie key={`${index}-${movie.title}`} movie={movie} />
-            ))
-          )}
+        <div class="infiniteScroll">
+          <div className="movies">
+            {loading && !errorMessage ? (
+              <img className="spinner" src={spinner} alt="Loading spinner" />
+            ) : errorMessage ? (
+              <div className="errorMessage">{errorMessage}</div>
+            ) : (
+              movies.map((movie, index) => (
+                <Movie key={`${index}-${movie.title}`} movie={movie} />
+              ))
+            )}
+          </div>
         </div>
       </div>
     </div>
