@@ -35,7 +35,7 @@ db.once("open", () => {
 /*  creating store */
 var store = new MongoDBStore({
   uri: "mongodb+srv://Team:Apkm5VCrxWTRPYxK@cluster0-shqxc.mongodb.net/hypertube_db?retryWrites=true&w=majority",
-  collection: "users"
+  collection: "MySessions"
 });
 
 /* Middleware */
