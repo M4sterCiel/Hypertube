@@ -26,4 +26,33 @@ const RegisterButton = () => {
   );
 };
 
-export { LoginButton, RegisterButton };
+const FunctionButtonRegular = ({ text, tooltip, func }) => {
+  return (
+    <Button
+      tooltip={tooltip}
+      className="btn-regular btn-function"
+      onClick={func}
+    >
+      <span className="btn-function-text">{text.toUpperCase()}</span>
+    </Button>
+  );
+};
+
+const FunctionButtonSecondary = ({ text, tooltip, func }) => {
+  return (
+    <Button
+      tooltip={tooltip}
+      className="btn-secondary btn-function"
+      onClick={func}
+    >
+      <span className="btn-function-text">{text.toUpperCase()}</span>
+    </Button>
+  );
+};
+
+export {
+  LoginButton,
+  RegisterButton,
+  FunctionButtonRegular,
+  FunctionButtonSecondary
+};

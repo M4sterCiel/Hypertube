@@ -1,19 +1,15 @@
 .search {
-    margin-top: 30px;
-}
-
-.btn {
-    margin-left: 20px;
+  margin-top: 30px;
 }
 
 .input-field {
-    color: white;
+  color: white;
 }
 
 .input-field::placeholder {
-    color: rgba(255, 255, 255, 0.486);
+  color: rgba(255, 255, 255, 0.486);
 }
 
 .search input:focus {
-    border-bottom: 1px solid white !important;
+  border-bottom: 1px solid white !important;
 }
