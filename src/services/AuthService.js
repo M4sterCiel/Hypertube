@@ -1,4 +1,6 @@
 import decode from "jwt-decode";
+import ErrorToast from "./toasts/ErrorToasts";
+import axios from "axios";
 
 export default class AuthService {
   // Setting token in local storage
@@ -12,9 +14,19 @@ export default class AuthService {
   }
 
   // Checking if token exists and is still valid
-  loggedIn() {
+  async loggedIn() {
     const token = this.getToken();
-    return !!token && !this.isTokenExpired(token);
+    var valid = false;
+    await axios
+      .get("/users/session", { headers: { Authorization: token } })
+      .then(res => {
+        if (res.data._id) valid = true;
+      })
+      .catch(err => {
+        ErrorToast.custom.error(err.response.data.error, 4000);
+        return false;
+      });
+    return !!token && !this.isTokenExpired(token) && valid;
   }
 
   // Checking if token is still valid

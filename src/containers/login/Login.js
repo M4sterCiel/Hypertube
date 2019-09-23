@@ -75,15 +75,15 @@ class Login extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-    axios
+    await axios
       .post("/users/login", {
         username: this.state.login,
         password: this.state.password
       })
       .then(res => {
         if (res.data.status === "success") {
-          this.props.history.push("/search");
           this.Auth.setToken(res.data.token);
+          this.props.history.push("/search");
         } else ErrorToast.custom.error(res.data.msg, 4000);
       })
       .catch(err => {
