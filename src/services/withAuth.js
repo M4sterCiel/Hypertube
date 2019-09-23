@@ -7,7 +7,6 @@ export default function withAuth(AuthComponent) {
 
   return class AuthWrapped extends Component {
     state = {
-      confirm: null,
       loaded: false
     };
 
@@ -28,14 +27,7 @@ export default function withAuth(AuthComponent) {
 
     render() {
       if (this.state.loaded === true) {
-        //console.log("confirmed!");
-        return (
-          <AuthComponent
-            history={this.props.history}
-            confirm={this.state.confirm}
-            //socket={this.state.socket}
-          />
-        );
+        return <AuthComponent history={this.props.history} />;
       } else {
         return null;
       }

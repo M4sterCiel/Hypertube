@@ -9,21 +9,32 @@ export default class AuthService {
   }
 
   // Getting token from local storage
-  getToken() {
-    return localStorage.getItem("Token");
+  async getToken() {
+    return await localStorage.getItem("Token");
   }
 
   // Checking if token exists and is still valid
   async loggedIn() {
-    const token = this.getToken();
+    const token = await this.getToken();
+    if (!token) {
+      ErrorToast.custom.error(
+        "You have to be logged to access this page!",
+        4000
+      );
+      return false;
+    }
     var valid = false;
     await axios
       .get("/users/session", { headers: { Authorization: token } })
       .then(res => {
+        console.log(res.data);
         if (res.data._id) valid = true;
       })
       .catch(err => {
-        ErrorToast.custom.error(err.response.data.error, 4000);
+        ErrorToast.custom.error(
+          "You have to be logged to access this page!",
+          4000
+        );
         return false;
       });
     return !!token && !this.isTokenExpired(token) && valid;
@@ -43,7 +54,7 @@ export default class AuthService {
 
   // Removing token from local storage
   async logout() {
-    const token = this.getToken();
+    const token = await this.getToken();
     if (token)
       await axios
         .get("/users/logout", { headers: { Authorization: token } })

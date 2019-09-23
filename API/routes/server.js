@@ -39,7 +39,7 @@ db.once("open", () => {
 var store = new MongoDBStore({
   uri:
     "mongodb+srv://Team:Apkm5VCrxWTRPYxK@cluster0-shqxc.mongodb.net/hypertube_db?retryWrites=true&w=majority",
-  collection: "mySessions"
+  collection: "MySessions"
 });
 
 /* Middleware */
