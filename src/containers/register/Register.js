@@ -9,6 +9,7 @@ import GoogleLogo from "../../assets/Google_Logo.png";
 import GithubLogo from "../../assets/Github_Logo.png";
 import SchoolLogo from "../../assets/42_Logo.png";
 import ErrorToast from "../../services/toasts/ErrorToasts";
+import InfoToast from "../../services/toasts/InfoToasts";
 
 import axios from "axios";
 
@@ -85,6 +86,7 @@ class Register extends Component {
       })
       .then(res => {
         if (res.data.status === "success") {
+          InfoToast.custom.info("An email has been sent!");
           this.props.history.push("/login");
         }
       })

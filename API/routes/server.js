@@ -22,10 +22,13 @@ mongoose.set("useNewUrlParser", true);
 mongoose.set("useFindAndModify", false);
 mongoose.set("useCreateIndex", true);
 mongoose.set("useUnifiedTopology", true);
-mongoose.connect("mongodb://localhost/hypertube_db", {
-  useUnifiedTopology: true,
-  useNewUrlParser: true
-});
+mongoose.connect(
+  "mongodb+srv://Team:Apkm5VCrxWTRPYxK@cluster0-shqxc.mongodb.net/hypertube_db?retryWrites=true&w=majority",
+  {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+  }
+);
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -34,7 +37,8 @@ db.once("open", () => {
 
 /*  creating store */
 var store = new MongoDBStore({
-  uri: "mongodb://localhost/hypertube_db",
+  uri:
+    "mongodb+srv://Team:Apkm5VCrxWTRPYxK@cluster0-shqxc.mongodb.net/hypertube_db?retryWrites=true&w=majority",
   collection: "mySessions"
 });
 
