@@ -27,7 +27,7 @@ const Search = ({ search }) => {
           value={searchValue}
           onChange={handleSearchInputChanges}
           type="text"
-          class="input-field s1"
+          class="search-input-field s1"
           placeholder="What movie are you looking for?"
         />
         <button disabled={searchValue.length < 2}
