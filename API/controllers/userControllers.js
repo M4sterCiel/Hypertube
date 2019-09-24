@@ -53,7 +53,11 @@ module.exports = {
           const payload = {
             _id: user._id,
             username: user.username,
-            language: user.language
+            language: user.language,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            email: user.email,
+            picture: user.picture
           };
           req.session.user = payload;
 
@@ -138,22 +142,12 @@ module.exports = {
           if (typeof req.session.user !== "undefined") {
             User.findOne({ _id: req.session.user._id }, (err, user) => {
               if (user) req.session.user.language = user.language;
-              return res.status(200).json(req.session.user);
+              return res.status(200).json(user);
             });
           } else return res.status(401).json({ error: "No session for user" });
         } else return res.status(401).json({ error: "Invalid token" });
       }
     });
-    //return res.status(401).json({ error: "Invalid token" });
-
-    /*  if ((await jwtService.verifyToken(token))) {
-      if (typeof req.session.user !== "undefined") {
-        User.findOne({ _id: req.session.user._id }, (err, user) => {
-          if (user) req.session.user.language = user.language;
-          return res.status(200).json(req.session.user);
-        });
-      } else return res.status(401).json({ error: "No session for user" });
-    } else return res.status(401).json({ error: "Invalid token" }); */
   },
 
   activateAccount: async (req, res, next) => {

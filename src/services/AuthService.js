@@ -1,8 +1,10 @@
 import decode from "jwt-decode";
 import ErrorToast from "./toasts/ErrorToasts";
 import axios from "axios";
+import { GlobalContext } from "../context/GlobalContext";
 
 export default class AuthService {
+  static contextType = GlobalContext;
   // Setting token in local storage
   setToken(tokenData) {
     localStorage.setItem("Token", tokenData);
@@ -14,7 +16,7 @@ export default class AuthService {
   }
 
   // Checking if token exists and is still valid
-  async loggedIn() {
+  loggedIn = async () => {
     const token = await this.getToken();
     if (!token) {
       ErrorToast.custom.error(
@@ -27,7 +29,18 @@ export default class AuthService {
     await axios
       .get("/users/session", { headers: { Authorization: token } })
       .then(res => {
-        console.log(res.data);
+        console.log(res.data._id);
+        var data = {
+          locale: res.data.language ? res.data.language : "en",
+          username: res.data.username ? res.data.username : "",
+          fisrtname: res.data.fisrtname ? res.data.fisrtname : "",
+          lastname: res.data.lastname ? res.data.lastname : "",
+          email: res.data.email ? res.data.email : "",
+          uid: res.data._id ? res.data._id : "",
+          picture: res.data.picture ? res.data.picture : ""
+        };
+        console.log(this.context);
+        //this.context.updateContext(data);
         if (res.data._id) valid = true;
       })
       .catch(err => {
@@ -38,7 +51,7 @@ export default class AuthService {
         return false;
       });
     return !!token && !this.isTokenExpired(token) && valid;
-  }
+  };
 
   // Checking if token is still valid
   isTokenExpired(token) {
