@@ -4,15 +4,23 @@
   margin-left: 0px;
 }
 
-/* Regular button */
+/* Regular button / submit buttons */
 
-.btn.btn-regular {
+.btn.btn-regular,
+.btn.btn-secondary,
+.btn-submit-form {
   background-color: red;
-  margin: 0px 10px;
+  margin: 0px 20px 0px 0px;
 }
 
-.btn.btn-regular:hover {
+.btn.btn-regular:hover,
+.btn-submit-form:hover {
   background-color: rgba(255, 0, 0, 0.5);
+}
+
+.btn.btn-regular:focus,
+.btn-submit-form:focus {
+  background-color: rgba(255, 0, 0, 0.8);
 }
 
 /* Secondary button */
@@ -38,14 +46,16 @@
   border: 1px solid white;
 }
 
-/* Function button */
+/* Function button / Modal button */
 
-.btn-function {
+.btn-function,
+.btn-modal {
   padding: 5px 30px;
   height: auto;
 }
 
-.btn-function-text {
+.btn-function-text,
+.btn-modal-text {
   font-size: 25px;
   line-height: 35px;
 }

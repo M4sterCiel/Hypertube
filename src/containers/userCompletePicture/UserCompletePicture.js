@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import NavBar from "../../components/navbar/NavBar";
 import UserPictureModify from "../../components/pictures/UserPictureModify";
+import "./UserCompletePicture.scss";
 
 class UserCompletePicture extends Component {
   constructor(props) {
@@ -46,7 +47,9 @@ class UserCompletePicture extends Component {
                 onSubmit={this.handleSubmit}
               >
                 <div className="input-field col s12">
-                  <UserPictureModify pictureToParent={this.handlePicture} />
+                  <div className="user-complete-picture-box">
+                    <UserPictureModify pictureToParent={this.handlePicture} />
+                  </div>
                 </div>
                 <input
                   type="submit"
