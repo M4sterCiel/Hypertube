@@ -130,7 +130,6 @@ module.exports = {
   },
 
   getSession: async (req, res, next) => {
-    console.log(req.headers.authorization);
     var token = req.headers.authorization;
     token = jwtService.parseAuthorization(token);
     await User.findOne({ token: token }, (err, user) => {
