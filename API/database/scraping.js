@@ -1,7 +1,7 @@
 const axios = require("axios");
 const MovieSchema = require('../schemas/Movie');
 
-async function connectMongo() {
+async function connectDB() {
     console.log('Connecting to MongoDB database...');
     const mongoose = require("mongoose");
     mongoose.set("useNewUrlParser", true);
@@ -62,7 +62,7 @@ const scrapYTS = async () => {
 
 const Scrap = async () => {
     try {
-        await connectMongo();
+        await connectDB();
         const ytsRes = await scrapYTS();
         await MovieSchema.collection.insertMany(ytsRes);
     }
