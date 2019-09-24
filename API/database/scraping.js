@@ -21,14 +21,14 @@ async function connectMongo() {
 }
 
 const scrapYTS = async () => {
-    const rawResults = [];
+    const raw = [];
     for (let i = 1; i <= 267; i++) {
         const res = await axios.get(`https://yts.lt/api/v2/list_movies.json?limit=50&page=${i}`);
             if (!res.data.data.movies) break;
         console.log(`${res.data.data.movies.length} movie(s) found on page ${i}.`);
-        rawResults.push(...res.data.data.movies)
+        raw.push(...res.data.data.movies)
     }
-    const formated = rawResults.map(movie => {
+    const formated = raw.map(movie => {
         const torrents = [];
         for (const item in movie.torrents) {
             const torrent = {
