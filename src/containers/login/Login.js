@@ -11,7 +11,9 @@ import GithubLogo from "../../assets/Github_Logo.png";
 import SchoolLogo from "../../assets/42_Logo.png";
 import axios from "axios";
 import ErrorToast from "../../services/toasts/ErrorToasts";
+import InfoToast from "../../services/toasts/InfoToasts";
 import { GlobalContext } from "../../context/GlobalContext";
+import CustomLanguage from "../../services/DefineLocale";
 
 class Login extends Component {
   static contextType = GlobalContext;
@@ -31,8 +33,13 @@ class Login extends Component {
     this._isMounted = false;
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this._isMounted = true;
+    if (this.Auth.loggedIn) {
+      var lang = await CustomLanguage.define(this.context.locale);
+      InfoToast.custom.info(lang.already_logged, 4000);
+      this.props.history.replace("/search");
+    }
   }
 
   componentWillUnmount() {
@@ -101,20 +108,7 @@ class Login extends Component {
       <GlobalContext.Consumer>
         {context => {
           const locale = context.locale;
-          var lang;
-          switch (locale) {
-            case "en":
-              lang = require("../../locale/en");
-              break;
-            case "es":
-              lang = require("../../locale/es");
-              break;
-            case "fr":
-              lang = require("../../locale/fr");
-              break;
-            default:
-              lang = require("../../locale/en");
-          }
+          var lang = CustomLanguage(locale);
           return (
             <div className="App">
               <NavBar />

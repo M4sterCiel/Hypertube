@@ -11,6 +11,7 @@ import SchoolLogo from "../../assets/42_Logo.png";
 import ErrorToast from "../../services/toasts/ErrorToasts";
 import InfoToast from "../../services/toasts/InfoToasts";
 import { GlobalContext } from "../../context/GlobalContext";
+import CustomLanguage from "../../services/DefineLocale";
 
 import axios from "axios";
 
@@ -43,8 +44,14 @@ class Register extends Component {
     this._isMounted = false;
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this._isMounted = true;
+    this._isMounted = true;
+    if (this.Auth.loggedIn) {
+      var lang = await CustomLanguage.define(this.context.locale);
+      InfoToast.custom.info(lang.already_logged, 4000);
+      this.props.history.replace("/search");
+    }
   }
 
   componentWillUnmount() {
@@ -101,20 +108,7 @@ class Register extends Component {
       <GlobalContext.Consumer>
         {context => {
           const locale = context.locale;
-          var lang;
-          switch (locale) {
-            case "en":
-              lang = require("../../locale/en");
-              break;
-            case "es":
-              lang = require("../../locale/es");
-              break;
-            case "fr":
-              lang = require("../../locale/fr");
-              break;
-            default:
-              lang = require("../../locale/en");
-          }
+          var lang = CustomLanguage.define(locale);
           return (
             <div className="App">
               <NavBar />

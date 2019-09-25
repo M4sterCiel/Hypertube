@@ -6,6 +6,7 @@ import Navbar from "../../components/navbar/NavBar";
 import { LpBigButton } from "../../components/buttons/BigButtons";
 import { withRouter } from "react-router-dom";
 import { GlobalContext } from "../../context/GlobalContext";
+import CustomLanguage from "../../services/DefineLocale";
 
 class LandingPage extends Component {
   render() {
@@ -13,20 +14,7 @@ class LandingPage extends Component {
       <GlobalContext.Consumer>
         {context => {
           const locale = context.locale;
-          var lang;
-          switch (locale) {
-            case "en":
-              lang = require("../../locale/en");
-              break;
-            case "es":
-              lang = require("../../locale/es");
-              break;
-            case "fr":
-              lang = require("../../locale/fr");
-              break;
-            default:
-              lang = require("../../locale/en");
-          }
+          var lang = CustomLanguage.define(locale);
           return (
             <div className="App">
               <Navbar />

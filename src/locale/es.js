@@ -122,7 +122,8 @@ var customLanguage = {
       length_email: "Email tiene que estar inferior a 30 caracteres"
     }
   ],
-  pwd_match_error: "Contraseñas no coinciden"
+  pwd_match_error: "Contraseñas no coinciden",
+  already_logged: "Ya está conectado!"
 };
 
 module.exports = customLanguage;

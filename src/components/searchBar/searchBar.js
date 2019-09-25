@@ -3,6 +3,7 @@ import Filter from "../../components/filter/Filter";
 import "../buttons/Buttons.scss";
 import "./searchBar.scss";
 import { GlobalContext } from "../../context/GlobalContext";
+import CustomLanguage from "../../services/DefineLocale";
 
 const Search = ({ search }) => {
   const [searchValue, setSearchValue] = useState("");
@@ -26,20 +27,7 @@ const Search = ({ search }) => {
       {context => {
         console.log(context.locale);
         const locale = context.locale;
-        var lang;
-        switch (locale) {
-          case "en":
-            lang = require("../../locale/en");
-            break;
-          case "es":
-            lang = require("../../locale/es");
-            break;
-          case "fr":
-            lang = require("../../locale/fr");
-            break;
-          default:
-            lang = require("../../locale/en");
-        }
+        var lang = CustomLanguage.define(locale);
         return (
           <div class="row">
             <form className="search">

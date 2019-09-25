@@ -123,7 +123,8 @@ var customLanguage = {
         "Email is too long (must be more than 2 and less than or equal to 30)"
     }
   ],
-  pwd_match_error: "Passwords don't match"
+  pwd_match_error: "Passwords don't match",
+  already_logged: "You are already logged!"
 };
 
 module.exports = customLanguage;

@@ -123,7 +123,8 @@ var customLanguage = {
       length_email: "L'email doit être inférieur ou égal à 30 caractères"
     }
   ],
-  pwd_match_error: "Les mots de passe ne sont pas identiques"
+  pwd_match_error: "Les mots de passe ne sont pas identiques",
+  already_logged: "Vous êtes déjà connecté!"
 };
 
 module.exports = customLanguage;
