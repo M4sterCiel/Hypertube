@@ -35,7 +35,7 @@ class Login extends Component {
 
   async componentDidMount() {
     this._isMounted = true;
-    if (this.Auth.loggedIn) {
+    if (await this.Auth.loggedIn()) {
       var lang = await CustomLanguage.define(this.context.locale);
       InfoToast.custom.info(lang.already_logged, 4000);
       this.props.history.replace("/search");
@@ -108,7 +108,7 @@ class Login extends Component {
       <GlobalContext.Consumer>
         {context => {
           const locale = context.locale;
-          var lang = CustomLanguage(locale);
+          var lang = CustomLanguage.define(locale);
           return (
             <div className="App">
               <NavBar />

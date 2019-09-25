@@ -12,13 +12,16 @@ import ErrorToast from "../../services/toasts/ErrorToasts";
 import InfoToast from "../../services/toasts/InfoToasts";
 import { GlobalContext } from "../../context/GlobalContext";
 import CustomLanguage from "../../services/DefineLocale";
+import AuthService from "../../services/AuthService";
 
 import axios from "axios";
 
 class Register extends Component {
+  static contextType = GlobalContext;
   constructor(props) {
     super(props);
     this.state = {
+      lang: "",
       firstname: "",
       lastname: "",
       username: "",
@@ -42,12 +45,12 @@ class Register extends Component {
       pwdHasMinLen: false
     };
     this._isMounted = false;
+    this.Auth = new AuthService();
   }
 
   async componentDidMount() {
     this._isMounted = true;
-    this._isMounted = true;
-    if (this.Auth.loggedIn) {
+    if (await this.Auth.loggedIn()) {
       var lang = await CustomLanguage.define(this.context.locale);
       InfoToast.custom.info(lang.already_logged, 4000);
       this.props.history.replace("/search");
@@ -94,7 +97,7 @@ class Register extends Component {
       })
       .then(res => {
         if (res.data.status === "success") {
-          InfoToast.custom.info("An email has been sent!", 4000);
+          InfoToast.custom.info(this.state.lang.register[0].confirmation, 4000);
           this.props.history.push("/login");
         }
       })

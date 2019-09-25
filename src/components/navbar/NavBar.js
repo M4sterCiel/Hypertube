@@ -12,7 +12,7 @@ import logo from "../../assets/hyperflix_logo2.png";
 import { GlobalContext } from "../../context/GlobalContext";
 
 class NavBar extends Component {
-  //static contextType = GlobalContext;
+  static contextType = GlobalContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -185,8 +185,9 @@ class NavBar extends Component {
     );
   }
 
-  handleLogout = () => {
-    this.Auth.logout();
+  handleLogout = async () => {
+    await this.Auth.logout();
+    await this.context.resetContext();
     this.props.history.replace("/login");
   };
 }

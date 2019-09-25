@@ -11,7 +11,8 @@ export const GlobalContext = createContext({
   uid: "",
   picture: "",
   setLocale: () => {},
-  updateContext: () => {}
+  updateContext: () => {},
+  resetContext: () => {}
 });
 
 class GlobalContextProvider extends Component {
@@ -35,6 +36,16 @@ class GlobalContextProvider extends Component {
           email: "",
           uid: data.username,
           picture: data.picture
+        }),
+      resetContext: () =>
+        this.setState({
+          locale: this.state.locale,
+          username: "",
+          firstname: "",
+          lastname: "",
+          email: "",
+          uid: "",
+          picture: ""
         })
     };
     this.Auth = new AuthService();

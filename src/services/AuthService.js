@@ -19,10 +19,10 @@ export default class AuthService {
   loggedIn = async () => {
     const token = await this.getToken();
     if (!token) {
-      ErrorToast.custom.error(
+      /* ErrorToast.custom.error(
         "You have to be logged to access this page!",
         4000
-      );
+      ); */
       return false;
     }
     var valid = false;
@@ -32,10 +32,10 @@ export default class AuthService {
         if (res.data._id) valid = true;
       })
       .catch(err => {
-        ErrorToast.custom.error(
+        /* ErrorToast.custom.error(
           "You have to be logged to access this page!",
           4000
-        );
+        ); */
         return false;
       });
     return !!token && !this.isTokenExpired(token) && valid;
@@ -64,10 +64,4 @@ export default class AuthService {
         });
     localStorage.removeItem("Token");
   }
-
-  // Getting the data saved in the token
-  getConfirm = () => {
-    let answer = decode(this.getToken());
-    return answer;
-  };
 }

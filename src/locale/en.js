@@ -39,7 +39,8 @@ var customLanguage = {
       oneNumber: "A ",
       number: "number",
       minimum: "Minimum ",
-      characters: "8 characters"
+      characters: "8 characters",
+      confirmation: "An email has been sent!"
     }
   ],
   search: [
@@ -111,7 +112,8 @@ var customLanguage = {
       invalid_username: "Username is invalid (use letters and numbers)",
       empty_username: "Username cannot be empty",
       length_username:
-        "Username is too long (must be more than 2 and less than or equal to 30)"
+        "Username is too long (must be more than 2 and less than or equal to 30)",
+      already_exist: "Username already exist... Chose another one"
     }
   ],
   email_error: [

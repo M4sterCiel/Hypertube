@@ -25,7 +25,6 @@ const Search = ({ search }) => {
   return (
     <GlobalContext.Consumer>
       {context => {
-        console.log(context.locale);
         const locale = context.locale;
         var lang = CustomLanguage.define(locale);
         return (

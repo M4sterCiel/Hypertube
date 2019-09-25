@@ -21,9 +21,7 @@ export default function withAuth(AuthComponent) {
       }
     }
 
-    componentWillUnmount() {
-      //console.log('closing socket');
-    }
+    componentWillUnmount() {}
 
     render() {
       if (this.state.loaded === true) {

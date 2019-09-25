@@ -39,7 +39,8 @@ var customLanguage = {
       oneLetter: "Une ",
       number: "chiffre",
       minimum: "Au minimum ",
-      characters: "8 caractères"
+      characters: "8 caractères",
+      confirmation: "Un email de confirmation vous a été envoyé"
     }
   ],
   search: [

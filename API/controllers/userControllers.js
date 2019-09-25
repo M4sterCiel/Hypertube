@@ -78,6 +78,8 @@ module.exports = {
   register: async (req, res, next) => {
     //console.log(req.body);
     //Check inputs
+    var lang = req.session.language;
+    console.log(lang);
     var err;
     if ((err = inputService.lastname(req.body.lastname).error))
       return res.status(400).json({ error: "lastname " + err });
@@ -130,7 +132,7 @@ module.exports = {
     console.log(req.headers.authorization);
     if (!req.session.user)
       return res.status(401).json({ error: "You are not logged in!" });
-    return res.status(200).json({ message: "blabla" });
+    return res.status(200).json({ message: "success" });
   },
 
   getSession: async (req, res, next) => {

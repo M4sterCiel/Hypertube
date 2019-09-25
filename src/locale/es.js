@@ -26,7 +26,7 @@ var customLanguage = {
       username: "Nombre de usuario",
       firstname: "Nombre",
       lastname: "Apellido",
-      email: "Email",
+      email: "Correo",
       password: "Contraseña",
       repeat_pwd: "Repita su contraseña",
       other: "O con",
@@ -39,7 +39,8 @@ var customLanguage = {
       oneNumber: "Una ",
       number: "cifra",
       minimum: "Minimum ",
-      characters: "8 caracteres"
+      characters: "8 caracteres",
+      confirmation: "Correo de confirmación enviado"
     }
   ],
   search: [
@@ -116,10 +117,10 @@ var customLanguage = {
   ],
   email_error: [
     {
-      no_space: "Email no puede contener espacios",
-      invalid_email: "Email incorrecto (example@email.com)",
-      empty_email: "Email no puede estar vacío",
-      length_email: "Email tiene que estar inferior a 30 caracteres"
+      no_space: "El correo no puede contener espacios",
+      invalid_email: "Correo incorrecto (example@email.com)",
+      empty_email: "Correo no puede estar vacío",
+      length_email: "Correo tiene que estar inferior a 30 caracteres"
     }
   ],
   pwd_match_error: "Contraseñas no coinciden",
