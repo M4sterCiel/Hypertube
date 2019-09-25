@@ -18,7 +18,7 @@ class GlobalContextProvider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      locale: "en",
+      locale: "",
       username: "",
       firstname: "",
       lastname: "",
@@ -43,18 +43,22 @@ class GlobalContextProvider extends Component {
   async componentDidMount() {
     var token = await this.Auth.getToken();
     if (token) {
-      axios
+      await axios
         .get("/users/session", { headers: { Authorization: token } })
-        .then(res => {
-          this.setState({
-            locale: res.data.language ? res.data.language : "en",
+        .then(async res => {
+          console.log(res.data);
+          await this.setState({
+            locale: res.data.language ? res.data.language : this.state.locale,
             username: res.data.username ? res.data.username : "",
-            fisrtname: res.data.fisrtname ? res.data.fisrtname : "",
+            firstname: res.data.firstname ? res.data.firstname : "",
             lastname: res.data.lastname ? res.data.lastname : "",
             email: res.data.email ? res.data.email : "",
             uid: res.data._id ? res.data._id : "",
             picture: res.data.picture ? res.data.picture : ""
           });
+        })
+        .catch(err => {
+          console.log("fnejfdbvisdfbvi");
         });
     }
   }

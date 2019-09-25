@@ -10,6 +10,7 @@ import GithubLogo from "../../assets/Github_Logo.png";
 import SchoolLogo from "../../assets/42_Logo.png";
 import ErrorToast from "../../services/toasts/ErrorToasts";
 import InfoToast from "../../services/toasts/InfoToasts";
+import { GlobalContext } from "../../context/GlobalContext";
 
 import axios from "axios";
 
@@ -97,197 +98,237 @@ class Register extends Component {
 
   render() {
     return (
-      <div className="App">
-        <NavBar />
-        <div className="container-background">
-          <div className="row">
-            {" "}
-            <div className="card-panel center auth-card">
-              {" "}
-              <div className="title-page">Register</div>
-              <form className="register-form" onSubmit={this.handleSubmit}>
-                <div className="input-field col s12">
-                  <input
-                    type="text"
-                    id="username"
-                    className="form-input-fields"
-                    value={this.state.username}
-                    onChange={this.handleChange}
-                  ></input>
-                  <div className="register-error">
-                    {this.state.usernameError}
-                  </div>
-                  <label className="label-form" htmlFor="username">
-                    Username
-                  </label>
-                </div>
-                <div className="input-field col s6">
-                  <input
-                    type="text"
-                    id="firstname"
-                    className="form-input-fields"
-                    value={this.state.firstname}
-                    onChange={this.handleChange}
-                  ></input>
-                  <div className="register-error">
-                    {this.state.firstnameError}
-                  </div>
-                  <label className="label-form" htmlFor="firstname">
-                    Firstname
-                  </label>
-                </div>
-                <div className="input-field col s6">
-                  <input
-                    type="text"
-                    id="lastname"
-                    className="form-input-fields"
-                    value={this.state.lastname}
-                    onChange={this.handleChange}
-                  ></input>
-                  <div className="register-error">
-                    {this.state.lastnameError}
-                  </div>
-                  <label className="label-form" htmlFor="lastname">
-                    Lastname
-                  </label>
-                </div>
-                <div className="input-field col s12">
-                  <input
-                    type="email"
-                    id="email"
-                    className="form-input-fields"
-                    value={this.state.email}
-                    onChange={this.handleChange}
-                  ></input>
-                  <div className="register-error">{this.state.emailError}</div>
-                  <label className="label-form" htmlFor="email">
-                    Email
-                  </label>
-                </div>
-                <div className="input-field col s12">
-                  <input
-                    type="password"
-                    id="pwd1"
-                    className="form-input-fields"
-                    value={this.state.pwd1}
-                    onChange={this.handleChange}
-                    onFocus={e =>
-                      this.setState({ pwd1VerifyBox: "box-enabled" })
-                    }
-                    onBlur={e =>
-                      this.setState({ pwd1VerifyBox: "box-disabled" })
-                    }
-                    required
-                  />
-                  <div
-                    className={"password-message " + this.state.pwd1VerifyBox}
-                  >
-                    <h3 id="pwd1-verify-title">
-                      Password must contain the following:
-                    </h3>
-                    <p
-                      id="letter"
-                      className={
-                        this.state.pwdHasLowercase ? "valid" : "invalid"
-                      }
+      <GlobalContext.Consumer>
+        {context => {
+          const locale = context.locale;
+          var lang;
+          switch (locale) {
+            case "en":
+              lang = require("../../locale/en");
+              break;
+            case "es":
+              lang = require("../../locale/es");
+              break;
+            case "fr":
+              lang = require("../../locale/fr");
+              break;
+            default:
+              lang = require("../../locale/en");
+          }
+          return (
+            <div className="App">
+              <NavBar />
+              <div className="container-background">
+                <div className="row">
+                  {" "}
+                  <div className="card-panel center auth-card">
+                    {" "}
+                    <div className="title-page">
+                      {lang.register[0].register}
+                    </div>
+                    <form
+                      className="register-form"
+                      onSubmit={this.handleSubmit}
                     >
-                      A <b>lowercase</b> letter
-                    </p>
-                    <p
-                      id="capital"
-                      className={
-                        this.state.pwdHasUppercase ? "valid" : "invalid"
-                      }
-                    >
-                      A <b>capital (uppercase)</b> letter
-                    </p>
-                    <p
-                      id="number"
-                      className={this.state.pwdHasNumber ? "valid" : "invalid"}
-                    >
-                      A <b>number</b>
-                    </p>
-                    <p
-                      id="length"
-                      className={this.state.pwdHasMinLen ? "valid" : "invalid"}
-                    >
-                      Minimum <b>8 characters</b>
+                      <div className="input-field col s12">
+                        <input
+                          type="text"
+                          id="username"
+                          className="form-input-fields"
+                          value={this.state.username}
+                          onChange={this.handleChange}
+                        ></input>
+                        <div className="register-error">
+                          {lang.username_error[0][this.state.usernameError]}
+                        </div>
+                        <label className="label-form" htmlFor="username">
+                          {lang.register[0].username}
+                        </label>
+                      </div>
+                      <div className="input-field col s6">
+                        <input
+                          type="text"
+                          id="firstname"
+                          className="form-input-fields"
+                          value={this.state.firstname}
+                          onChange={this.handleChange}
+                        ></input>
+                        <div className="register-error">
+                          {lang.firstname_error[0][this.state.firstError]}
+                        </div>
+                        <label className="label-form" htmlFor="firstname">
+                          {lang.register[0].firstname}
+                        </label>
+                      </div>
+                      <div className="input-field col s6">
+                        <input
+                          type="text"
+                          id="lastname"
+                          className="form-input-fields"
+                          value={this.state.lastname}
+                          onChange={this.handleChange}
+                        ></input>
+                        <div className="register-error">
+                          {lang.firstname_error[0][this.state.lastnameError]}
+                        </div>
+                        <label className="label-form" htmlFor="lastname">
+                          {lang.register[0].lastname}
+                        </label>
+                      </div>
+                      <div className="input-field col s12">
+                        <input
+                          type="email"
+                          id="email"
+                          className="form-input-fields"
+                          value={this.state.email}
+                          onChange={this.handleChange}
+                        ></input>
+                        <div className="register-error">
+                          {lang.email_error[0][this.state.emailError]}
+                        </div>
+                        <label className="label-form" htmlFor="email">
+                          {lang.register[0].email}
+                        </label>
+                      </div>
+                      <div className="input-field col s12">
+                        <input
+                          type="password"
+                          id="pwd1"
+                          className="form-input-fields"
+                          value={this.state.pwd1}
+                          onChange={this.handleChange}
+                          onFocus={e =>
+                            this.setState({ pwd1VerifyBox: "box-enabled" })
+                          }
+                          onBlur={e =>
+                            this.setState({ pwd1VerifyBox: "box-disabled" })
+                          }
+                          required
+                        />
+                        <div
+                          className={
+                            "password-message " + this.state.pwd1VerifyBox
+                          }
+                        >
+                          <h3 id="pwd1-verify-title">
+                            {lang.register[0].spaces}
+                          </h3>
+                          <p
+                            id="letter"
+                            className={
+                              this.state.pwdHasLowercase ? "valid" : "invalid"
+                            }
+                          >
+                            {lang.register[0].oneLetter}
+                            <b>{lang.register[0].lowercase}</b>{" "}
+                          </p>
+                          <p
+                            id="capital"
+                            className={
+                              this.state.pwdHasUppercase ? "valid" : "invalid"
+                            }
+                          >
+                            {lang.register[0].oneLetter}
+                            <b>{lang.register[0].uppercase}</b>{" "}
+                          </p>
+                          <p
+                            id="number"
+                            className={
+                              this.state.pwdHasNumber ? "valid" : "invalid"
+                            }
+                          >
+                            {lang.register[0].oneNumber}{" "}
+                            <b>{lang.register[0].number}</b>
+                          </p>
+                          <p
+                            id="length"
+                            className={
+                              this.state.pwdHasMinLen ? "valid" : "invalid"
+                            }
+                          >
+                            {lang.register[0].minimum}{" "}
+                            <b>{lang.register[0].characters}</b>
+                          </p>
+                        </div>
+                        <label className="label-form" htmlFor="pwd1">
+                          {lang.register[0].password}
+                        </label>
+                      </div>
+                      <div className="input-field col s12">
+                        <input
+                          type="password"
+                          id="pwd2"
+                          className="form-input-fields"
+                          value={this.state.pwd2}
+                          onChange={this.handleChange}
+                        ></input>
+                        <div className="register-error">
+                          {this.state.pwd2 !== this.state.pwd1 &&
+                          this.state.pwd2 !== ""
+                            ? lang.pwd_match_error
+                            : ""}
+                        </div>
+                        <label className="label-form" htmlFor="pwd2">
+                          {lang.register[0].repeat_pwd}
+                        </label>
+                      </div>
+                      <input
+                        type="submit"
+                        name="submit"
+                        value={lang.register[0].register}
+                        className="btn btn-submit-form"
+                        disabled={
+                          !this.state.lastnameValid ||
+                          !this.state.firstnameValid ||
+                          !this.state.usernameValid ||
+                          !this.state.emailValid ||
+                          !this.state.pwd1Valid ||
+                          this.state.pwd2 !== this.state.pwd1
+                        }
+                      />
+                    </form>
+                    <div className="register-login-with-social">
+                      <p className="register-login-social-text">
+                        {lang.register[0].other}
+                      </p>
+                      <img
+                        onClick={this.auth42}
+                        src={SchoolLogo}
+                        alt="42 logo"
+                        className="third-party-logo"
+                      ></img>
+                      <img
+                        onClick={this.authTwitter}
+                        src={TwitterLogo}
+                        alt="twitter logo"
+                        className="third-party-logo"
+                      ></img>
+                      <img
+                        onClick={this.authGoogle}
+                        src={GoogleLogo}
+                        alt="google logo"
+                        className="third-party-logo"
+                      ></img>
+                      <img
+                        onClick={this.authGithub}
+                        src={GithubLogo}
+                        alt="github logo"
+                        className="third-party-logo"
+                      ></img>
+                    </div>
+                    <p className="register-login-link link-right">
+                      {lang.register[0].already_account}{" "}
+                      <NavLink className="red-link" to="/login">
+                        {lang.register[0].login}
+                      </NavLink>
                     </p>
                   </div>
-                  <label className="label-form" htmlFor="pwd1">
-                    Password
-                  </label>
                 </div>
-                <div className="input-field col s12">
-                  <input
-                    type="password"
-                    id="pwd2"
-                    className="form-input-fields"
-                    value={this.state.pwd2}
-                    onChange={this.handleChange}
-                  ></input>
-                  <div className="register-error">
-                    {this.state.pwd2 !== this.state.pwd1 &&
-                    this.state.pwd2 !== ""
-                      ? "Passwords don't match"
-                      : ""}
-                  </div>
-                  <label className="label-form" htmlFor="pwd2">
-                    Repeat password
-                  </label>
-                </div>
-                <input
-                  type="submit"
-                  name="submit"
-                  value="Register"
-                  className="btn btn-submit-form"
-                  disabled={
-                    !this.state.lastnameValid ||
-                    !this.state.firstnameValid ||
-                    !this.state.usernameValid ||
-                    !this.state.emailValid ||
-                    !this.state.pwd1Valid ||
-                    this.state.pwd2 !== this.state.pwd1
-                  }
-                />
-              </form>
-              <div className="register-login-with-social">
-                <p className="register-login-social-text">Or register with</p>
-                <img
-                  onClick={this.auth42}
-                  src={SchoolLogo}
-                  alt="42 logo"
-                  className="third-party-logo"
-                ></img>
-                <img
-                  onClick={this.authTwitter}
-                  src={TwitterLogo}
-                  alt="twitter logo"
-                  className="third-party-logo"
-                ></img>
-                <img
-                  onClick={this.authGoogle}
-                  src={GoogleLogo}
-                  alt="google logo"
-                  className="third-party-logo"
-                ></img>
-                <img
-                  onClick={this.authGithub}
-                  src={GithubLogo}
-                  alt="github logo"
-                  className="third-party-logo"
-                ></img>
               </div>
-              <p className="register-login-link link-right">
-                Already have an account?{" "}
-                <NavLink className="red-link" to="/login">
-                  Login
-                </NavLink>
-              </p>
             </div>
-          </div>
-        </div>
-      </div>
+          );
+        }}
+      </GlobalContext.Consumer>
     );
   }
 }

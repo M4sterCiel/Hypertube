@@ -6,11 +6,11 @@ const user = (type, value) => {
       let regexEmail = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/;
 
       if (!value.match(regexLogin) && !value.match(regexEmail)) {
-        loginError = "Please enter a valid Username/Email";
+        loginError = "invalid_login";
       } else if (value === "") {
-        loginError = "Username/Email cannot be empty";
+        loginError = "empty_login";
       } else if (value.length > 30) {
-        loginError = "Username/Email must be less or equal to 30 chars";
+        loginError = "length_login";
       }
 
       if (loginError) {
@@ -24,17 +24,17 @@ const user = (type, value) => {
 
       if (/\s/.test(value)) {
         return {
-          firstnameError: "Firstname cannot contain spaces",
+          firstnameError: "no_space",
           firstnameValid: false
         };
       } else if (!value.match(firstnameRegex)) {
         return {
-          firstnameError: "Firstname is invalid",
+          firstnameError: "invalid_firstname",
           firstnameValid: false
         };
       } else if (value === "") {
         return {
-          firstnameError: "Firstname cannot be empty",
+          firstnameError: "empty_firstname",
           firstnameValid: false
         };
       }
@@ -47,17 +47,17 @@ const user = (type, value) => {
 
       if (/\s/.test(value)) {
         return {
-          lastnameError: "Lastname cannot contain spaces",
+          lastnameError: "no_space",
           lastnameValid: false
         };
       } else if (!value.match(lastnameRegex)) {
         return {
-          lastnameError: "Lastname is invalid",
+          lastnameError: "invalid_lastname",
           lastnameValid: false
         };
       } else if (value === "") {
         return {
-          lastnameError: "Lastname cannot be empty",
+          lastnameError: "empty_lastname",
           lastnameValid: false
         };
       }
@@ -70,23 +70,22 @@ const user = (type, value) => {
 
       if (/\s/.test(value)) {
         return {
-          usernameError: "Username cannot contain spaces",
+          usernameError: "no_space",
           usernameValid: false
         };
       } else if (!value.match(usernameRegex)) {
         return {
-          usernameError: "Username is invalid (use letters and numbers)",
+          usernameError: "invalid_username",
           usernameValid: false
         };
       } else if (value.length > 30) {
         return {
-          usernameError:
-            "Username is too long (must be more than 2 and less than or equal to 30)",
+          usernameError: "length_username",
           usernameValid: false
         };
       } else if (value === "") {
         return {
-          usernameError: "Username cannot be empty",
+          usernameError: "empty_username",
           usernameValid: false
         };
       }
@@ -99,22 +98,22 @@ const user = (type, value) => {
 
       if (/\s/.test(value)) {
         return {
-          emailError: "Email cannot contain spaces",
+          emailError: "no_space",
           emailValid: false
         };
       } else if (!value.match(emailRegex)) {
         return {
-          emailError: "Email is invalid (example@email.com)",
+          emailError: "invalid_email",
           emailValid: false
         };
       } else if (value.length > 30) {
         return {
-          emailError: "Email is too long (must be equal or less than 30)",
+          emailError: "length_email",
           emailValid: false
         };
       } else if (value === "") {
         return {
-          emailError: "Email cannot be empty",
+          emailError: "empty_email",
           emailValid: false
         };
       }
@@ -126,9 +125,9 @@ const user = (type, value) => {
       let pwdError = "";
 
       if (value.length < 8 || value.includes(" ")) {
-        pwdError = "Please enter a valid password";
+        pwdError = "invalid_pwd";
       } else if (value.length > 30) {
-        pwdError = "Password must be less or equal to 30 chars";
+        pwdError = "length_pwd";
       }
 
       if (pwdError) {

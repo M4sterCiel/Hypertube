@@ -84,19 +84,9 @@ class Login extends Component {
         password: this.state.password
       })
       .then(res => {
-        console.log(res.data.user);
+        //console.log(res.data.user);
         if (res.data.status === "success") {
-          //this.context.setLocale(res.data.user.language);
-          var data = {
-            locale: res.data.user.language ? res.data.user.language : "en",
-            username: res.data.user.username ? res.data.user.username : "",
-            firstname: res.data.user.firstname ? res.data.user.firstname : "",
-            lastname: res.data.user.lastname ? res.data.user.lastname : "",
-            email: res.data.user.email ? res.data.user.email : "",
-            uid: res.data.user._id ? res.data.user._id : "",
-            picture: res.data.user.picture ? res.data.user.picture : ""
-          };
-          this.context.updateContext(data);
+          this.context.setLocale(res.data.user.language);
           this.Auth.setToken(res.data.token);
           this.props.history.push("/search");
         } else ErrorToast.custom.error(res.data.msg, 4000);
@@ -142,7 +132,7 @@ class Login extends Component {
                           onChange={this.handleChange}
                         ></input>
                         <div className="login-error">
-                          {this.state.loginError}
+                          {lang.login_error[0][this.state.loginError]}
                         </div>
                         <label className="label-form" htmlFor="user-login">
                           {lang.login[0].username}
@@ -156,7 +146,9 @@ class Login extends Component {
                           value={this.state.password}
                           onChange={this.handleChange}
                         ></input>
-                        <div className="login-error">{this.state.pwdError}</div>
+                        <div className="login-error">
+                          {lang.passwordSimple_error[0][this.state.pwdError]}
+                        </div>
                         <label className="label-form" htmlFor="user-password">
                           {lang.login[0].password}
                         </label>

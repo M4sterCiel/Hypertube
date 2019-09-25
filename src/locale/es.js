@@ -4,7 +4,7 @@ var customLanguage = {
       line1: "Disfrute una larga selección de películas en HyperFlix",
       line2: "Tan solo un par de cliks le separa de la aventura...",
       line3: "Sin tarjeta de crédito - Es gratis!",
-      try_it: "PRUEBELO YA>"
+      try_it: "PRUEBELO YA"
     }
   ],
   login: [
@@ -31,7 +31,15 @@ var customLanguage = {
       repeat_pwd: "Repita su contraseña",
       other: "O con",
       already_account: "Ya tiene cuenta?",
-      login: "Acceso"
+      login: "Acceso",
+      spaces: "La contraseña debe estar diseñada como sigue:",
+      lowercase: "minuscula",
+      uppercase: "mayuscula",
+      oneLetter: "Una ",
+      oneNumber: "Una ",
+      number: "cifra",
+      minimum: "Minimum ",
+      characters: "8 caracteres"
     }
   ],
   search: [
@@ -41,14 +49,6 @@ var customLanguage = {
       rating: "Nota",
       year: "Año",
       genre: "Tipo"
-    }
-  ],
-  navbar: [
-    {
-      register: "REGISTRO",
-      login: "ACCESO",
-      logout: "SALIR",
-      profile: "Perfil"
     }
   ],
   profile: [
@@ -69,7 +69,60 @@ var customLanguage = {
       password: "CONTRASEÑA",
       delete: "ELIMINAR CUENTA"
     }
-  ]
+  ],
+  navbar: [
+    {
+      login: "ACCESO",
+      register: "REGISTRO",
+      logout: "SALIR",
+      profile: "PERFÍL"
+    }
+  ],
+  login_error: [
+    {
+      invalid_login: "Nombre de usuario incorrecto",
+      empty_login: "Nombre de usuario no puede estar vacío",
+      length_login: "Nombre de usuario tiene que estar inferior a 30 caracteres"
+    }
+  ],
+  passwordSimple_error: [
+    {
+      invalid_pwd: "Contraseña incorrecta",
+      length_pwd: "Contraseña tiene que estar inferior a 30 caracteres"
+    }
+  ],
+  firstname_error: [
+    {
+      no_space: "El nombre no puede contener espacios",
+      invalid_firstname: "Nombre incorrecto",
+      empty_firstname: "Nombre no puede estar vacío"
+    }
+  ],
+  lastname_error: [
+    {
+      no_space: "El apellido no puede contener espacios",
+      invalid_lastname: "Apellido incorrecto",
+      empty_lastname: "Apellido no puede estar vacío"
+    }
+  ],
+  username_error: [
+    {
+      no_space: "El nombre de usuario no puede contener espacios",
+      invalid_username: "Nombre de usuario incorrecto (solo letras y cifras)",
+      empty_username: "Nombre de usuario no puede estar vacío",
+      length_username:
+        "Nombre de usuario tiene que estar inferior a 30 caracteres"
+    }
+  ],
+  email_error: [
+    {
+      no_space: "Email no puede contener espacios",
+      invalid_email: "Email incorrecto (example@email.com)",
+      empty_email: "Email no puede estar vacío",
+      length_email: "Email tiene que estar inferior a 30 caracteres"
+    }
+  ],
+  pwd_match_error: "Contraseñas no coinciden"
 };
 
 module.exports = customLanguage;

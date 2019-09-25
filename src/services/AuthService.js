@@ -29,18 +29,6 @@ export default class AuthService {
     await axios
       .get("/users/session", { headers: { Authorization: token } })
       .then(res => {
-        console.log(res.data._id);
-        var data = {
-          locale: res.data.language ? res.data.language : "en",
-          username: res.data.username ? res.data.username : "",
-          fisrtname: res.data.fisrtname ? res.data.fisrtname : "",
-          lastname: res.data.lastname ? res.data.lastname : "",
-          email: res.data.email ? res.data.email : "",
-          uid: res.data._id ? res.data._id : "",
-          picture: res.data.picture ? res.data.picture : ""
-        };
-        console.log(this.context);
-        //this.context.updateContext(data);
         if (res.data._id) valid = true;
       })
       .catch(err => {
