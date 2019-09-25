@@ -1,9 +1,15 @@
+/* General */
+
+.modal {
+  max-height: 90%;
+  overflow: auto;
+}
+
 /* Modal black background */
 
 .modal-black-background {
   max-width: 1200px;
   width: 100% !important;
-  height: 1000px;
   background: black !important;
   opacity: 1 !important;
 }
@@ -48,6 +54,10 @@
   padding: 0px 20px !important;
   font-size: 20px !important;
   margin-bottom: 15px !important;
+}
+
+.form-input-fields-modal:focus {
+  box-shadow: 0 1px 0 0 red !important;
 }
 
 .half-input-fields-modal {
@@ -99,6 +109,8 @@
 
 .profile-edit-actions {
   margin-top: 40px;
+  padding-bottom: 20px;
+  border-bottom: solid 1px white;
 }
 
 .profile-edit-actions-buttons {
@@ -126,6 +138,10 @@
   .half-input-fields-modal,
   .form-input-fields-modal {
     max-width: 85%;
+  }
+
+  .profile-edit-actions {
+    margin-top: 120px;
   }
 
   .profile-edit-actions-buttons {
@@ -161,6 +177,10 @@
     margin: auto;
     position: static;
     padding: 0px !important;
+  }
+
+  .profile-edit-actions {
+    margin-top: 0px;
   }
 }
 

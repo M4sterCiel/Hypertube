@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Select } from "react-materialize";
 import "./Modals.scss";
 import UserPictureModify from "../../components/pictures/UserPictureModify";
@@ -7,9 +7,23 @@ import {
   FunctionButtonSecondary
 } from "../../components/buttons/Buttons";
 
-const EditProfileModal = () => {
+const EditProfileModal = props => {
+  const [user, setUser] = useState(props.user);
+
+  const handleInputChange = e => {
+    console.log(e.target);
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value });
+    console.log(user);
+  };
+
   const handlePicture = picture => {
     console.log(picture);
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log(user);
   };
 
   return (
@@ -29,37 +43,45 @@ const EditProfileModal = () => {
               <input
                 type="text"
                 id="username"
+                name="username"
                 className="form-input-fields-modal"
-                value="toto"
-                onChange={() => console.log("toto")}
+                value={user.username}
+                onChange={handleInputChange}
               ></input>
               <input
                 type="text"
                 id="firstname"
+                name="firstname"
                 className="form-input-fields-modal half-input-fields-modal field-right-margin"
-                value="toto"
-                onChange={() => console.log("toto")}
+                value={user.firstname}
+                onChange={handleInputChange}
               ></input>
               <input
                 type="text"
                 id="lastname"
+                name="lastname"
                 className="form-input-fields-modal half-input-fields-modal"
-                value="toto"
-                onChange={() => console.log("toto")}
+                value={user.lastname}
+                onChange={handleInputChange}
               ></input>
               <input
                 type="email"
                 id="email"
+                name="email"
                 className="form-input-fields-modal"
-                value="toto"
-                onChange={() => console.log("toto")}
+                value={user.email}
+                onChange={handleInputChange}
               ></input>
               <div className="profile-select-language">
                 <p className="profile-select-language-text">Language: </p>
-                <Select value="EN" onChange={() => console.log("toto")}>
-                  <option value="0">English</option>
-                  <option value="1">Français</option>
-                  <option value="2">Español</option>
+                <Select
+                  value={user.language}
+                  onChange={handleInputChange}
+                  name="language"
+                >
+                  <option value="EN">English</option>
+                  <option value="FR">Français</option>
+                  <option value="ES">Español</option>
                 </Select>
               </div>
             </form>
@@ -67,7 +89,7 @@ const EditProfileModal = () => {
         </div>
         <div className="profile-edit-actions">
           <span className="profile-edit-actions-buttons">
-            <FunctionButtonRegular text="save" />
+            <FunctionButtonRegular text="save" func={handleSubmit} />
           </span>
           <span className="profile-edit-actions-buttons">
             <FunctionButtonSecondary text="cancel" />

@@ -223,7 +223,7 @@ const UserProfile = () => {
               )}
             </div>
           </div>
-          <EditProfileModal />
+          {data.username && <EditProfileModal user={data} />}
         </div>
       </div>
     </div>
