@@ -1,151 +1,158 @@
-import React, { useReducer, useEffect } from "react";
-import NavBar from "../../components/navbar/NavBar";
-import UserPictureView from "../../components/pictures/UserPictureView";
-import "./UserProfile.scss";
-import { FunctionButtonSecondary } from "../../components/buttons/Buttons";
-import MoviesPosters from "../../components/lists/MoviesPosters";
-import UsersList from "../../components/lists/UsersList";
-import { ModalButtonSecondary } from "../../components/buttons/ModalButtons";
-import EditProfileModal from "../../components/modals/EditProfileModal";
+import React, { useReducer, useEffect, useContext } from 'react';
+import NavBar from '../../components/navbar/NavBar';
+import UserPictureView from '../../components/pictures/UserPictureView';
+import './UserProfile.scss';
+import { FunctionButtonSecondary } from '../../components/buttons/Buttons';
+import MoviesPosters from '../../components/lists/MoviesPosters';
+import UsersList from '../../components/lists/UsersList';
+import { ModalButtonSecondary } from '../../components/buttons/ModalButtons';
+import EditProfileModal from '../../components/modals/EditProfileModal';
+import { GlobalContext } from '../../context/GlobalContext';
 
 const initialState = {
   sendingRequest: false,
   requestReceived: false,
   data: [],
-  status: ""
+  status: ''
+};
+
+const languages = {
+  en: 'English',
+  fr: 'Français',
+  es: 'Español'
 };
 
 const testUser = {
-  firstname: "Firstname",
-  lastname: "Lastname",
-  username: "Username",
+  firstname: 'Firstname',
+  lastname: 'Lastname',
+  username: 'Username',
   profile_picture:
-    "https://www.cats.org.uk/media/1400/choosing-a-cat.jpg?width=1600",
-  email: "toto@email.tatta",
-  language: "FR",
+    'https://www.cats.org.uk/media/1400/choosing-a-cat.jpg?width=1600',
+  email: 'toto@email.tatta',
+  language: 'FR',
   movies_seen: [
     {
       id: 1,
-      title: "Toto",
+      title: 'Toto',
       poster:
-        "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg"
+        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
     },
     {
       id: 2,
-      title: "Toto",
+      title: 'Toto',
       poster:
-        "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg"
+        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
     },
     {
       id: 3,
-      title: "Toto",
+      title: 'Toto',
       poster:
-        "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg"
+        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
     },
     {
       id: 4,
-      title: "Toto",
+      title: 'Toto',
       poster:
-        "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg"
+        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
     },
     {
       id: 5,
-      title: "Toto",
+      title: 'Toto',
       poster:
-        "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg"
+        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
     },
     {
       id: 6,
-      title: "Toto",
+      title: 'Toto',
       poster:
-        "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg"
+        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
     },
     {
       id: 7,
-      title: "Toto",
+      title: 'Toto',
       poster:
-        "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg"
+        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
     },
     {
       id: 8,
-      title: "Toto",
+      title: 'Toto',
       poster:
-        "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg"
+        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
     },
     {
       id: 9,
-      title: "Toto",
+      title: 'Toto',
       poster:
-        "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg"
+        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
     },
     {
       id: 10,
-      title: "Toto",
+      title: 'Toto',
       poster:
-        "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg"
+        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
     }
   ],
   following: [
     {
       id: 1,
-      username: "toto",
+      username: 'toto',
       picture:
-        "https://www.petmd.com/sites/default/files/the-cat-which-sleeps-picture-id596060186.jpg"
+        'https://www.petmd.com/sites/default/files/the-cat-which-sleeps-picture-id596060186.jpg'
     },
     {
       id: 2,
-      username: "toto2",
+      username: 'toto2',
       picture:
-        "https://www.petmd.com/sites/default/files/the-cat-which-sleeps-picture-id596060186.jpg"
+        'https://www.petmd.com/sites/default/files/the-cat-which-sleeps-picture-id596060186.jpg'
     },
     {
       id: 3,
-      username: "totodwedewdewdewdewdwedewdwedwedwed3",
+      username: 'totodwedewdewdewdewdwedewdwedwedwed3',
       picture:
-        "https://www.petmd.com/sites/default/files/the-cat-which-sleeps-picture-id596060186.jpg"
+        'https://www.petmd.com/sites/default/files/the-cat-which-sleeps-picture-id596060186.jpg'
     },
     {
       id: 4,
-      username: "toto4",
+      username: 'toto4',
       picture:
-        "https://www.petmd.com/sites/default/files/the-cat-which-sleeps-picture-id596060186.jpg"
+        'https://www.petmd.com/sites/default/files/the-cat-which-sleeps-picture-id596060186.jpg'
     }
   ]
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "USER_PROFILE_REQUEST":
+    case 'USER_PROFILE_REQUEST':
       return {
         ...state,
         sendingRequest: true,
         requestReceived: false,
         data: [],
-        status: "Pending..."
+        status: 'Pending...'
       };
-    case "USER_PROFILE_SUCCESS":
-      return {
-        ...state,
-        sendingRequest: false,
-        requestReceived: true,
-        data: testUser,
-        status: "Received"
-      };
-    case "USER_UPDATE_REQUEST":
-      return {
-        ...state,
-        sendingRequest: true,
-        requestReceived: false,
-        data: [],
-        status: "Pending..."
-      };
-    case "USER_UPDATE_SUCCESS":
+    case 'USER_PROFILE_SUCCESS':
       return {
         ...state,
         sendingRequest: false,
         requestReceived: true,
         data: action.payload,
-        status: "Updated"
+        status: 'Received'
+      };
+    case 'USER_UPDATE_REQUEST':
+      return {
+        ...state,
+        sendingRequest: true,
+        requestReceived: false,
+        data: [],
+        status: 'Pending...'
+      };
+    case 'USER_UPDATE_SUCCESS':
+      return {
+        ...state,
+        sendingRequest: false,
+        requestReceived: true,
+        data: action.payload,
+        status: 'Updated'
       };
     default:
       return state;
@@ -154,13 +161,27 @@ const reducer = (state, action) => {
 
 const UserProfile = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const user = useContext(GlobalContext);
 
   useEffect(() => {
+    let url = document.location.href;
+    let username = url.split('/');
+    username = username[username.length - 1];
+
     dispatch({
-      type: "USER_PROFILE_SUCCESS",
-      payload: testUser
+      type: 'USER_PROFILE_REQUEST'
     });
-  }, []);
+
+    if (user.username === username) {
+      dispatch({
+        type: 'USER_PROFILE_SUCCESS',
+        payload: user
+      });
+    }
+    console.log('url username= ', username);
+    console.log(user.firstname);
+    console.log(user);
+  }, [user]);
 
   const { data } = state;
 
@@ -173,16 +194,16 @@ const UserProfile = () => {
             <div className="user-profile">
               <div className="user-profile-info">
                 <div className="user-profile-info-picture col l2 m4 s12 col-padding-zero">
-                  {" "}
+                  {' '}
                   <UserPictureView picture_url={data.profile_picture} />
                 </div>
                 <div className="user-profile-info-text col l10 m8 s12">
                   <p className="user-profile-info-text-big">{data.username}</p>
                   <p className="user-profile-info-text-regular">
-                    {data.firstname + " " + data.lastname}
+                    {data.firstname + ' ' + data.lastname}
                   </p>
                   <p className="user-profile-info-text-regular">
-                    {"Preferred language: " + data.language}
+                    {'Preferred language: ' + languages[data.locale]}
                   </p>
                   {/*                   <FunctionButtonSecondary
                     text="follow"
@@ -197,9 +218,9 @@ const UserProfile = () => {
                 </div>
               </div>
               <div className="user-profile-movies-seen">
-                {" "}
+                {' '}
                 <p className="user-profile-info-text-big">
-                  Movies seen{" "}
+                  Movies seen{' '}
                   <span className="user-profile-info-text-regular">
                     {`(${data.movies_seen ? data.movies_seen.length : 0})`}
                   </span>
@@ -213,7 +234,7 @@ const UserProfile = () => {
               {data.following && (
                 <div className="user-profile-following">
                   <p className="user-profile-info-text-big">
-                    Following{" "}
+                    Following{' '}
                     <span className="user-profile-info-text-regular">
                       {`(${data.following ? data.following.length : 0})`}
                     </span>
