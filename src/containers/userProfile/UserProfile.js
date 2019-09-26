@@ -5,6 +5,8 @@ import "./UserProfile.scss";
 import { FunctionButtonSecondary } from "../../components/buttons/Buttons";
 import MoviesPosters from "../../components/lists/MoviesPosters";
 import UsersList from "../../components/lists/UsersList";
+import { ModalButtonSecondary } from "../../components/buttons/ModalButtons";
+import EditProfileModal from "../../components/modals/EditProfileModal";
 
 const initialState = {
   sendingRequest: false,
@@ -182,10 +184,15 @@ const UserProfile = () => {
                   <p className="user-profile-info-text-regular">
                     {"Preferred language: " + data.language}
                   </p>
-                  <FunctionButtonSecondary
+                  {/*                   <FunctionButtonSecondary
                     text="follow"
                     func={() => console.log("toto")}
                     tooltip="Click to follow user"
+                  /> */}
+                  <ModalButtonSecondary
+                    text="EDIT"
+                    tooltip="Edit your profile"
+                    href="edit-profile-modal"
                   />
                 </div>
               </div>
@@ -216,6 +223,7 @@ const UserProfile = () => {
               )}
             </div>
           </div>
+          {data.username && <EditProfileModal user={data} />}
         </div>
       </div>
     </div>

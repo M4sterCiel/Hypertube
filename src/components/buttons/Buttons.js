@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 const LoginButton = props => {
   return (
     <NavLink to="/login">
-      <Button className="btn-regular modal-trigger">
+      <Button tooltip="Log on HyperFlix" className="btn-regular">
         <span className="btn-regular-text">{props.value}</span>
       </Button>
     </NavLink>
@@ -16,7 +16,7 @@ const LoginButton = props => {
 const RegisterButton = props => {
   return (
     <NavLink to="/register">
-      <Button className="btn-regular modal-trigger">
+      <Button tooltip="Register on HyperFlix" className="btn-regular">
         <span className="btn-regular-text">{props.value}</span>
       </Button>
     </NavLink>

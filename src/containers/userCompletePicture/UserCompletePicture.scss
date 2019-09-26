@@ -1,0 +1,23 @@
+/* General */
+
+.user-complete-picture-box {
+  width: 350px;
+  height: 350px;
+  margin-bottom: 50px;
+}
+
+/* Responsive */
+
+@media screen and (max-width: 440px) {
+  .user-complete-picture-box {
+    width: 280px;
+    height: 280px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .user-complete-picture-box {
+    width: 220px;
+    height: 220px;
+  }
+}

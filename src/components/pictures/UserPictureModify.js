@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./pictures.scss";
 import ValidatePicture from "../../services/ValidatePicture";
 import ErrorToast from "../../services/toasts/ErrorToasts";
@@ -7,6 +7,14 @@ import DefaultUserPic from "../../assets/default_user.png";
 const UserPictureModify = props => {
   const [pictureValid, setPictureValid] = useState(false);
   const [picture, setPicture] = useState(DefaultUserPic);
+
+  useEffect(() => {
+    if (props.picture) {
+      setPicture(props.picture);
+      setPictureValid(true);
+      return;
+    }
+  }, [props.picture]);
 
   const handlePictureUpload = e => {
     let file = e.target.files[0];
