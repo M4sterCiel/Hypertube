@@ -3,6 +3,7 @@ const http = require("http").Server(app);
 var session = require("express-session");
 var MongoDBStore = require("connect-mongodb-session")(session);
 const userRoutes = require("./userRoutes");
+const searchRoutes = require("./searchRoutes");
 const passport = require("passport");
 const bodyParser = require("body-parser");
 const User = require("../schemas/User");
@@ -70,4 +71,5 @@ passport.deserializeUser(User.deserializeUser());
 
 /* Routes for API */
 app.use("/users", userRoutes.router);
+app.use("/search", searchRoutes.router);
 app.use("/auth", require("../controllers/auth"));

@@ -1,93 +1,69 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, useState } from "react";
+import axios from 'axios';
 import withAuth from "../../services/withAuth";
 import "./Search.scss";
 // import Header from "./Header";
-import spinner from "../../spinner.gif";
-import Movie from "../../components/movie/movie";
+// import spinner from "../../spinner.gif";
+import Movie from "../../components/movie/Movie";
 import Search from "../../components/searchBar/searchBar";
 import Navbar from "../../components/navbar/NavBar";
 import Filter from "../../components/filter/Filter";
 
-const MOVIE_API_URL =
-  "https://yts.lt/api/v2/list_movies.json?minimum_rating=8.5&order_by=asc";
-
-const initialState = {
-  loading: true,
-  movies: [],
-  errorMessage: null
-};
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "SEARCH_MOVIES_REQUEST":
-      return {
-        ...state,
-        loading: true,
-        errorMessage: null
-      };
-    case "SEARCH_MOVIES_SUCCESS":
-      return {
-        ...state,
-        loading: false,
-        movies: action.payload
-      };
-    case "SEARCH_MOVIES_FAILURE":
-      return {
-        ...state,
-        loading: false,
-        errorMessage: "No movies found"
-      };
-    default:
-      return state;
-  }
-};
-
 const SearchView = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const [searchTerms, setSearchTerms] = useState({
+    genre: "All",
+    page: 1,
+    ratings: [0, 10],
+    years: [1915, 2019],
+    keywords: "",
+    limit: 10
+  })
+  
+  const [searchResult, setSearchResult] = useState({movies: []});
 
   useEffect(() => {
-    fetch(MOVIE_API_URL)
-      .then(response => response.json())
-      .then(jsonResponse => {
-        dispatch({
-          type: "SEARCH_MOVIES_SUCCESS",
-          payload: jsonResponse.data.movies
-        });
-      });
-  }, []);
-
-  // you can add this to the onClick listener of the Header component
-  //   const refreshPage = () => {
-  //     window.location.reload();
-  //   };
+    const fetchMovies = async () => {
+      try {
+        const res = await axios.post("/search/movies", searchTerms);
+        console.log("res = ", res);
+        if (res.data.length !== 0) {
+          if (searchTerms.page === 1)
+            setSearchResult({ movies: [...res.data] })
+          else
+            setSearchResult(prev => ({movies: prev.movies.concat(res.data)}))
+        }
+      } catch(err) {
+        if (err.response && err.response.status === 401) 
+        console.log(err.response);
+      }
+    }
+    fetchMovies();
+  }, [searchTerms])
 
   const search = searchValue => {
-    dispatch({
-      type: "SEARCH_MOVIES_REQUEST"
-    });
+    setSearchTerms({
+      ...searchTerms,
+      genre: "All",
+      page: 1,
+      ratings: [0, 10],
+      years: [1915, 2019],
+      keywords: searchValue,
+      limit: 10
+    })
+  }
 
-    fetch(`https://yts.lt/api/v2/list_movies.json?query_term=${searchValue}`)
-      .then(response => response.json())
-      .then(jsonResponse => {
-        if (
-          jsonResponse.status_message === "Query was successful" &&
-          jsonResponse.data.movie_count > 0
-        ) {
-          dispatch({
-            type: "SEARCH_MOVIES_SUCCESS",
-            payload: jsonResponse.data.movies
-          });
-        } else {
-          dispatch({
-            type: "SEARCH_MOVIES_FAILURE",
-            error: jsonResponse.Error
-          });
-        }
-        console.log(jsonResponse);
-      });
-  };
-
-  const { movies, errorMessage, loading } = state;
+  const filter = prop => {
+    setSearchTerms({
+      ...searchTerms,
+      genre: genreValue,
+      page: 1,
+      ratings: [0, 10],
+      years: [1915, 2019],
+      keywords: "",
+      limit: 10
+    })
+  }
 
   return (
     <div className="SearchView">
@@ -97,14 +73,8 @@ const SearchView = () => {
         <Search search={search} />
         <div class="infiniteScroll">
           <div className="movies">
-            {loading && !errorMessage ? (
-              <img className="spinner" src={spinner} alt="Loading spinner" />
-            ) : errorMessage ? (
-              <div className="errorMessage">{errorMessage}</div>
-            ) : (
-              movies.map((movie, index) => (
-                <Movie key={`${index}-${movie.title}`} movie={movie} />
-              ))
+            {searchResult.movies.map((movie, index) => 
+              <Movie key={`${index}-${movie.title}`} movie={movie} />
             )}
           </div>
         </div>

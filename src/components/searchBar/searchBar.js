@@ -20,6 +20,10 @@ const Search = ({ search }) => {
     resetInputField();
   };
 
+  const filter = props => {
+    console.log(props);
+  }
+
   return (
     <div class="row">
       <form className="search">  
@@ -38,7 +42,7 @@ const Search = ({ search }) => {
           SEARCH
         </button>
       </form>
-      <Filter />
+      <Filter filter={filter}/>
     </div>
   );
 };
