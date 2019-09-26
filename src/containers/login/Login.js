@@ -53,12 +53,13 @@ class Login extends Component {
     const isPwd = e.target.id === "user-password";
 
     if (isLogin) {
-      let result = ValidateInput.user("login", e.target.value);
+      let result = ValidateInput.user("username", e.target.value);
+      console.log(result);
       this._isMounted &&
         this.setState({
           login: e.target.value,
-          loginValid: result.loginValid,
-          loginError: result.loginError
+          loginValid: result.usernameValid,
+          loginError: result.usernameError
         });
     }
 
@@ -110,7 +111,7 @@ class Login extends Component {
                   ></input>
                   <div className="login-error">{this.state.loginError}</div>
                   <label className="label-form" htmlFor="user-login">
-                    Username or email
+                    Username
                   </label>
                 </div>
                 <div className="input-field col s12">

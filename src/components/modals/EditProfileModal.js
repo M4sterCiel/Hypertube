@@ -6,24 +6,69 @@ import {
   FunctionButtonRegular,
   FunctionButtonSecondary
 } from "../../components/buttons/Buttons";
+import ValidateInput from "../../services/ValidateInput";
+import InfoToast from "../../services/toasts/InfoToasts";
+import ErrorToast from "../../services/toasts/ErrorToasts";
+import CheckObjectsEquivalence from "../../services/CheckObjectsEquivalence";
 
 const EditProfileModal = props => {
   const [user, setUser] = useState(props.user);
+  const [error, setError] = useState({
+    firstnameError: "",
+    firstnameValid: true,
+    lastnameError: "",
+    lastnameValid: true,
+    usernameError: "",
+    usernameValid: true,
+    emailError: "",
+    emailValid: true,
+    pictureValid: true
+  });
+  const event = new KeyboardEvent("keydown", { keyCode: 27 });
 
-  const handleInputChange = e => {
-    console.log(e.target);
+  const handleChange = e => {
     const { name, value } = e.target;
+
+    if (name !== "language") {
+      let result = ValidateInput.user(name, value);
+      setError({ ...error, ...result });
+    }
+
     setUser({ ...user, [name]: value });
-    console.log(user);
+    console.log(props.user);
   };
 
   const handlePicture = picture => {
     console.log(picture);
+    if (picture.status && picture.url) {
+      setError({ ...error, pictureValid: true });
+      setUser({ ...user, profile_picture: picture.url });
+    } else {
+      setError({ pictureValid: false });
+    }
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(user);
+    if (
+      error.firstnameValid &&
+      error.lastnameValid &&
+      error.usernameValid &&
+      error.emailValid &&
+      error.pictureValid
+    ) {
+      if (!CheckObjectsEquivalence(user, props.user)) {
+        console.log("user", { ...user });
+        console.log("props", { ...props.user });
+        InfoToast.custom.info("Saved", 4000);
+      } else {
+        console.log("same");
+        InfoToast.custom.info("Nothing changed", 4000);
+      }
+      document.dispatchEvent(event);
+    } else {
+      ErrorToast.custom.error("Incorrect field(s), cannot save", 4000);
+    }
   };
 
   return (
@@ -39,44 +84,51 @@ const EditProfileModal = props => {
           </div>
           <div className="profile-text-modify col l10 m8 s12">
             <form className="edit-profile-form">
-              {" "}
               <input
                 type="text"
                 id="username"
                 name="username"
-                className="form-input-fields-modal"
+                className={`form-input-fields-modal ${
+                  error.usernameValid ? "" : "edit-profile-invalid-input"
+                }`}
                 value={user.username}
-                onChange={handleInputChange}
+                onChange={handleChange}
               ></input>
               <input
                 type="text"
                 id="firstname"
                 name="firstname"
-                className="form-input-fields-modal half-input-fields-modal field-right-margin"
+                className={`form-input-fields-modal half-input-fields-modal field-right-margin  ${
+                  error.firstnameValid ? "" : "edit-profile-invalid-input"
+                }`}
                 value={user.firstname}
-                onChange={handleInputChange}
+                onChange={handleChange}
               ></input>
               <input
                 type="text"
                 id="lastname"
                 name="lastname"
-                className="form-input-fields-modal half-input-fields-modal"
+                className={`form-input-fields-modal half-input-fields-modal  ${
+                  error.lastnameValid ? "" : "edit-profile-invalid-input"
+                }`}
                 value={user.lastname}
-                onChange={handleInputChange}
+                onChange={handleChange}
               ></input>
               <input
                 type="email"
                 id="email"
                 name="email"
-                className="form-input-fields-modal"
+                className={`form-input-fields-modal  ${
+                  error.emailValid ? "" : "edit-profile-invalid-input"
+                }`}
                 value={user.email}
-                onChange={handleInputChange}
+                onChange={handleChange}
               ></input>
               <div className="profile-select-language">
                 <p className="profile-select-language-text">Language: </p>
                 <Select
                   value={user.language}
-                  onChange={handleInputChange}
+                  onChange={handleChange}
                   name="language"
                 >
                   <option value="EN">English</option>
@@ -92,7 +144,10 @@ const EditProfileModal = props => {
             <FunctionButtonRegular text="save" func={handleSubmit} />
           </span>
           <span className="profile-edit-actions-buttons">
-            <FunctionButtonSecondary text="cancel" />
+            <FunctionButtonSecondary
+              text="cancel"
+              func={() => document.dispatchEvent(event)}
+            />
           </span>
           <span className="profile-edit-actions-buttons">
             <FunctionButtonSecondary text="password" />
