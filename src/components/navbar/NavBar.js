@@ -10,6 +10,8 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import logo from "../../assets/hyperflix_logo2.png";
 import { GlobalContext } from "../../context/GlobalContext";
+import CountryPicker from "../buttons/Country-picker";
+import CustomLanguage from "../../services/DefineLocale";
 
 class NavBar extends Component {
   static contextType = GlobalContext;
@@ -59,20 +61,7 @@ class NavBar extends Component {
         <GlobalContext.Consumer>
           {context => {
             const locale = context.locale;
-            var lang;
-            switch (locale) {
-              case "en":
-                lang = require("../../locale/en");
-                break;
-              case "es":
-                lang = require("../../locale/es");
-                break;
-              case "fr":
-                lang = require("../../locale/fr");
-                break;
-              default:
-                lang = require("../../locale/en");
-            }
+            var lang = CustomLanguage.define(locale);
             return (
               <div
                 className={classes.list}
@@ -134,24 +123,12 @@ class NavBar extends Component {
         <GlobalContext.Consumer>
           {context => {
             const locale = context.locale;
-            var lang;
-            switch (locale) {
-              case "en":
-                lang = require("../../locale/en");
-                break;
-              case "es":
-                lang = require("../../locale/es");
-                break;
-              case "fr":
-                lang = require("../../locale/fr");
-                break;
-              default:
-                lang = require("../../locale/en");
-            }
+            var lang = CustomLanguage.define(locale);
             return (
               <div>
                 <LoginButton value={lang.navbar[0].login} />
                 <RegisterButton value={lang.navbar[0].register} />
+                <CountryPicker />
                 <button onClick={this.handleLogout}>
                   {lang.navbar[0].logout}
                 </button>
