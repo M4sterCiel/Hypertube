@@ -57,7 +57,7 @@ class GlobalContextProvider extends Component {
       await axios
         .get("/users/session", { headers: { Authorization: token } })
         .then(async res => {
-          console.log(res.data);
+          
           await this.setState({
             locale: res.data.language ? res.data.language : this.state.locale,
             username: res.data.username ? res.data.username : "",

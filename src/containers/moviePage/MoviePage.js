@@ -14,7 +14,7 @@ class MoviePage extends Component {
       <div className="player">
         <video controls>
           <source
-            src="http://localhost:5000/movie/movie/SampleVideo_1280x720_30mb.mp4"
+            src="http://localhost:5000/movie/movie/Sample_1080.mp4"
             type="video/mp4"
           />
         </video>
