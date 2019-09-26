@@ -12,7 +12,9 @@ const Movie = ({ movie }) => {
           src={movie.poster}
         />
       </div>
-      <p><strong>{movie.year} &nbsp;|&nbsp;</strong> {movie.rating} ☆</p>
+      <p>
+        <strong>{movie.year} &nbsp;|&nbsp;</strong> {movie.rating} ☆
+      </p>
     </div>
   );
 };

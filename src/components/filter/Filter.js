@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./Filter.scss";
-import Slider, { Range } from 'rc-slider';
-import 'rc-slider/assets/index.css';
+import Slider, { Range } from "rc-slider";
+import "rc-slider/assets/index.css";
+import { GlobalContext } from "../../context/GlobalContext";
 
 const Filter = ({ filter }) => {
 
@@ -40,36 +41,54 @@ const Filter = ({ filter }) => {
   const Range = createSliderWithTooltip(Slider.Range);
 
   return (
-      <div class="all">
-        <div class="RatingRange">
-          <label>Rating</label>
-          <Range 
-            min={0}
-            max={10}
-            allowCross={false}
-            defaultValue={[0, 10]}
-          /> 
-          </div>
-          <div class="YearRange">
-            <label>Year</label>
-            <Range 
-              min={1915}
-              max={2019}
-              allowCross={false}
-              defaultValue={[1915, 2019]}
-            /> 
-          </div>
-          <select
-            class="Genre browser-default"
-            onChange={handleGenreChanges}
-          >
-            {genreList.map(genre => (
+    <GlobalContext.Consumer>
+      {context => {
+        const locale = context.locale;
+        var lang;
+        switch (locale) {
+          case "en":
+            lang = require("../../locale/en");
+            break;
+          case "es":
+            lang = require("../../locale/es");
+            break;
+          case "fr":
+            lang = require("../../locale/fr");
+            break;
+          default:
+            lang = require("../../locale/en");
+        }
+        return (
+          <div class="all">
+            <div class="RatingRange">
+              <label>{lang.search[0].rating}</label>
+              <Range
+                min={0}
+                max={10}
+                allowCross={false}
+                defaultValue={[0, 10]}
+              />
+            </div>
+            <div class="YearRange">
+              <label>{lang.search[0].year}</label>
+              <Range
+                min={1915}
+                max={2019}
+                allowCross={false}
+                defaultValue={[1915, 2019]}
+              />
+            </div>
+            <select class="browser-default">
+              {genreList.map(genre => (
               <option key={genre} value={genre}>
                 {genre}
               </option>
             ))}
-          </select>
-      </div>
+            </select>
+          </div>
+        );
+      }}
+    </GlobalContext.Consumer>
   );
 };
 

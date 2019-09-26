@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import NavBar from "../../components/navbar/NavBar";
 import ValidateInput from "../../services/ValidateInput";
+import Infotoast from "../../services/toasts/InfoToasts";
 import ErrorToast from "../../services/toasts/ErrorToasts";
 import Axios from "axios";
 
@@ -62,6 +63,8 @@ class ResetPassword extends Component {
       pwd2: this.state.pwd2
     })
       .then(res => {
+        if (res.data.status === "success")
+          Infotoast.custom.info("New password is set", 4000);
         this.props.history.push("/login");
       })
       .catch(err => {

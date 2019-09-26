@@ -53,7 +53,11 @@ module.exports = {
           const payload = {
             _id: user._id,
             username: user.username,
-            language: user.language
+            language: user.language,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            email: user.email,
+            picture: user.picture
           };
           req.session.user = payload;
 
@@ -74,6 +78,8 @@ module.exports = {
   register: async (req, res, next) => {
     //console.log(req.body);
     //Check inputs
+    var lang = req.session.language;
+    console.log(lang);
     var err;
     if ((err = inputService.lastname(req.body.lastname).error))
       return res.status(400).json({ error: "lastname " + err });
@@ -126,11 +132,10 @@ module.exports = {
     console.log(req.headers.authorization);
     if (!req.session.user)
       return res.status(401).json({ error: "You are not logged in!" });
-    return res.status(200).json({ message: "blabla" });
+    return res.status(200).json({ message: "success" });
   },
 
   getSession: async (req, res, next) => {
-    console.log(req.headers.authorization);
     var token = req.headers.authorization;
     token = jwtService.parseAuthorization(token);
     await User.findOne({ token: token }, (err, user) => {
@@ -139,22 +144,12 @@ module.exports = {
           if (typeof req.session.user !== "undefined") {
             User.findOne({ _id: req.session.user._id }, (err, user) => {
               if (user) req.session.user.language = user.language;
-              return res.status(200).json(req.session.user);
+              return res.status(200).json(user);
             });
           } else return res.status(401).json({ error: "No session for user" });
         } else return res.status(401).json({ error: "Invalid token" });
       }
     });
-    //return res.status(401).json({ error: "Invalid token" });
-
-    /*  if ((await jwtService.verifyToken(token))) {
-      if (typeof req.session.user !== "undefined") {
-        User.findOne({ _id: req.session.user._id }, (err, user) => {
-          if (user) req.session.user.language = user.language;
-          return res.status(200).json(req.session.user);
-        });
-      } else return res.status(401).json({ error: "No session for user" });
-    } else return res.status(401).json({ error: "Invalid token" }); */
   },
 
   activateAccount: async (req, res, next) => {

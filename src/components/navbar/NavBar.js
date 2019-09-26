@@ -9,8 +9,12 @@ import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import logo from "../../assets/hyperflix_logo2.png";
+import { GlobalContext } from "../../context/GlobalContext";
+import CountryPicker from "../buttons/Country-picker";
+import CustomLanguage from "../../services/DefineLocale";
 
 class NavBar extends Component {
+  static contextType = GlobalContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -19,7 +23,7 @@ class NavBar extends Component {
     this.Auth = new AuthService();
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this._isMounted = true;
   }
 
@@ -54,32 +58,44 @@ class NavBar extends Component {
       const classes = useStyles();
 
       const MobileMenuLoggedOut = menu => (
-        <div
-          className={classes.list}
-          role="presentation"
-          onClick={toggleMenu(menu, false)}
-          onKeyDown={toggleMenu(menu, false)}
-        >
-          <h5 style={{ textAlign: "center", color: "red" }}>Menu</h5>
-          <List>
-            <ListItem>
-              <NavLink className="nav-mobile-menu-links" to="/login">
-                <i className="material-icons icons-red link-icon nav-mobile-menu-icons">
-                  account_box
-                </i>
-                <span className="nav-mobile-menu-text">Log in</span>
-              </NavLink>
-            </ListItem>
-            <ListItem>
-              <NavLink className="nav-mobile-menu-links" to="/register">
-                <i className="material-icons icons-red link-icon nav-mobile-menu-icons">
-                  person_add
-                </i>
-                <span className="nav-mobile-menu-text">Register</span>
-              </NavLink>
-            </ListItem>
-          </List>
-        </div>
+        <GlobalContext.Consumer>
+          {context => {
+            const locale = context.locale;
+            var lang = CustomLanguage.define(locale);
+            return (
+              <div
+                className={classes.list}
+                role="presentation"
+                onClick={toggleMenu(menu, false)}
+                onKeyDown={toggleMenu(menu, false)}
+              >
+                <h5 style={{ textAlign: "center", color: "red" }}>Menu</h5>
+                <List>
+                  <ListItem>
+                    <NavLink className="nav-mobile-menu-links" to="/login">
+                      <i className="material-icons icons-red link-icon nav-mobile-menu-icons">
+                        account_box
+                      </i>
+                      <span className="nav-mobile-menu-text">
+                        {lang.navbar[0].login}
+                      </span>
+                    </NavLink>
+                  </ListItem>
+                  <ListItem>
+                    <NavLink className="nav-mobile-menu-links" to="/register">
+                      <i className="material-icons icons-red link-icon nav-mobile-menu-icons">
+                        person_add
+                      </i>
+                      <span className="nav-mobile-menu-text">
+                        {lang.navbar[0].register}
+                      </span>
+                    </NavLink>
+                  </ListItem>
+                </List>
+              </div>
+            );
+          }}
+        </GlobalContext.Consumer>
       );
 
       return (
@@ -104,11 +120,22 @@ class NavBar extends Component {
 
     const LoggedOutLinks = () => {
       return (
-        <div>
-          <LoginButton />
-          <RegisterButton />
-          <button onClick={this.handleLogout}>logout</button>
-        </div>
+        <GlobalContext.Consumer>
+          {context => {
+            const locale = context.locale;
+            var lang = CustomLanguage.define(locale);
+            return (
+              <div>
+                <LoginButton value={lang.navbar[0].login} />
+                <RegisterButton value={lang.navbar[0].register} />
+                <CountryPicker />
+                <button onClick={this.handleLogout}>
+                  {lang.navbar[0].logout}
+                </button>
+              </div>
+            );
+          }}
+        </GlobalContext.Consumer>
       );
     };
 
@@ -135,8 +162,9 @@ class NavBar extends Component {
     );
   }
 
-  handleLogout = () => {
-    this.Auth.logout();
+  handleLogout = async () => {
+    await this.Auth.logout();
+    await this.context.resetContext();
     this.props.history.replace("/login");
   };
 }

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "materialize-css/dist/css/materialize.min.css";
 import NavBar from "../../components/navbar/NavBar";
+import InfoToast from "../../services/toasts/InfoToasts";
 import ErrorToast from "../../services/toasts/ErrorToasts";
 import axios from "axios";
 
@@ -26,7 +27,8 @@ class Activation extends Component {
         key: key
       })
       .then(res => {
-        console.log(res.data);
+        if (res.data.status)
+          InfoToast.custom.info("Your account is now ready!", 4000);
         if (res.data.message) ErrorToast.custom.error(res.data.message, 4000);
         this.props.history.push("/login");
       })
