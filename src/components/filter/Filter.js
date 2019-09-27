@@ -33,16 +33,12 @@ const Filter = ({ filter }) => {
 
   const searchTerms = useContext(SearchContext);
 
-  const [filterTerms, setFilterTerms] = useState({
-    rating: [0, 10],
-    year: [1915, 2019],
-    genre: "",
-  });
+  const [filterTerms, setFilterTerms] = useState(searchTerms);
 
   const handleRatingChanges = value => {
     setFilterTerms({
       ...filterTerms,
-      rating: value
+      ratings: value
     });
     filter(filterTerms);
   };
@@ -50,7 +46,7 @@ const Filter = ({ filter }) => {
   const handleYearChanges = value => {
     setFilterTerms({
       ...filterTerms,
-      year: value
+      years: value
     });
     filter(filterTerms);
   };
