@@ -5,7 +5,7 @@ import "./Search.scss";
 // import Header from "./Header";
 // import spinner from "../../spinner.gif";
 import Movie from "../../components/movie/Movie";
-import Search from "../../components/searchBar/searchBar";
+import Search from "../../components/searchBar/SearchBar";
 import Navbar from "../../components/navbar/NavBar";
 import Filter from "../../components/filter/Filter";
 import { SearchProvider } from '../../context/SearchContext';
@@ -20,14 +20,13 @@ const SearchView = () => {
     keywords: "",
     limit: 10
   })
-  
+
   const [searchResult, setSearchResult] = useState({movies: []});
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
         const res = await axios.post("/search/movies", searchTerms);
-        // console.log("res = ", res);
         if (res.data.length !== 0) {
           if (searchTerms.page === 1)
             setSearchResult({ movies: [...res.data] })
@@ -54,14 +53,14 @@ const SearchView = () => {
     })
   }
 
-  const filter = filterValue => {
+  const filter = filterTerms => {
+    console.log("filterTerms = ", filterTerms);
     setSearchTerms({
       ...searchTerms,
       genre: "All",
       page: 1,
       ratings: [0, 10],
       years: [1915, 2019],
-      keywords: filterValue,
       limit: 10
     })
   }
@@ -71,7 +70,6 @@ const SearchView = () => {
       <div className="SearchView">
         <div className="layer">
           <Navbar />
-          {/* <Header text="HyperFlix" /> */}
           <Search search={search}/>
           <Filter filter={filter}/>
           <div class="infiniteScroll">

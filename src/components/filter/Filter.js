@@ -3,9 +3,9 @@ import "./Filter.scss";
 import Slider, { Range } from "rc-slider";
 import "rc-slider/assets/index.css";
 import { GlobalContext } from "../../context/GlobalContext";
-// import SearchContext from '../../context/SearchContext'
+import SearchContext from '../../context/SearchContext'
 
-const Filter = () => {
+const Filter = ({ filter }) => {
 
   const genreList = [
     'All',
@@ -31,13 +31,43 @@ const Filter = () => {
     'Western'
   ]
 
-  // const SearchContext = useContext(SearchContext);
+  const searchTerms = useContext(SearchContext);
 
-  const handleGenreChanges = e => {
-    // prop = ["genre", e.target.value];
-    // filter(prop);
+  const [filterTerms, setFilterTerms] = useState({
+    rating: [0, 10],
+    year: [1915, 2019],
+    genre: "",
+  });
+
+  const handleRatingChanges = value => {
+    setFilterTerms({
+      ...filterTerms,
+      rating: value
+    });
+    filter(filterTerms);
   };
-  
+
+  const handleYearChanges = value => {
+    setFilterTerms({
+      ...filterTerms,
+      year: value
+    });
+    filter(filterTerms);
+  };
+
+  const handleGenreChanges = value => {
+    setFilterTerms({
+      ...filterTerms,
+      genre: value.toLowerCase()
+    });
+    filter(filterTerms);
+  };
+
+  const callSearchFunction = e => {
+    e.preventDefault();
+    filter(filterTerms);
+  };
+
   const createSliderWithTooltip = Slider.createSliderWithTooltip;
   const Range = createSliderWithTooltip(Slider.Range);
 
@@ -67,7 +97,8 @@ const Filter = () => {
                 min={0}
                 max={10}
                 allowCross={false}
-                defaultValue={[0, 10]}
+                defaultValue={searchTerms.ratings}
+                onAfterChange={handleRatingChanges}
               />
             </div>
             <div class="YearRange">
@@ -76,12 +107,16 @@ const Filter = () => {
                 min={1915}
                 max={2019}
                 allowCross={false}
-                defaultValue={[1915, 2019]}
+                defaultValue={searchTerms.years}
+                onAfterChange={handleYearChanges}
               />
             </div>
             <select class="browser-default">
               {genreList.map(genre => (
-              <option key={genre} value={genre}>
+              <option key={genre} 
+                      value={genre} 
+                      onChange={handleGenreChanges}
+              >
                 {genre}
               </option>
             ))}
