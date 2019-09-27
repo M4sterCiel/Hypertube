@@ -61,7 +61,7 @@ const SearchView = () => {
       page: 1,
       ratings: [0, 10],
       years: [1915, 2019],
-      keywords: searchValue,
+      keywords: filterValue,
       limit: 10
     })
   }
