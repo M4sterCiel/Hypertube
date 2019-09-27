@@ -57,7 +57,7 @@ module.exports = {
             firstname: user.firstname,
             lastname: user.lastname,
             email: user.email,
-            picture: user.picture
+            picture: user.img
           };
           req.session.user = payload;
 
@@ -102,10 +102,11 @@ module.exports = {
       new Date().getTime() + Math.floor(Math.random() * 10000 + 1).toString(16);
 
     var user = new User({
-      username: sanitize(req.body.username),
-      firstname: sanitize(req.body.firstname),
-      lastname: sanitize(req.body.lastname),
-      email: sanitize(req.body.email),
+      username: sanitize(req.body.username.toLowerCase()),
+      firstname: sanitize(req.body.firstname.toLowerCase()),
+      lastname: sanitize(req.body.lastname.toLowerCase()),
+      email: sanitize(req.body.email.toLowerCase()),
+      img: sanitize(req.body.picture),
       activationKey: uniqid
     });
 
@@ -115,6 +116,31 @@ module.exports = {
       return res.status(200).json({ status: 'success' });
     });
   },
+
+  updateUser:  async (req, res, next) => {
+    var token = jwtService.parseAuthorization(req.headers.authorization);
+    if (jwtService.verifyToken(token)) {
+      User.findOneAndUpdate({ token: token }, req.body.data, err => {
+        if (err) console.log(err);
+      });
+      return res.status(200).json({ message: 'User updated' });
+    }
+    return res.status(400).json({error: "User update failed"});
+  },
+
+  getUser:  async (req, res, next) => {
+    console.log(req.body.data);
+  /*   await User.findOne({ ...req.body.data }, function(err, user) {
+      if (err) {
+        return res.status(401).json({ error: 'User not found' });
+      }
+      if (!user) {
+        return res.status(401).json({ error: 'User not found' });
+      }
+      return res.status(200).json(user);
+  }) */
+},
+
 
   logout: async (req, res, next) => {
     var token = jwtService.parseAuthorization(req.headers.authorization);

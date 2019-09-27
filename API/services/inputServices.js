@@ -30,7 +30,7 @@ module.exports = {
     if (!data.match(regex)) return { error: "is invalid" };
     if (data.length < 3 || data.length > 30) return { error: "incorrect size" };
     //Check db for already existing username
-    var result = await User.find({ username: data });
+    var result = await User.find({ username: data.toLowerCase() });
     if (result != "") return { error: "is already registered" };
     else return { status: "valid" };
   },
@@ -42,7 +42,7 @@ module.exports = {
     var mailPattern = /^([a-zA-Z0-9]+(?:[\.\-\_]?[a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[\.\-\_]?[a-zA-Z0-9]+)*)\.([a-zA-Z]{2,})+$/;
     if (!mailPattern.test(data)) return { error: "doesn't match pattern" };
     //Check db for already existing mail
-    var result = await User.find({ email: data });
+    var result = await User.find({ email: data.toLowerCase() });
     if (result != "") return { error: "already exists" };
     else return { status: "valid" };
   },

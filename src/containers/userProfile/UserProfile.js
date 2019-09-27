@@ -8,6 +8,7 @@ import UsersList from '../../components/lists/UsersList';
 import { ModalButtonSecondary } from '../../components/buttons/ModalButtons';
 import EditProfileModal from '../../components/modals/EditProfileModal';
 import { GlobalContext } from '../../context/GlobalContext';
+import axios from "axios";
 
 const initialState = {
   sendingRequest: false,
@@ -20,104 +21,6 @@ const languages = {
   en: 'English',
   fr: 'Français',
   es: 'Español'
-};
-
-const testUser = {
-  firstname: 'Firstname',
-  lastname: 'Lastname',
-  username: 'Username',
-  profile_picture:
-    'https://www.cats.org.uk/media/1400/choosing-a-cat.jpg?width=1600',
-  email: 'toto@email.tatta',
-  language: 'FR',
-  movies_seen: [
-    {
-      id: 1,
-      title: 'Toto',
-      poster:
-        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
-    },
-    {
-      id: 2,
-      title: 'Toto',
-      poster:
-        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
-    },
-    {
-      id: 3,
-      title: 'Toto',
-      poster:
-        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
-    },
-    {
-      id: 4,
-      title: 'Toto',
-      poster:
-        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
-    },
-    {
-      id: 5,
-      title: 'Toto',
-      poster:
-        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
-    },
-    {
-      id: 6,
-      title: 'Toto',
-      poster:
-        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
-    },
-    {
-      id: 7,
-      title: 'Toto',
-      poster:
-        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
-    },
-    {
-      id: 8,
-      title: 'Toto',
-      poster:
-        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
-    },
-    {
-      id: 9,
-      title: 'Toto',
-      poster:
-        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
-    },
-    {
-      id: 10,
-      title: 'Toto',
-      poster:
-        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY1000_CR0,0,675,1000_AL_.jpg'
-    }
-  ],
-  following: [
-    {
-      id: 1,
-      username: 'toto',
-      picture:
-        'https://www.petmd.com/sites/default/files/the-cat-which-sleeps-picture-id596060186.jpg'
-    },
-    {
-      id: 2,
-      username: 'toto2',
-      picture:
-        'https://www.petmd.com/sites/default/files/the-cat-which-sleeps-picture-id596060186.jpg'
-    },
-    {
-      id: 3,
-      username: 'totodwedewdewdewdewdwedewdwedwedwed3',
-      picture:
-        'https://www.petmd.com/sites/default/files/the-cat-which-sleeps-picture-id596060186.jpg'
-    },
-    {
-      id: 4,
-      username: 'toto4',
-      picture:
-        'https://www.petmd.com/sites/default/files/the-cat-which-sleeps-picture-id596060186.jpg'
-    }
-  ]
 };
 
 const reducer = (state, action) => {
@@ -177,10 +80,12 @@ const UserProfile = () => {
         type: 'USER_PROFILE_SUCCESS',
         payload: user
       });
+    } else {
+      console.log(username);
+      axios.get('/users/get', {username: username}).then(res => {
+        console.log(res.data);
+      })
     }
-    console.log('url username= ', username);
-    console.log(user.firstname);
-    console.log(user);
   }, [user]);
 
   const { data } = state;
@@ -195,7 +100,7 @@ const UserProfile = () => {
               <div className="user-profile-info">
                 <div className="user-profile-info-picture col l2 m4 s12 col-padding-zero">
                   {' '}
-                  <UserPictureView picture_url={data.profile_picture} />
+                  <UserPictureView picture_url={data.picture} />
                 </div>
                 <div className="user-profile-info-text col l10 m8 s12">
                   <p className="user-profile-info-text-big">{data.username}</p>

@@ -13,6 +13,8 @@ exports.router = (() => {
   userRouter.route('/reset-password').post(userController.resetPassword);
   userRouter.route('/logout').get(userController.logout);
   userRouter.route('/profile').get(userController.getProfile);
+  userRouter.route('/get').get(userController.getUser);
+  userRouter.route('/update').post(userController.updateUser);
   userRouter.route('/session').get(userController.getSession);
 
   return userRouter;

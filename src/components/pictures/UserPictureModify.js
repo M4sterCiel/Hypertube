@@ -48,10 +48,10 @@ const UserPictureModify = props => {
         var reader = new FileReader();
         reader.onloadend = () => {
           setPicture(reader.result);
+          setPictureValid(true);
+          props.pictureToParent({ status: true, url: reader.result });
         };
         reader.readAsDataURL(file);
-        setPictureValid(true);
-        props.pictureToParent({ status: true, url: picture });
       }
     };
   };

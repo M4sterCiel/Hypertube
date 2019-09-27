@@ -64,7 +64,6 @@ class Login extends Component {
 
     if (isLogin) {
       let result = ValidateInput.user("username", e.target.value);
-      console.log(result);
       this._isMounted &&
         this.setState({
           login: e.target.value,
@@ -92,9 +91,8 @@ class Login extends Component {
         password: this.state.password
       })
       .then(res => {
-        //console.log(res.data.user);
         if (res.data.status === "success") {
-          this.context.setLocale(res.data.user.language);
+          this.context.updateContext({locale: res.data.user.language, username: res.data.user.username, firstname: res.data.user.firstname, lastname: res.data.user.lastname, email: res.data.user.email, picture: res.data.user.picture});
           this.Auth.setToken(res.data.token);
           this.props.history.push("/search");
         } else ErrorToast.custom.error(res.data.msg, 4000);
