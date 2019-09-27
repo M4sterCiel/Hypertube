@@ -1,12 +1,20 @@
-import React, { useState } from "react";
-import Filter from "../../components/filter/Filter";
+import React, { useState, useContext } from "react";
 import "../buttons/Buttons.scss";
 import "./searchBar.scss";
 import { GlobalContext } from "../../context/GlobalContext";
 import CustomLanguage from "../../services/DefineLocale";
+/* import SearchContext from '../../context/SearchContext' */
 
-const Search = ({ search }) => {
+const Search = () => {
   const [searchValue, setSearchValue] = useState("");
+/*   const searchTerms = useContext(SearchContext); */
+
+  const search = e => {
+    e.preventDefault();
+    resetInputField();
+/*     searchTerms.keywords = searchValue; */
+/*     console.log(searchTerms); */
+  }
 
   const handleSearchInputChanges = e => {
     setSearchValue(e.target.value);
@@ -15,16 +23,6 @@ const Search = ({ search }) => {
   const resetInputField = () => {
     setSearchValue("");
   };
-
-  const callSearchFunction = e => {
-    e.preventDefault();
-    search(searchValue);
-    resetInputField();
-  };
-
-  const filter = props => {
-    console.log(props);
-  }
 
   return (
     <GlobalContext.Consumer>
@@ -43,7 +41,7 @@ const Search = ({ search }) => {
               />
               <button
                 disabled={searchValue.length < 2}
-                onClick={callSearchFunction}
+                onClick={search}
                 type="submit"
                 class="btn btn-secondary btn-medium waves-effect"
                 value={lang.search[0].search}
@@ -51,7 +49,6 @@ const Search = ({ search }) => {
                 {lang.search[0].search}
               </button>
             </form>
-            <Filter filter={filter}/>
           </div>
         );
       }}

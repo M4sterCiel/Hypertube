@@ -8,6 +8,7 @@ import Movie from "../../components/movie/Movie";
 import Search from "../../components/searchBar/searchBar";
 import Navbar from "../../components/navbar/NavBar";
 import Filter from "../../components/filter/Filter";
+import { SearchProvider } from '../../context/SearchContext';
 
 const SearchView = () => {
 
@@ -26,7 +27,7 @@ const SearchView = () => {
     const fetchMovies = async () => {
       try {
         const res = await axios.post("/search/movies", searchTerms);
-        console.log("res = ", res);
+        // console.log("res = ", res);
         if (res.data.length !== 0) {
           if (searchTerms.page === 1)
             setSearchResult({ movies: [...res.data] })
@@ -53,33 +54,36 @@ const SearchView = () => {
     })
   }
 
-  const filter = prop => {
+  const filter = filterValue => {
     setSearchTerms({
       ...searchTerms,
-      genre: genreValue,
+      genre: "All",
       page: 1,
       ratings: [0, 10],
       years: [1915, 2019],
-      keywords: "",
+      keywords: searchValue,
       limit: 10
     })
   }
 
   return (
-    <div className="SearchView">
-      <div className="layer">
-        <Navbar />
-        {/* <Header text="HyperFlix" /> */}
-        <Search search={search} />
-        <div class="infiniteScroll">
-          <div className="movies">
-            {searchResult.movies.map((movie, index) => 
-              <Movie key={`${index}-${movie.title}`} movie={movie} />
-            )}
+    <SearchProvider value={searchTerms}>
+      <div className="SearchView">
+        <div className="layer">
+          <Navbar />
+          {/* <Header text="HyperFlix" /> */}
+          <Search search={search}/>
+          <Filter filter={filter}/>
+          <div class="infiniteScroll">
+            <div className="movies">
+              {searchResult.movies.map((movie, index) => 
+                <Movie key={`${index}-${movie.title}`} movie={movie} />
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </SearchProvider>
   );
 };
 

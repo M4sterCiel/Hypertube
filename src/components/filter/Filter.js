@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./Filter.scss";
 import Slider, { Range } from "rc-slider";
 import "rc-slider/assets/index.css";
 import { GlobalContext } from "../../context/GlobalContext";
+// import SearchContext from '../../context/SearchContext'
 
-const Filter = ({ filter }) => {
+const Filter = () => {
 
   const genreList = [
     'All',
@@ -30,11 +31,11 @@ const Filter = ({ filter }) => {
     'Western'
   ]
 
-  const prop = ["", ""];
+  // const SearchContext = useContext(SearchContext);
 
   const handleGenreChanges = e => {
-    prop = ["genre", e.target.value];
-    filter(prop);
+    // prop = ["genre", e.target.value];
+    // filter(prop);
   };
   
   const createSliderWithTooltip = Slider.createSliderWithTooltip;
