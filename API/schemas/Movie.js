@@ -11,6 +11,8 @@ const MovieSchema = mongoose.Schema({
     poster: String,
     rating: Number,
     torrents: Array,
-    lastViewed: Date
+    lastViewed: Date,
+    path720p: String,
+    path1080p: String
 });
 module.exports = Movie = mongoose.model("Movie", MovieSchema);

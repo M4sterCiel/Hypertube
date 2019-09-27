@@ -5,7 +5,6 @@ const TorrentStream = require("torrent-stream");
 const options = {
     connections: 100,
     uploads: 10,
-    tmp: "/tmp",
     path: "/goinfre", // Where to save the files. Overrides `tmp`.
     verify: true,
     tracker: true, // Whether or not to use trackers from torrent file or magnet link
@@ -35,44 +34,77 @@ const options = {
         "http://tracker.electro-torrent.pl:80/announce"
     ]
 };
+
 module.exports = {
+    streamMovie: async (res, path, start, end) => {
+        console.log("recu");
+        let stream = file
+            .createReadStream({
+                start: start,
+                end: end
+            })
+            .on("open", () => {
+                stream.pipe(res);
+            });
+    },
     getMovieStream: async (req, res) => {
-        module.exports.downloadMovie("tt8328716", "720p");
-        const path = "API/torrents/" + req.params.movie;
-        const stat = fs.statSync(path);
-        const fileSize = stat.size;
-        const range = req.headers.range;
-        if (range) {
-            const parts = range.replace(/bytes=/, "").split("-");
-            const start = parseInt(parts[0], 10);
-            const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
-            const chunksize = end - start + 1;
-            const file = fs.createReadStream(path, { start, end });
-            const head = {
-                "Content-Range": `bytes ${start}-${end}/${fileSize}`,
-                "Accept-Ranges": "bytes",
-                "Content-Length": chunksize,
-                "Content-Type": "video/mp4"
-            };
-            res.writeHead(206, head);
-            file.pipe(res);
-        } else {
-            const head = {
-                "Content-Length": fileSize,
-                "Content-Type": "video/mp4"
-            };
-            res.writeHead(200, head);
-            fs.createReadStream(path).pipe(res);
-        }
+        var pathFile = await module.exports.movieExists(
+            req.params.movieId,
+            req.params.quality
+        );
+        console.log(pathFile);
+        if (pathFile !== undefined) {
+            const stat = fs.statSync(pathFile);
+            const fileSize = stat.size;
+            var otherstart = 0;
+            var otherend = fileSize - 1;
+            const range = req.headers.range;
+            if (range) {
+                const parts = range.replace(/bytes=/, "").split("-");
+                const start = parseInt(parts[0], 10);
+                const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+                const chunksize = end - start + 1;
+
+                const head = {
+                    "Content-Range": `bytes ${start}-${end}/${fileSize}`,
+                    "Accept-Ranges": "bytes",
+                    "Content-Length": chunksize,
+                    "Content-Type": "video/mp4"
+                };
+                res.writeHead(206, head);
+                module.exports.streamMovie(res, pathFile, start, end);
+            } else {
+                const head = {
+                    "Content-Length": fileSize,
+                    "Content-Type": "video/mp4"
+                };
+                res.writeHead(200, head);
+                module.exports.streamMovie(res, pathFile, otherstart, otherend);
+            }
+        } else
+            module.exports.downloadMovie(
+                req,
+                req.params.movieId,
+                req.params.quality
+            );
     },
 
     movieExists: async (movieId, quality) => {
         try {
-            var path = movieId + "_" + quality;
-        } catch (err) {}
+            var customPath = "path" + quality;
+            Movie.findOne({ imdbId: movieId }, (err, result) => {
+                if (result[customPath]) {
+                    console.log(result[customPath]);
+                    return result[customPath];
+                }
+            });
+        } catch (err) {
+            throw err;
+        }
+        return undefined;
     },
 
-    downloadMovie: async (movieId, quality) => {
+    downloadMovie: async (req, movieId, quality) => {
         console.log("Processing download...");
         try {
             Movie.findOne({ imdbId: movieId }, (err, result) => {
@@ -82,23 +114,86 @@ module.exports = {
                     if (element.quality === quality) magnet = element.magnet;
                 });
                 if (magnet !== undefined) {
+                    magnet = magnet.split("/");
+                    magnet = magnet[magnet.length - 1];
                     console.log("Magnet link: ", magnet);
-                    const engine = TorrentStream(
-                        "3F777779858541656E93A1687BAC8ED272F4E9B7",
-                        options
-                    );
+                    const engine = TorrentStream(magnet, options);
+
+                    var newFilePath;
+                    let fileSize;
 
                     engine
-                        .on("ready", function() {
-                            engine.files.forEach(function(file) {
-                                console.log("filename:", file.name);
-                                var stream = file.createReadStream();
-                                // stream is readable stream to containing the file content
+                        .on("ready", () => {
+                            engine.files.forEach(file => {
+                                var ext = file.name.split(".", -1);
+                                if (
+                                    ext === "mp4" ||
+                                    ext === "mkv" ||
+                                    ext === "avi" ||
+                                    ext === "ogg"
+                                ) {
+                                    //file.select();
+                                    fileSize = file.length;
+                                    newFilePath = "/goinfre/" + file.path;
+
+                                    const range = req.headers.range;
+                                    if (range) {
+                                        const parts = range
+                                            .replace(/bytes=/, "")
+                                            .split("-");
+                                        const start = parseInt(parts[0], 10);
+                                        const end = parts[1]
+                                            ? parseInt(parts[1], 10)
+                                            : fileSize - 1;
+                                        const chunksize = end - start + 1;
+
+                                        const head = {
+                                            "Content-Range": `bytes ${start}-${end}/${fileSize}`,
+                                            "Accept-Ranges": "bytes",
+                                            "Content-Length": chunksize,
+                                            "Content-Type": "video/mp4"
+                                        };
+                                        res.writeHead(206, head);
+                                        console.log("test1");
+                                        module.exports.streamMovie(
+                                            res,
+                                            file,
+                                            start,
+                                            end
+                                        );
+                                    } else {
+                                        console.log("test1");
+
+                                        const head = {
+                                            "Content-Length": fileSize,
+                                            "Content-Type": "video/mp4"
+                                        };
+                                        res.writeHead(200, head);
+                                        module.exports.streamMovie(
+                                            res,
+                                            file,
+                                            0,
+                                            fileSize - 1
+                                        );
+                                    }
+                                }
                             });
                         })
                         .on("download", () => {
-                            const downloaded = engine.swarm.downloaded;
-                            console.log(downloaded);
+                            const downloaded =
+                                Math.round(
+                                    (engine.swarm.downloaded / fileSize) *
+                                        100 *
+                                        100
+                                ) / 100;
+
+                            console.log("Downloded: " + downloaded + "%");
+                        })
+                        .on("idle", () => {
+                            console.log("Download complete!");
+                            var update = "path" + quality;
+                            result[update] = newFilePath;
+                            result.save();
                         });
                 }
             });
