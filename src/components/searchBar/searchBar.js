@@ -5,16 +5,8 @@ import { GlobalContext } from "../../context/GlobalContext";
 import CustomLanguage from "../../services/DefineLocale";
 /* import SearchContext from '../../context/SearchContext' */
 
-const Search = () => {
+const Search = ({ search }) => {
   const [searchValue, setSearchValue] = useState("");
-/*   const searchTerms = useContext(SearchContext); */
-
-  const search = e => {
-    e.preventDefault();
-    resetInputField();
-/*     searchTerms.keywords = searchValue; */
-/*     console.log(searchTerms); */
-  }
 
   const handleSearchInputChanges = e => {
     setSearchValue(e.target.value);
@@ -22,6 +14,12 @@ const Search = () => {
 
   const resetInputField = () => {
     setSearchValue("");
+  };
+
+  const callSearchFunction = e => {
+    e.preventDefault();
+    search(searchValue);
+    resetInputField();
   };
 
   return (
@@ -41,7 +39,7 @@ const Search = () => {
               />
               <button
                 disabled={searchValue.length < 2}
-                onClick={search}
+                onClick={callSearchFunction}
                 type="submit"
                 class="btn btn-secondary btn-medium waves-effect"
                 value={lang.search[0].search}
