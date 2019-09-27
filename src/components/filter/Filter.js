@@ -54,13 +54,8 @@ const Filter = ({ filter }) => {
   const handleGenreChanges = value => {
     setFilterTerms({
       ...filterTerms,
-      genre: value.toLowerCase()
+      genre: value.toString().toLowerCase()
     });
-    filter(filterTerms);
-  };
-
-  const callSearchFunction = e => {
-    e.preventDefault();
     filter(filterTerms);
   };
 
@@ -94,7 +89,7 @@ const Filter = ({ filter }) => {
                 max={10}
                 allowCross={false}
                 defaultValue={searchTerms.ratings}
-                onAfterChange={handleRatingChanges}
+                onChange={handleRatingChanges}
               />
             </div>
             <div class="YearRange">
@@ -104,14 +99,15 @@ const Filter = ({ filter }) => {
                 max={2019}
                 allowCross={false}
                 defaultValue={searchTerms.years}
-                onAfterChange={handleYearChanges}
+                onChange={handleYearChanges}
               />
             </div>
-            <select class="browser-default">
+            <select class="browser-default"
+                    onChange={handleGenreChanges}
+            >
               {genreList.map(genre => (
               <option key={genre} 
                       value={genre} 
-                      onChange={handleGenreChanges}
               >
                 {genre}
               </option>

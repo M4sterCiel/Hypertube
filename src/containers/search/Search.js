@@ -54,9 +54,10 @@ const SearchView = () => {
   }
 
   const filter = filterTerms => {
+    console.log("filterTerms.genre =", filterTerms.genre);
     setSearchTerms({
       ...searchTerms,
-      genre: "All",
+      genre: filterTerms.genre,
       page: 1,
       ratings: filterTerms.ratings,
       years: filterTerms.years,
