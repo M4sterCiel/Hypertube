@@ -38,14 +38,11 @@ const options = {
 module.exports = {
     streamMovie: async (res, path, start, end) => {
         console.log("recu");
-        let stream = file
-            .createReadStream({
-                start: start,
-                end: end
-            })
-            .on("open", () => {
-                stream.pipe(res);
-            });
+        let stream = path.createReadStream({
+            start: start,
+            end: end
+        });
+        stream.pipe(res);
     },
     getMovieStream: async (req, res) => {
         var pathFile = await module.exports.movieExists(
@@ -84,6 +81,7 @@ module.exports = {
         } else
             module.exports.downloadMovie(
                 req,
+                res,
                 req.params.movieId,
                 req.params.quality
             );
@@ -104,7 +102,7 @@ module.exports = {
         return undefined;
     },
 
-    downloadMovie: async (req, movieId, quality) => {
+    downloadMovie: async (req, res, movieId, quality) => {
         console.log("Processing download...");
         try {
             Movie.findOne({ imdbId: movieId }, (err, result) => {
@@ -127,10 +125,10 @@ module.exports = {
                             engine.files.forEach(file => {
                                 var ext = file.name.split(".", -1);
                                 if (
-                                    ext === "mp4" ||
-                                    ext === "mkv" ||
-                                    ext === "avi" ||
-                                    ext === "ogg"
+                                    ext[ext.length - 1] === "mp4" ||
+                                    ext[ext.length - 1] === "mkv" ||
+                                    ext[ext.length - 1] === "avi" ||
+                                    ext[ext.length - 1] === "ogg"
                                 ) {
                                     //file.select();
                                     fileSize = file.length;
@@ -154,7 +152,6 @@ module.exports = {
                                             "Content-Type": "video/mp4"
                                         };
                                         res.writeHead(206, head);
-                                        console.log("test1");
                                         module.exports.streamMovie(
                                             res,
                                             file,
@@ -162,8 +159,6 @@ module.exports = {
                                             end
                                         );
                                     } else {
-                                        console.log("test1");
-
                                         const head = {
                                             "Content-Length": fileSize,
                                             "Content-Type": "video/mp4"
