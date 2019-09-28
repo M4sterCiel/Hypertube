@@ -75,16 +75,18 @@ const UserProfile = () => {
       type: 'USER_PROFILE_REQUEST'
     });
 
-    if (user.username === username) {
-      dispatch({
-        type: 'USER_PROFILE_SUCCESS',
-        payload: user
-      });
-    } else {
-      console.log(username);
-      axios.get('/users/get', {username: username}).then(res => {
-        console.log(res.data);
-      })
+    if (user.username !== "") {
+      if (user.username === username) {
+        dispatch({
+          type: 'USER_PROFILE_SUCCESS',
+          payload: user
+        });
+      } else {
+        console.log("username:", username);
+        axios.get('/users/get-profile', "toto").then(res => {
+          console.log(res.data);
+        })
+      }
     }
   }, [user]);
 

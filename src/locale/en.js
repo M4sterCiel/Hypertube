@@ -57,7 +57,8 @@ var customLanguage = {
       register: "REGISTER",
       login: "LOGIN",
       logout: "LOGOUT",
-      profile: "Profile"
+      search: "SEARCH",
+      profile: "PROFILE"
     }
   ],
   profile: [

@@ -76,6 +76,7 @@ var customLanguage = {
       login: "ACCESO",
       register: "REGISTRO",
       logout: "SALIR",
+      search: "BUSCAR",
       profile: "PERFÍL"
     }
   ],

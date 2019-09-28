@@ -129,7 +129,8 @@ module.exports = {
   },
 
   getUser:  async (req, res, next) => {
-    console.log(req.body.data);
+    console.log("Over here");
+    console.log(req);
   /*   await User.findOne({ ...req.body.data }, function(err, user) {
       if (err) {
         return res.status(401).json({ error: 'User not found' });

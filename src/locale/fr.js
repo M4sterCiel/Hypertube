@@ -76,6 +76,7 @@ var customLanguage = {
       login: "SE CONNECTER",
       register: "S'INSCRIRE",
       logout: "DECONNEXION",
+      search: "RECHERCHE",
       profile: "PROFIL"
     }
   ],
