@@ -11,6 +11,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Flag from "react-world-flags";
+import "./Buttons.scss";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -43,7 +44,7 @@ export default function DialogSelect() {
   };
 
   return (
-    <div>
+    <div className="btn-country-picker">
       <Button onClick={handleClickOpen}>
         <Flag code={"US"} height="16" />
       </Button>

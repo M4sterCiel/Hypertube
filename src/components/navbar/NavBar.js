@@ -10,7 +10,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import logo from "../../assets/hyperflix_logo2.png";
 import { GlobalContext } from "../../context/GlobalContext";
-import CountryPicker from "../buttons/Country-picker";
+import CountryPicker from "../buttons/CountryPicker";
 import CustomLanguage from "../../services/DefineLocale";
 
 class NavBar extends Component {
@@ -135,9 +135,6 @@ class NavBar extends Component {
                 <LoginButton value={lang.navbar[0].login} />
                 <RegisterButton value={lang.navbar[0].register} />
                 <CountryPicker />
-                <button onClick={this.handleLogout}>
-                  {lang.navbar[0].logout}
-                </button>
               </div>
             );
           }}
@@ -235,13 +232,18 @@ class NavBar extends Component {
       return (
         <GlobalContext.Consumer>
           {context => {
-/*             const locale = context.locale;
-            var lang = CustomLanguage.define(locale); */
             return (
               <div className="nav-btns-right">
-                <CountryPicker />
-                <NavLink to="#" onClick={this.handleLogout}>
-                  <i className="material-icons icons-white link-icon nav-mobile-menu-icons">
+                <NavLink to="/search" className="nav-link">
+                  <i className="material-icons icons-white nav-link-icon">
+                  search
+                  </i>
+                </NavLink>
+                <NavLink to={`/user/${context.username}`} className="nav-link">
+                  <div className="nav-link-img" style={{ backgroundImage: "url(" + context.picture + ")" }}></div>
+                </NavLink>
+                <NavLink to="#" onClick={this.handleLogout} className="nav-link">
+                  <i className="material-icons icons-white nav-link-icon">
                   exit_to_app
                   </i>
                 </NavLink>
