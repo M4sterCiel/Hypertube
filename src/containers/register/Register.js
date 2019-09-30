@@ -53,7 +53,7 @@ class Register extends Component {
 
   async componentDidMount() {
     this._isMounted = true;
-    if (await this.Auth.loggedIn()) {
+    if ((await this.Auth.isTokenValid()) && this.Auth.isSessionValid()) {
       var lang = await CustomLanguage.define(this.context.locale);
       InfoToast.custom.info(lang.already_logged, 4000);
       this.props.history.replace("/search");
@@ -137,7 +137,7 @@ class Register extends Component {
                       {lang.register[0].register}
                     </div>
                     <div className="register-picture-box">
-                    <UserPictureModify pictureToParent={this.handlePicture} />
+                      <UserPictureModify pictureToParent={this.handlePicture} />
                     </div>
                     <form
                       className="register-form"
@@ -296,7 +296,8 @@ class Register extends Component {
                           !this.state.usernameValid ||
                           !this.state.emailValid ||
                           !this.state.pwd1Valid ||
-                          this.state.pwd2 !== this.state.pwd1 || !this.state.pictureValid
+                          this.state.pwd2 !== this.state.pwd1 ||
+                          !this.state.pictureValid
                         }
                       />
                     </form>

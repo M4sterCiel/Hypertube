@@ -1,5 +1,6 @@
 import React, { useReducer, useEffect, useContext } from 'react';
 import NavBar from '../../components/navbar/NavBar';
+import withAuth from "../../services/withAuth";
 import UserPictureView from '../../components/pictures/UserPictureView';
 import './UserProfile.scss';
 import { FunctionButtonSecondary } from '../../components/buttons/Buttons';
@@ -158,4 +159,4 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+export default withAuth(UserProfile);

@@ -26,10 +26,10 @@ class NavBar extends Component {
 
   async componentDidMount() {
     this._isMounted = true;
-    if (await this.Auth.loggedIn()) {
-      this.setState({logged: true});
-    } else {
-      this.setState({logged: false});
+    if (await this.Auth.isTokenValid()) {
+      this._isMounted && this.setState({logged: true});
+    } else if (await !this.Auth.isSessionValid()) {
+      this._isMounted && this.setState({logged: false});
     }
   }
 
@@ -300,6 +300,7 @@ class NavBar extends Component {
   }
 
   handleLogout = async () => {
+    console.log("logout");
     await this.Auth.logout();
     await this.context.resetContext();
     this.props.history.replace("/login");
