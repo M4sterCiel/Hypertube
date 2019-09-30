@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useReducer, useEffect, useState } from "react";
 import { Modal, Select } from "react-materialize";
 import "./Modals.scss";
 import UserPictureModify from "../../components/pictures/UserPictureModify";
@@ -10,8 +10,41 @@ import ValidateInput from "../../services/ValidateInput";
 import InfoToast from "../../services/toasts/InfoToasts";
 import ErrorToast from "../../services/toasts/ErrorToasts";
 import CheckObjectsEquivalence from "../../services/CheckObjectsEquivalence";
+import AuthService from "../../services/AuthService";
+import axios from "axios";
+
+const initialState = {
+  sendingRequest: false,
+  requestReceived: false,
+  data: [],
+  status: ''
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'USER_UPDATE_REQUEST':
+      return {
+        ...state,
+        sendingRequest: true,
+        requestReceived: false,
+        data: [],
+        status: 'Pending...'
+      };
+    case 'USER_UPDATE_SUCCESS':
+      return {
+        ...state,
+        sendingRequest: false,
+        requestReceived: true,
+        data: action.payload,
+        status: 'Updated'
+      };
+    default:
+      return state;
+  }
+};
 
 const EditProfileModal = props => {
+  const [state, dispatch] = useReducer(reducer, initialState);
   const [user, setUser] = useState(props.user);
   const [error, setError] = useState({
     firstnameError: "",
@@ -25,6 +58,7 @@ const EditProfileModal = props => {
     pictureValid: true
   });
   const event = new KeyboardEvent("keydown", { keyCode: 27 });
+  const Auth = new AuthService();
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -35,11 +69,9 @@ const EditProfileModal = props => {
     }
 
     setUser({ ...user, [name]: value });
-    console.log(props.user);
   };
 
   const handlePicture = picture => {
-    console.log(picture);
     if (picture.status && picture.url) {
       setError({ ...error, pictureValid: true });
       setUser({ ...user, profile_picture: picture.url });
@@ -48,8 +80,13 @@ const EditProfileModal = props => {
     }
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
+    
+    dispatch({
+      type: 'USER_UPDATE_REQUEST'
+    });
+
     if (
       error.firstnameValid &&
       error.lastnameValid &&
@@ -58,14 +95,14 @@ const EditProfileModal = props => {
       error.pictureValid
     ) {
       if (!CheckObjectsEquivalence(user, props.user)) {
-        console.log("user", { ...user });
-        console.log("props", { ...props.user });
+        var token = await Auth.getToken();
+
         InfoToast.custom.info("Saved", 4000);
+        console.log(user);
+        axios.post("/users/update", { data: {username: user.username, firstname: user.firstname, lastname: user.lastname, language: user.locale, img: user.picture } }, { headers: { Authorization: token } }).then(res => console.log(res)).catch(err => console.log(err));
       } else {
-        console.log("same");
         InfoToast.custom.info("Nothing changed", 4000);
       }
-      document.dispatchEvent(event);
     } else {
       ErrorToast.custom.error("Incorrect field(s), cannot save", 4000);
     }
@@ -78,7 +115,7 @@ const EditProfileModal = props => {
         <div className="modal-black-content">
           <div className="profile-picture-modify col l2 m4 s12 col-padding-zero">
             <UserPictureModify
-              picture="https://i.ytimg.com/vi/jpsGLsaZKS0/maxresdefault.jpg"
+              picture={user.picture}
               pictureToParent={handlePicture}
             />
           </div>

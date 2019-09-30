@@ -118,6 +118,7 @@ module.exports = {
   },
 
   updateUser:  async (req, res, next) => {
+    console.log(req.body.data);
     var token = jwtService.parseAuthorization(req.headers.authorization);
     if (jwtService.verifyToken(token)) {
       User.findOneAndUpdate({ token: token }, req.body.data, err => {
@@ -128,10 +129,8 @@ module.exports = {
     return res.status(400).json({error: "User update failed"});
   },
 
-  getUser:  async (req, res, next) => {
-    console.log("Over here");
-    console.log(req);
-  /*   await User.findOne({ ...req.body.data }, function(err, user) {
+  getUserByUsername:  async (req, res, next) => {
+    await User.findOne({ username: req.params.username }, function(err, user) {
       if (err) {
         return res.status(401).json({ error: 'User not found' });
       }
@@ -139,9 +138,8 @@ module.exports = {
         return res.status(401).json({ error: 'User not found' });
       }
       return res.status(200).json(user);
-  }) */
-},
-
+    })
+  },
 
   logout: async (req, res, next) => {
     var token = jwtService.parseAuthorization(req.headers.authorization);
