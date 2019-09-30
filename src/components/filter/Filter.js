@@ -5,7 +5,7 @@ import "rc-slider/assets/index.css";
 import { GlobalContext } from "../../context/GlobalContext";
 import SearchContext from '../../context/SearchContext'
 
-const Filter = ({ filter }) => {
+const Filter = ({ ratings, years, genre }) => {
 
   const genreList = [
     'All',
@@ -33,30 +33,16 @@ const Filter = ({ filter }) => {
 
   const searchTerms = useContext(SearchContext);
 
-  const [filterTerms, setFilterTerms] = useState(searchTerms);
-
   const handleRatingChanges = value => {
-    setFilterTerms({
-      ...filterTerms,
-      ratings: value
-    });
-    filter(filterTerms);
+    ratings(value);
   };
 
   const handleYearChanges = value => {
-    setFilterTerms({
-      ...filterTerms,
-      years: value
-    });
-    filter(filterTerms);
+    years(value);
   };
 
-  const handleGenreChanges = value => {
-    setFilterTerms({
-      ...filterTerms,
-      genre: value.toString().toLowerCase()
-    });
-    filter(filterTerms);
+  const handleGenreChanges = e => {
+    genre(e.target.value.toLowerCase());
   };
 
   const createSliderWithTooltip = Slider.createSliderWithTooltip;

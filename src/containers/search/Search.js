@@ -18,7 +18,7 @@ const SearchView = () => {
     ratings: [0, 10],
     years: [1915, 2019],
     keywords: "",
-    limit: 10
+    limit: 30
   })
 
   const [searchResult, setSearchResult] = useState({movies: []});
@@ -44,24 +44,26 @@ const SearchView = () => {
   const search = searchValue => {
     setSearchTerms({
       ...searchTerms,
-      genre: "All",
-      page: 1,
-      ratings: [0, 10],
-      years: [1915, 2019],
       keywords: searchValue,
-      limit: 10
     })
   }
 
-  const filter = filterTerms => {
-    console.log("filterTerms.genre =", filterTerms.genre);
+  const ratings = ratings => {
     setSearchTerms({
       ...searchTerms,
-      genre: filterTerms.genre,
-      page: 1,
-      ratings: filterTerms.ratings,
-      years: filterTerms.years,
-      limit: 10
+      ratings: ratings,
+    })
+  }
+  const years = years => {
+    setSearchTerms({
+      ...searchTerms,
+      years: years,
+    })
+  }
+  const genre = genre => {
+    setSearchTerms({
+      ...searchTerms,
+      genre: genre,
     })
   }
 
@@ -71,7 +73,7 @@ const SearchView = () => {
         <div className="layer">
           <Navbar />
           <Search search={search}/>
-          <Filter filter={filter}/>
+          <Filter ratings={ratings} years={years} genre={genre}/>
           <div class="infiniteScroll">
             <div className="movies">
               {searchResult.movies.map((movie, index) => 
