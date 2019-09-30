@@ -1,5 +1,4 @@
 import decode from "jwt-decode";
-//import ErrorToast from "./toasts/ErrorToasts";
 import axios from "axios";
 import { GlobalContext } from "../context/GlobalContext";
 
@@ -16,11 +15,14 @@ export default class AuthService {
   }
 
   // Checking if token exists and is still valid
-  loggedIn = async () => {
+  isTokenValid = async () => {
     const token = await this.getToken();
-    if (!token) {
-      return false;
-    }
+    return !!token && !this.isTokenExpired(token);
+  }
+
+  // Checking if session is valid
+  isSessionValid = async () => {
+    const token = await this.getToken();
     var valid = false;
     await axios
       .get("/users/session", { headers: { Authorization: token } })
@@ -30,8 +32,8 @@ export default class AuthService {
       .catch(err => {
         return false;
       });
-    return !!token && !this.isTokenExpired(token) && valid;
-  };
+      return valid;
+  }
 
   // Checking if token is still valid
   isTokenExpired(token) {
@@ -48,12 +50,12 @@ export default class AuthService {
   // Removing token from local storage
   async logout() {
     const token = await this.getToken();
+    localStorage.removeItem("Token");
     if (token)
       await axios
         .get("/users/logout", { headers: { Authorization: token } })
         .then(res => {
           console.log(res.data);
         });
-    localStorage.removeItem("Token");
   }
 }

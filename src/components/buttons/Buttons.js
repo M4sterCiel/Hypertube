@@ -13,6 +13,18 @@ const LoginButton = props => {
   );
 };
 
+const LogoutButton = props => {
+  return (
+    <Button
+    tooltip="Log out from HyperFlix"
+      className="btn-regular"
+      onClick={props.func}
+    >
+      <span className="btn-regular-text">{props.value.toUpperCase()}</span>
+    </Button>
+  );
+};
+
 const RegisterButton = props => {
   return (
     <NavLink to="/register">
@@ -49,6 +61,7 @@ const FunctionButtonSecondary = ({ text, tooltip, func }) => {
 
 export {
   LoginButton,
+  LogoutButton,
   RegisterButton,
   FunctionButtonRegular,
   FunctionButtonSecondary

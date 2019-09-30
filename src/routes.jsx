@@ -6,7 +6,6 @@ import Register from "./containers/register/Register";
 import Activation from "./containers/activation/Activation";
 import ResetPassword from "./containers/resetPassword/ResetPassword";
 import ForgotPassword from "./containers/forgotPassword/ForgotPassword";
-import UserCompletePicture from "./containers/userCompletePicture/UserCompletePicture";
 import UserProfile from "./containers/userProfile/UserProfile";
 import Search from "./containers/search/Search";
 import ActivateOauth from "./containers/activation/activateOauth";
@@ -28,12 +27,7 @@ export default function MainRouter() {
             <Route exact path="/forgot-password" component={ForgotPassword} />
             <Route path="/reset-password" component={ResetPassword} />
             <Route path="/activateOauth" component={ActivateOauth} />
-            <Route
-              exact
-              path="/user-complete-picture"
-              component={UserCompletePicture}
-            />
-            <Route exact path="/user-profile" component={UserProfile} />
+            <Route path="/user" component={UserProfile} />
           </GlobalContextProvider>
         </Switch>
       </div>

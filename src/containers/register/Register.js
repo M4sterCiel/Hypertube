@@ -13,6 +13,7 @@ import InfoToast from "../../services/toasts/InfoToasts";
 import { GlobalContext } from "../../context/GlobalContext";
 import CustomLanguage from "../../services/DefineLocale";
 import AuthService from "../../services/AuthService";
+import UserPictureModify from "../../components/pictures/UserPictureModify";
 
 import axios from "axios";
 
@@ -42,7 +43,9 @@ class Register extends Component {
       pwdHasLowercase: false,
       pwdHasUppercase: false,
       pwdHasNumber: false,
-      pwdHasMinLen: false
+      pwdHasMinLen: false,
+      pictureUrl: "",
+      pictureValid: false
     };
     this._isMounted = false;
     this.Auth = new AuthService();
@@ -50,7 +53,7 @@ class Register extends Component {
 
   async componentDidMount() {
     this._isMounted = true;
-    if (await this.Auth.loggedIn()) {
+    if ((await this.Auth.isTokenValid()) && this.Auth.isSessionValid()) {
       var lang = await CustomLanguage.define(this.context.locale);
       InfoToast.custom.info(lang.already_logged, 4000);
       this.props.history.replace("/search");
@@ -84,6 +87,14 @@ class Register extends Component {
       this.setState({ [e.target.id]: e.target.value, ...result });
   };
 
+  handlePicture = picture => {
+    this._isMounted &&
+      this.setState({
+        pictureValid: picture.status,
+        pictureUrl: picture.url
+      });
+  };
+
   handleSubmit = e => {
     e.preventDefault();
     axios
@@ -93,11 +104,13 @@ class Register extends Component {
         lastname: this.state.lastname,
         email: this.state.email,
         pwd1: this.state.pwd1,
-        pwd2: this.state.pwd2
+        pwd2: this.state.pwd2,
+        picture: this.state.pictureUrl
       })
       .then(res => {
         if (res.data.status === "success") {
-          InfoToast.custom.info(this.state.lang.register[0].confirmation, 4000);
+          var lang = CustomLanguage.define(this.context.locale);
+          InfoToast.custom.info(lang.register[0].confirmation, 4000);
           this.props.history.push("/login");
         }
       })
@@ -122,6 +135,9 @@ class Register extends Component {
                     {" "}
                     <div className="title-page">
                       {lang.register[0].register}
+                    </div>
+                    <div className="register-picture-box">
+                      <UserPictureModify pictureToParent={this.handlePicture} />
                     </div>
                     <form
                       className="register-form"
@@ -280,7 +296,8 @@ class Register extends Component {
                           !this.state.usernameValid ||
                           !this.state.emailValid ||
                           !this.state.pwd1Valid ||
-                          this.state.pwd2 !== this.state.pwd1
+                          this.state.pwd2 !== this.state.pwd1 ||
+                          !this.state.pictureValid
                         }
                       />
                     </form>

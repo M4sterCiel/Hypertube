@@ -33,9 +33,12 @@ class GlobalContextProvider extends Component {
           username: data.username,
           firstname: data.firstname,
           lastname: data.lastname,
-          email: "",
+          email: data.email,
           uid: data.username,
           picture: data.picture
+        }),
+        updatePicture: data => this.setState({
+          picture: data
         }),
       resetContext: () =>
         this.setState({
@@ -57,7 +60,6 @@ class GlobalContextProvider extends Component {
       await axios
         .get("/users/session", { headers: { Authorization: token } })
         .then(async res => {
-          
           await this.setState({
             locale: res.data.language ? res.data.language : this.state.locale,
             username: res.data.username ? res.data.username : "",
@@ -65,7 +67,7 @@ class GlobalContextProvider extends Component {
             lastname: res.data.lastname ? res.data.lastname : "",
             email: res.data.email ? res.data.email : "",
             uid: res.data._id ? res.data._id : "",
-            picture: res.data.picture ? res.data.picture : ""
+            picture: res.data.img ? res.data.img : ""
           });
         })
         .catch(err => {

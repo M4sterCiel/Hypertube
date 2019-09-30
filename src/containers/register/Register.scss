@@ -1,5 +1,13 @@
 /* General */
 
+/* Picture */
+
+.register-picture-box {
+  width: 150px;
+  height: 150px;
+  margin: auto auto 50px auto;
+}
+
 /* Password */
 
 .password-message {
@@ -45,4 +53,20 @@
   content: "✖";
   position: relative;
   left: -10px;
+}
+
+/* Responsive */
+
+@media screen and (max-width: 440px) {
+  .register-picture-box {
+    width: 280px;
+    height: 280px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .register-picture-box {
+    width: 220px;
+    height: 220px;
+  }
 }
