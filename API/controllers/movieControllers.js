@@ -1,5 +1,7 @@
 const fs = require("fs");
 const mime = require("mime");
+const pump = require("pump");
+const ffmpeg = require("fluent-ffmpeg");
 const Movie = require("../schemas/Movie");
 const TorrentStream = require("torrent-stream");
 
@@ -39,17 +41,53 @@ const options = {
 module.exports = {
     streamMovie: async (res, path, start, end, mode) => {
         if (mode === 1) {
-            let stream = path.createReadStream({
-                start: start,
-                end: end
-            });
-            stream.pipe(res);
+            console.log(mime.getType(path.name));
+            if (
+                mime.getType(path.name) !== "video/mp4" &&
+                mime.getType(path.name) !== "video/ogg"
+            ) {
+                console.log("Starting conversion...");
+                let sourceFile = path.createReadStream({
+                    start: start,
+                    end: end
+                });
+                let stream = ffmpeg(sourceFile)
+                    .videoCodec("libvpx")
+                    .audioCodec("libvorbis")
+                    .format("ogg")
+                    .audioBitrate(128)
+                    .videoBitrate(1024)
+                    .outputOptions(["-deadline realtime", "-cpu-used -5"])
+                    .on("error", (err, stdout, stderr) => {
+                        console.log("An error has occurred: " + err);
+                        console.log("ffmpeg stdout: " + stdout);
+                        console.log("ffmpeg stderr: " + stderr);
+                    })
+                    .on("progress", progress => {
+                        console.log(
+                            "Converting " + progress.percent + "% done"
+                        );
+                    })
+                    .on("end", () => {
+                        console.log("Conversion is done!");
+                    })
+                    .save("/goinfre/" + path.path.slice(0, -4) + ".mp4");
+
+                pump(stream, res);
+            } else {
+                let stream = path.createReadStream({
+                    start: start,
+                    end: end
+                });
+                pump(stream, res);
+            }
         } else {
+            console.log(mime.getType(path));
             let stream = fs.createReadStream(path, {
                 start: start,
                 end: end
             });
-            stream.pipe(res);
+            pump(stream, res);
         }
     },
 
@@ -135,17 +173,21 @@ module.exports = {
                         engine
                             .on("ready", () => {
                                 engine.files.forEach(file => {
-                                    var ext = file.name.split(".", -1);
+                                    var ext = file.name.substr(-4, 4);
                                     if (
-                                        ext[ext.length - 1] === "mp4" ||
-                                        ext[ext.length - 1] === "mkv" ||
-                                        ext[ext.length - 1] === "avi" ||
-                                        ext[ext.length - 1] === "ogg"
+                                        ext === ".mp4" ||
+                                        ext === ".mkv" ||
+                                        ext === ".avi" ||
+                                        ext === ".ogg"
                                     ) {
-                                        console.log(mime.getType(file.name));
                                         file.select();
+                                        if (ext !== ".mp4" && ".ogg")
+                                            ext = ".mp4";
                                         fileSize = file.length;
-                                        newFilePath = "/goinfre/" + file.path;
+                                        newFilePath =
+                                            "/goinfre/" +
+                                            file.path.slice(0, -4) +
+                                            ext;
 
                                         const range = req.headers.range;
                                         if (range) {
@@ -165,9 +207,15 @@ module.exports = {
                                                 "Content-Range": `bytes ${start}-${end}/${fileSize}`,
                                                 "Accept-Ranges": "bytes",
                                                 "Content-Length": chunksize,
-                                                "Content-Type": mime.getType(
-                                                    file.name
-                                                )
+                                                "Content-Type":
+                                                    mime.getType(file.name) ===
+                                                        "video/mp4" ||
+                                                    mime.getType(file.name) ===
+                                                        "video/ogg"
+                                                        ? mime.getType(
+                                                              file.name
+                                                          )
+                                                        : "video/ogg"
                                             };
                                             res.writeHead(206, head);
                                             module.exports.streamMovie(
@@ -180,9 +228,15 @@ module.exports = {
                                         } else {
                                             const head = {
                                                 "Content-Length": fileSize,
-                                                "Content-Type": mime.getType(
-                                                    file.name
-                                                )
+                                                "Content-Type":
+                                                    mime.getType(file.name) ===
+                                                        "video/mp4" ||
+                                                    mime.getType(file.name) ===
+                                                        "video/ogg"
+                                                        ? mime.getType(
+                                                              file.name
+                                                          )
+                                                        : "video/ogg"
                                             };
                                             res.writeHead(200, head);
                                             module.exports.streamMovie(
