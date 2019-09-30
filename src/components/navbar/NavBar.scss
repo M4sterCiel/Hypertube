@@ -47,6 +47,15 @@
   color: red;
 }
 
+.btn.btn-regular {
+  background-color: red;
+  margin: 0px 10px;
+}
+
+.btn.btn-regular:hover {
+  background-color: rgba(255, 0, 0, 0.5);
+}
+
 /* Responsive */
 
 @media only screen and (max-width: 992px) {

@@ -10,6 +10,7 @@ import UserCompletePicture from "./containers/userCompletePicture/UserCompletePi
 import UserProfile from "./containers/userProfile/UserProfile";
 import Search from "./containers/search/Search";
 import ActivateOauth from "./containers/activation/activateOauth";
+import MoviePage from "./containers/moviePage/MoviePage";
 import GlobalContextProvider from "./context/GlobalContext";
 
 export default function MainRouter() {
@@ -23,6 +24,7 @@ export default function MainRouter() {
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/search" component={Search} />
+            <Route path="/movie/:movie_id" component={MoviePage} />
             <Route exact path="/forgot-password" component={ForgotPassword} />
             <Route path="/reset-password" component={ResetPassword} />
             <Route path="/activateOauth" component={ActivateOauth} />

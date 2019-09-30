@@ -10,7 +10,6 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import logo from "../../assets/hyperflix_logo2.png";
 import { GlobalContext } from "../../context/GlobalContext";
-import CountryPicker from "../buttons/Country-picker";
 import CustomLanguage from "../../services/DefineLocale";
 
 class NavBar extends Component {
@@ -128,9 +127,13 @@ class NavBar extends Component {
               <div>
                 <LoginButton value={lang.navbar[0].login} />
                 <RegisterButton value={lang.navbar[0].register} />
-                <CountryPicker />
-                <button onClick={this.handleLogout}>
-                  {lang.navbar[0].logout}
+                <button
+                  className="btn-regular modal-trigger"
+                  onClick={this.handleLogout}
+                >
+                  <span className="btn-regular-text">
+                    {lang.navbar[0].logout}
+                  </span>
                 </button>
               </div>
             );
