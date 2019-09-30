@@ -2,8 +2,6 @@ import React, { useReducer, useEffect, useState } from "react";
 import axios from 'axios';
 import withAuth from "../../services/withAuth";
 import "./Search.scss";
-// import Header from "./Header";
-// import spinner from "../../spinner.gif";
 import Movie from "../../components/movie/Movie";
 import Search from "../../components/searchBar/SearchBar";
 import Navbar from "../../components/navbar/NavBar";
@@ -18,7 +16,7 @@ const SearchView = () => {
     ratings: [0, 10],
     years: [1915, 2019],
     keywords: "",
-    limit: 30
+    limit: 20
   })
 
   const [searchResult, setSearchResult] = useState({movies: []});
@@ -35,7 +33,7 @@ const SearchView = () => {
         }
       } catch(err) {
         if (err.response && err.response.status === 401) 
-        console.log(err.response);
+          console.log(err.response);
       }
     }
     fetchMovies();
@@ -47,7 +45,6 @@ const SearchView = () => {
       keywords: searchValue,
     })
   }
-
   const ratings = ratings => {
     setSearchTerms({
       ...searchTerms,
@@ -67,14 +64,35 @@ const SearchView = () => {
     })
   }
 
+  useEffect(() => {
+    window.document.getElementById("infiniteScroll").addEventListener('scroll', handleScroll);
+    return () => window.document.getElementById("infiniteScroll").removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleScroll = () => {
+    if (window.document.getElementById("infiniteScroll").scrollTop + 
+        window.document.getElementById("infiniteScroll").clientHeight >= 
+        window.document.getElementById("infiniteScroll").scrollHeight)
+    {
+      setSearchTerms(p => {
+        const terms = {
+            ...p,
+            page: p.page + 1
+        }
+        return terms
+      })
+      return
+    }
+  }
+
   return (
     <SearchProvider value={searchTerms}>
-      <div className="SearchView">
+      <div className="SearchView" id="SearchView"> 
         <div className="layer">
           <Navbar />
-          <Search search={search}/>
-          <Filter ratings={ratings} years={years} genre={genre}/>
-          <div class="infiniteScroll">
+          <Search search={search} />
+          <Filter ratings={ratings} years={years} genre={genre} />
+          <div class="infiniteScroll" id="infiniteScroll">
             <div className="movies">
               {searchResult.movies.map((movie, index) => 
                 <Movie key={`${index}-${movie.title}`} movie={movie} />

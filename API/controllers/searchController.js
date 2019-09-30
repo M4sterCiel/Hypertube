@@ -5,13 +5,16 @@ const search = async (req, res) => {
         const { genre, ratings, years, page, limit, keywords } = req.body;
         const sorting = {};
         sorting['rating'] = -1;
+        const skip = limit * (page - 1);
+        const count = limit * page;
         const queryTerms = [
             { $match: {
                 year: { $gte: years[0], $lte: years[1] },
                 rating: { $gte: ratings[0], $lte: ratings[1] }
             }},
             { $sort: sorting },
-            { $limit: limit },
+            { $limit: count },
+            { $skip: skip },
         ]
         if (keywords !== '')
             queryTerms.unshift({ $match: { ...queryTerms.$match, title: { $regex: keywords.toLowerCase()}}});
