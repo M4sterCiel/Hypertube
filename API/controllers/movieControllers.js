@@ -1,7 +1,9 @@
 const fs = require("fs");
 const mime = require("mime");
 const pump = require("pump");
+const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 const ffmpeg = require("fluent-ffmpeg");
+ffmpeg.setFfmpegPath(ffmpegPath);
 const Movie = require("../schemas/Movie");
 const TorrentStream = require("torrent-stream");
 
@@ -47,31 +49,38 @@ module.exports = {
                 mime.getType(path.name) !== "video/ogg"
             ) {
                 console.log("Starting conversion...");
-                let sourceFile = path.createReadStream({
+
+                let torrent = path.createReadStream({
                     start: start,
                     end: end
                 });
-                let stream = ffmpeg(sourceFile)
+
+                var stream = ffmpeg(torrent)
                     .videoCodec("libvpx")
-                    .audioCodec("libvorbis")
-                    .format("ogg")
+                    .audioCodec("libopus")
                     .audioBitrate(128)
                     .videoBitrate(1024)
-                    .outputOptions(["-deadline realtime", "-cpu-used -5"])
+                    .format("webm")
+                    .outputOptions([
+                        "-crf 30",
+                        "-deadline realtime",
+                        "-cpu-used 2",
+                        "-threads 3"
+                    ])
+                    .on("progress", progress => {
+                        /* console.log(
+                            "Converting " + progress.percent + "% done"
+                        );
+                        console.log("TEST >>>> ", progress); */
+                    })
                     .on("error", (err, stdout, stderr) => {
-                        console.log("An error has occurred: " + err);
+                        console.log("Cannot process video: " + err.message);
                         console.log("ffmpeg stdout: " + stdout);
                         console.log("ffmpeg stderr: " + stderr);
                     })
-                    .on("progress", progress => {
-                        console.log(
-                            "Converting " + progress.percent + "% done"
-                        );
-                    })
                     .on("end", () => {
-                        console.log("Conversion is done!");
-                    })
-                    .save("/goinfre/" + path.path.slice(0, -4) + ".mp4");
+                        console.log("Converting is done !");
+                    });
 
                 pump(stream, res);
             } else {
@@ -82,7 +91,7 @@ module.exports = {
                 pump(stream, res);
             }
         } else {
-            console.log(mime.getType(path));
+            //console.log(mime.getType(path));
             let stream = fs.createReadStream(path, {
                 start: start,
                 end: end
@@ -182,12 +191,9 @@ module.exports = {
                                     ) {
                                         file.select();
                                         if (ext !== ".mp4" && ".ogg")
-                                            ext = ".mp4";
+                                            ext = ".webm";
                                         fileSize = file.length;
-                                        newFilePath =
-                                            "/goinfre/" +
-                                            file.path.slice(0, -4) +
-                                            ext;
+                                        newFilePath = "/goinfre/" + file.path;
 
                                         const range = req.headers.range;
                                         if (range) {
@@ -215,7 +221,7 @@ module.exports = {
                                                         ? mime.getType(
                                                               file.name
                                                           )
-                                                        : "video/ogg"
+                                                        : "video/webm"
                                             };
                                             res.writeHead(206, head);
                                             module.exports.streamMovie(
@@ -236,7 +242,7 @@ module.exports = {
                                                         ? mime.getType(
                                                               file.name
                                                           )
-                                                        : "video/ogg"
+                                                        : "video/webm"
                                             };
                                             res.writeHead(200, head);
                                             module.exports.streamMovie(
