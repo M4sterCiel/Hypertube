@@ -30,7 +30,7 @@ export default class AuthService {
         if (res.data._id) valid = true;
       })
       .catch(err => {
-        return false;
+        console.log(err);
       });
       return valid;
   }

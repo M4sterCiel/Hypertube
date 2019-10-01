@@ -27,8 +27,7 @@ class Login extends Component {
       loginValid: false,
       pwdValid: false,
       responseToPost: "",
-      locale: "en",
-      submitDisabled: false
+      locale: "en"
     };
     this.Auth = new AuthService();
     this._isMounted = false;
@@ -87,9 +86,6 @@ class Login extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-    this._isMounted && this.setState({
-      submitDisabled: true
-    })
     await axios
       .post("/users/login", {
         username: this.state.login,
@@ -101,16 +97,10 @@ class Login extends Component {
           this.Auth.setToken(res.data.token);
           this.props.history.replace("/search");
         } else {
-          this._isMounted && this.setState({
-            submitDisabled: true
-          });
           ErrorToast.custom.error(res.data.msg, 4000);
         }
       })
       .catch(err => {
-        this._isMounted && this.setState({
-          submitDisabled: false
-        })
         ErrorToast.custom.error(err.response.data.error, 4000);
       });
   };
@@ -165,7 +155,7 @@ class Login extends Component {
                         value={lang.login[0].login}
                         className="btn btn-submit-form"
                         disabled={
-                          !this.state.loginValid || !this.state.pwdValid || this.state.submitDisabled
+                          !this.state.loginValid || !this.state.pwdValid
                         }
                       />
                     </form>

@@ -78,7 +78,7 @@ const UserProfile = () => {
         })
       }
     }
-  }, [user]);
+  }, [user, username]);
 
   const { data } = state;
 
@@ -142,7 +142,7 @@ const UserProfile = () => {
               )}
             </div>
           </div>
-          {data.username && <EditProfileModal user={data} />}
+          {data.username === username && <EditProfileModal user={data} />}
         </div>
       </div>
     </div>

@@ -76,7 +76,6 @@ module.exports = {
   },
 
   register: async (req, res, next) => {
-    //console.log(req.body);
     //Check inputs
     var lang = req.session.language;
     console.log(lang);
@@ -118,11 +117,30 @@ module.exports = {
   },
 
   updateUser:  async (req, res, next) => {
-    console.log(req.body.data);
     var token = jwtService.parseAuthorization(req.headers.authorization);
     if (jwtService.verifyToken(token)) {
-      User.findOneAndUpdate({ token: token }, req.body.data, err => {
-        if (err) console.log(err);
+      console.log(req.body.username);
+      var err;
+      if (req.body.firstname !== undefined && (err = inputService.firstname(req.body.firstname).error)) {
+        return res.status(400).json({ error: 'firstname ' + err });
+      }
+      if (req.body.lastname !== undefined && (err = inputService.lastname(req.body.lastname).error)) {
+        return res.status(400).json({ error: 'lastname ' + err });
+      }
+      if (req.body.username !== undefined) {
+        err = await inputService.username(req.body.username);
+        if (err.error) {
+          return res.status(400).json({ error: 'username ' + err.error });
+        }
+      }
+      if (req.body.email !== undefined) {
+        err = await inputService.mail(req.body.email);
+        if (err.error) {
+          return res.status(400).json({ error: 'mail ' + err.error });
+        }
+      }
+      User.findOneAndUpdate({ token: token }, req.body, err => {
+        if (err) return res.status(400).json({error: "User update failed"});
       });
       return res.status(200).json({ message: 'User updated' });
     }

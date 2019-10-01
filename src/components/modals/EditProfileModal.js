@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useState } from "react";
+import React, { useReducer, useState, useContext } from "react";
 import { Modal, Select } from "react-materialize";
 import "./Modals.scss";
 import UserPictureModify from "../../components/pictures/UserPictureModify";
@@ -10,6 +10,7 @@ import ValidateInput from "../../services/ValidateInput";
 import InfoToast from "../../services/toasts/InfoToasts";
 import ErrorToast from "../../services/toasts/ErrorToasts";
 import CheckObjectsEquivalence from "../../services/CheckObjectsEquivalence";
+import { GlobalContext } from "../../context/GlobalContext";
 import AuthService from "../../services/AuthService";
 import axios from "axios";
 
@@ -45,6 +46,7 @@ const reducer = (state, action) => {
 
 const EditProfileModal = props => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const context = useContext(GlobalContext);
   const [user, setUser] = useState(props.user);
   const [error, setError] = useState({
     firstnameError: "",
@@ -63,7 +65,7 @@ const EditProfileModal = props => {
   const handleChange = e => {
     const { name, value } = e.target;
 
-    if (name !== "language") {
+    if (name !== "locale") {
       let result = ValidateInput.user(name, value);
       setError({ ...error, ...result });
     }
@@ -74,11 +76,16 @@ const EditProfileModal = props => {
   const handlePicture = picture => {
     if (picture.status && picture.url) {
       setError({ ...error, pictureValid: true });
-      setUser({ ...user, profile_picture: picture.url });
+      setUser({ ...user, picture: picture.url });
     } else {
       setError({ pictureValid: false });
     }
   };
+
+  const handleCancel = e => {
+    document.dispatchEvent(event);
+    setUser(props.user);
+  }
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -96,10 +103,18 @@ const EditProfileModal = props => {
     ) {
       if (!CheckObjectsEquivalence(user, props.user)) {
         var token = await Auth.getToken();
-
+        var data = { ...(user.username !== props.user.username && { username: user.username}), 
+        ...(user.firstname !== props.user.firstname && { firstname: user.firstname}), 
+        ...(user.lastname !== props.user.lastname && { lastname: user.lastname}),
+        ...(user.email !== props.user.email && { email: user.email}),
+        ...(user.locale !== props.user.locale && { language: user.locale}),
+        ...(user.picture !== props.user.picture && { img: user.picture})};
+        
+        axios.post("/users/update", {...data} , { headers: { Authorization: token }})
+        .then(res => {context.updateContext({ locale: user.locale, username: user.username, firstname: user.firstname, lastname: user.lastname, email: user.email, uid: user.username, picture: user.picture });
         InfoToast.custom.info("Saved", 4000);
-        console.log(user);
-        axios.post("/users/update", { data: {username: user.username, firstname: user.firstname, lastname: user.lastname, language: user.locale, img: user.picture } }, { headers: { Authorization: token } }).then(res => console.log(res)).catch(err => console.log(err));
+        document.dispatchEvent(event);})
+        .catch(err => ErrorToast.custom.error(err.response.data.error, 4000));
       } else {
         InfoToast.custom.info("Nothing changed", 4000);
       }
@@ -164,13 +179,13 @@ const EditProfileModal = props => {
               <div className="profile-select-language">
                 <p className="profile-select-language-text">Language: </p>
                 <Select
-                  value={user.language}
+                  value={user.locale}
                   onChange={handleChange}
-                  name="language"
+                  name="locale"
                 >
-                  <option value="EN">English</option>
-                  <option value="FR">Français</option>
-                  <option value="ES">Español</option>
+                  <option value="en">English</option>
+                  <option value="fr">Français</option>
+                  <option value="es">Español</option>
                 </Select>
               </div>
             </form>
@@ -183,7 +198,7 @@ const EditProfileModal = props => {
           <span className="profile-edit-actions-buttons">
             <FunctionButtonSecondary
               text="cancel"
-              func={() => document.dispatchEvent(event)}
+              func={handleCancel}
             />
           </span>
           <span className="profile-edit-actions-buttons">

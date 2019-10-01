@@ -34,7 +34,6 @@ class GlobalContextProvider extends Component {
           firstname: data.firstname,
           lastname: data.lastname,
           email: data.email,
-          uid: data.username,
           picture: data.picture
         }),
         updatePicture: data => this.setState({

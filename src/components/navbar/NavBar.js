@@ -300,7 +300,6 @@ class NavBar extends Component {
   }
 
   handleLogout = async () => {
-    console.log("logout");
     await this.Auth.logout();
     await this.context.resetContext();
     this.props.history.replace("/login");
