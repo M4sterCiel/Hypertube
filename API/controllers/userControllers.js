@@ -119,7 +119,6 @@ module.exports = {
   updateUser:  async (req, res, next) => {
     var token = jwtService.parseAuthorization(req.headers.authorization);
     if (jwtService.verifyToken(token)) {
-      console.log(req.body.username);
       var err;
       if (req.body.firstname !== undefined && (err = inputService.firstname(req.body.firstname).error)) {
         return res.status(400).json({ error: 'firstname ' + err });

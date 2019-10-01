@@ -96,7 +96,7 @@ const UserProfile = () => {
                 </div>
                 <div className="user-profile-info-text col l10 m8 s12">
                   <p className="user-profile-info-text-big">{data.username}</p>
-                  <p className="user-profile-info-text-regular">
+                  <p className="user-profile-info-text-regular text-first-letter-capital">
                     {data.firstname + ' ' + data.lastname}
                   </p>
                   <p className="user-profile-info-text-regular">

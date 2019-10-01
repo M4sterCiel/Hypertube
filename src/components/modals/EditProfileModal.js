@@ -21,6 +21,18 @@ const initialState = {
   status: ''
 };
 
+const initialValidation = {
+  firstnameError: "",
+  firstnameValid: true,
+  lastnameError: "",
+  lastnameValid: true,
+  usernameError: "",
+  usernameValid: true,
+  emailError: "",
+  emailValid: true,
+  pictureValid: true
+}
+
 const reducer = (state, action) => {
   switch (action.type) {
     case 'USER_UPDATE_REQUEST':
@@ -48,17 +60,7 @@ const EditProfileModal = props => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const context = useContext(GlobalContext);
   const [user, setUser] = useState(props.user);
-  const [error, setError] = useState({
-    firstnameError: "",
-    firstnameValid: true,
-    lastnameError: "",
-    lastnameValid: true,
-    usernameError: "",
-    usernameValid: true,
-    emailError: "",
-    emailValid: true,
-    pictureValid: true
-  });
+  const [error, setError] = useState(initialValidation);
   const event = new KeyboardEvent("keydown", { keyCode: 27 });
   const Auth = new AuthService();
 
@@ -70,7 +72,7 @@ const EditProfileModal = props => {
       setError({ ...error, ...result });
     }
 
-    setUser({ ...user, [name]: value });
+    setUser({ ...user, [name]: value.toLowerCase() });
   };
 
   const handlePicture = picture => {
@@ -85,6 +87,7 @@ const EditProfileModal = props => {
   const handleCancel = e => {
     document.dispatchEvent(event);
     setUser(props.user);
+    setError(initialValidation);
   }
 
   const handleSubmit = async e => {
@@ -103,15 +106,15 @@ const EditProfileModal = props => {
     ) {
       if (!CheckObjectsEquivalence(user, props.user)) {
         var token = await Auth.getToken();
-        var data = { ...(user.username !== props.user.username && { username: user.username}), 
-        ...(user.firstname !== props.user.firstname && { firstname: user.firstname}), 
-        ...(user.lastname !== props.user.lastname && { lastname: user.lastname}),
-        ...(user.email !== props.user.email && { email: user.email}),
+        var data = { ...(user.username.toLowerCase() !== props.user.username.toLowerCase() && { username: user.username.toLowerCase()}), 
+        ...(user.firstname.toLowerCase() !== props.user.firstname.toLowerCase() && { firstname: user.firstname.toLowerCase()}), 
+        ...(user.lastname.toLowerCase() !== props.user.lastname.toLowerCase() && { lastname: user.lastname.toLowerCase()}),
+        ...(user.email.toLowerCase() !== props.user.email.toLowerCase() && { email: user.email.toLowerCase()}),
         ...(user.locale !== props.user.locale && { language: user.locale}),
         ...(user.picture !== props.user.picture && { img: user.picture})};
         
         axios.post("/users/update", {...data} , { headers: { Authorization: token }})
-        .then(res => {context.updateContext({ locale: user.locale, username: user.username, firstname: user.firstname, lastname: user.lastname, email: user.email, uid: user.username, picture: user.picture });
+        .then(res => {context.updateContext({ locale: user.locale, username: user.username.toLowerCase(), firstname: user.firstname.toLowerCase(), lastname: user.lastname.toLowerCase(), email: user.email.toLowerCase(), picture: user.picture });
         InfoToast.custom.info("Saved", 4000);
         document.dispatchEvent(event);})
         .catch(err => ErrorToast.custom.error(err.response.data.error, 4000));
@@ -150,7 +153,7 @@ const EditProfileModal = props => {
                 type="text"
                 id="firstname"
                 name="firstname"
-                className={`form-input-fields-modal half-input-fields-modal field-right-margin  ${
+                className={`form-input-fields-modal half-input-fields-modal field-right-margin text-first-letter-capital ${
                   error.firstnameValid ? "" : "edit-profile-invalid-input"
                 }`}
                 value={user.firstname}
@@ -160,7 +163,7 @@ const EditProfileModal = props => {
                 type="text"
                 id="lastname"
                 name="lastname"
-                className={`form-input-fields-modal half-input-fields-modal  ${
+                className={`form-input-fields-modal half-input-fields-modal text-first-letter-capital ${
                   error.lastnameValid ? "" : "edit-profile-invalid-input"
                 }`}
                 value={user.lastname}
