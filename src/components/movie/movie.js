@@ -4,7 +4,6 @@ import "./Movie.scss";
 const Movie = ({ movie }) => {
   return (
     <div className="movie">
-      {/* <h2><strong>{movie.title}</strong></h2> */}
       <div>
         <img
           width="200"

@@ -40,17 +40,18 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
+  justify-content: space-between;
 }
 
-.add-movies {
-  text-align: center;
-}
+// .add-movies {
+//   text-align: center;
+// }
 
-.add-movies button {
-  font-size: 16px;
-  padding: 8px;
-  margin: 0 10px 30px 10px;
-}
+// .add-movies button {
+//   font-size: 16px;
+//   padding: 8px;
+//   margin: 0 10px 30px 10px;
+// }
 
 @media screen and (min-width: 652px) and (max-width: 693px) {
   .movie {

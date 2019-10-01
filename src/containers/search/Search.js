@@ -16,7 +16,7 @@ const SearchView = () => {
     ratings: [0, 10],
     years: [1915, 2019],
     keywords: "",
-    limit: 20
+    limit: 40
   })
 
   const [searchResult, setSearchResult] = useState({movies: []});
@@ -40,6 +40,7 @@ const SearchView = () => {
   }, [searchTerms])
 
   const search = searchValue => {
+    setSearchResult({movies: []});
     setSearchTerms({
       ...searchTerms,
       keywords: searchValue,
@@ -72,12 +73,12 @@ const SearchView = () => {
   const handleScroll = () => {
     if (window.document.getElementById("infiniteScroll").scrollTop + 
         window.document.getElementById("infiniteScroll").clientHeight >= 
-        window.document.getElementById("infiniteScroll").scrollHeight)
+        window.document.getElementById("infiniteScroll").scrollHeight - 120)
     {
       setSearchTerms(p => {
         const terms = {
             ...p,
-            page: p.page + 1
+            page: p.page + 2
         }
         return terms
       })
