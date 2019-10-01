@@ -5,7 +5,6 @@ const Movie = ({ movie }) => {
   return (
     <div className="movie">
       <img
-        // width="200"
         alt={`${movie.title}`}
         src={movie.poster}
       />
