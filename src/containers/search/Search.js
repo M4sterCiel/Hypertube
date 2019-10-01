@@ -93,12 +93,12 @@ const SearchView = () => {
           <Navbar />
           <Search search={search} />
           <Filter ratings={ratings} years={years} genre={genre} />
-          <div class="infiniteScroll" id="infiniteScroll">
-            <div className="movies">
+          <div className="infiniteScroll" id="infiniteScroll">
+            {/* <div className="movies"> */}
               {searchResult.movies.map((movie, index) => 
                 <Movie key={`${index}-${movie.title}`} movie={movie} />
               )}
-            </div>
+            {/* </div> */}
           </div>
         </div>
       </div>

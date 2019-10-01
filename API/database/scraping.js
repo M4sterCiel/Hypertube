@@ -45,7 +45,7 @@ const scrapYTS = async () => {
         }
         const infos = {
             imdbId: movie.imdb_code,
-            title: movie.title.toLowerCase(),
+            title: movie.title,
             year: movie.year,
             plot: movie.synopsis,
             runtime: movie.runtime,

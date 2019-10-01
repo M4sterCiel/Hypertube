@@ -4,16 +4,16 @@ import "./Movie.scss";
 const Movie = ({ movie }) => {
   return (
     <div className="movie">
-      <div>
-        <img
-          width="200"
-          alt={`${movie.title}`}
-          src={movie.poster}
-        />
+      <img
+        // width="200"
+        alt={`${movie.title}`}
+        src={movie.poster}
+      />
+      <div className="movieInfosDiv">
+        <p className="movieInfos">
+          <strong>{movie.year} &nbsp;|&nbsp;</strong> {movie.rating} ☆
+        </p>
       </div>
-      <p>
-        <strong>{movie.year} &nbsp;|&nbsp;</strong> {movie.rating} ☆
-      </p>
     </div>
   );
 };

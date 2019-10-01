@@ -67,8 +67,8 @@ const Filter = ({ ratings, years, genre }) => {
             lang = require("../../locale/en");
         }
         return (
-          <div class="all">
-            <div class="RatingRange">
+          <div className="all">
+            <div className="RatingRange">
               <label>{lang.search[0].rating}</label>
               <Range
                 min={0}
@@ -78,7 +78,7 @@ const Filter = ({ ratings, years, genre }) => {
                 onChange={handleRatingChanges}
               />
             </div>
-            <div class="YearRange">
+            <div className="YearRange">
               <label>{lang.search[0].year}</label>
               <Range
                 min={1915}
@@ -88,7 +88,7 @@ const Filter = ({ ratings, years, genre }) => {
                 onChange={handleYearChanges}
               />
             </div>
-            <select class="browser-default"
+            <select className="browser-default"
                     onChange={handleGenreChanges}
             >
               {genreList.map(genre => (
