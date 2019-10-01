@@ -12,6 +12,7 @@ import ErrorToast from "../../services/toasts/ErrorToasts";
 import CheckObjectsEquivalence from "../../services/CheckObjectsEquivalence";
 import { GlobalContext } from "../../context/GlobalContext";
 import AuthService from "../../services/AuthService";
+import ChangePassword from "../../components/password/ChangePassword";
 import axios from "axios";
 
 const initialState = {
@@ -60,6 +61,7 @@ const EditProfileModal = props => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const context = useContext(GlobalContext);
   const [user, setUser] = useState(props.user);
+  const [passwordSwitch, setPasswordSwitch] = useState(false);
   const [error, setError] = useState(initialValidation);
   const event = new KeyboardEvent("keydown", { keyCode: 27 });
   const Auth = new AuthService();
@@ -88,6 +90,10 @@ const EditProfileModal = props => {
     document.dispatchEvent(event);
     setUser(props.user);
     setError(initialValidation);
+  }
+
+  const handlePasswordSwitch = () => {
+    setPasswordSwitch(!passwordSwitch);
   }
 
   const handleSubmit = async e => {
@@ -205,12 +211,13 @@ const EditProfileModal = props => {
             />
           </span>
           <span className="profile-edit-actions-buttons">
-            <FunctionButtonSecondary text="password" />
-          </span>
-          <span className="profile-edit-actions-buttons">
             <FunctionButtonSecondary text="delete account" />
           </span>
+          <span className="profile-edit-actions-buttons">
+            <FunctionButtonSecondary text="password" func={handlePasswordSwitch} />
+          </span>
         </div>
+        {passwordSwitch && <ChangePassword username={user.username} closePasswordSwitch={handlePasswordSwitch} />}
       </div>
     </Modal>
   );

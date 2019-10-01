@@ -302,5 +302,38 @@ module.exports = {
         }
       );
     }
+  },
+
+  changePassword: async (req, res, next) => {
+
+    if ((err = inputService.password(req.body.pwd1).error))
+      return res.status(400).json({ error: 'password ' + err });
+    if ((err = inputService.password(req.body.pwd2).error))
+      return res.status(400).json({ error: 'password ' + err });
+    if (req.body.pwd1 !== req.body.pwd2)
+      return res.status(400).json({ error: 'password has to be identical' });
+
+    var result = await User.find({
+      username: sanitize(req.body.username)
+    });
+    if (result.length < 1)
+      return res.status(400).json({ error: 'Impossible to reset password...' });
+    else {
+      User.findOneAndUpdate(
+        { username: sanitize(req.body.username) },
+        {
+          activationKey: null
+        },
+        (err, user) => {
+          if (err) console.log(err);
+          user.setPassword(req.body.pwd1, () => {
+            user.save().catch(err => {
+              console.error(err);
+            });
+            return res.status(200).json({ status: 'success' });
+          });
+        }
+      );
+    }
   }
 };
