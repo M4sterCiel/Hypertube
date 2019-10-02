@@ -42,7 +42,12 @@ const Filter = ({ ratings, years, genre }) => {
   };
 
   const handleGenreChanges = e => {
-    genre(e.target.value.toLowerCase());
+    if (e.target.value != "All")
+    {
+      genre(e.target.value.toLowerCase());
+    } else {
+      genre("All");
+    }
   };
 
   const createSliderWithTooltip = Slider.createSliderWithTooltip;
@@ -75,7 +80,7 @@ const Filter = ({ ratings, years, genre }) => {
                 max={10}
                 allowCross={false}
                 defaultValue={searchTerms.ratings}
-                onChange={handleRatingChanges}
+                onAfterChange={handleRatingChanges}
               />
             </div>
             <div className="YearRange">
@@ -85,7 +90,7 @@ const Filter = ({ ratings, years, genre }) => {
                 max={2019}
                 allowCross={false}
                 defaultValue={searchTerms.years}
-                onChange={handleYearChanges}
+                onAfterChange={handleYearChanges}
               />
             </div>
             <select className="browser-default"

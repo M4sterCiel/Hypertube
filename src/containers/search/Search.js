@@ -23,6 +23,7 @@ const SearchView = () => {
 
   useEffect(() => {
     const fetchMovies = async () => {
+      console.log(searchTerms);
       try {
         const res = await axios.post("/search/movies", searchTerms);
         if (res.data.length !== 0) {
@@ -47,18 +48,21 @@ const SearchView = () => {
     })
   }
   const ratings = ratings => {
+    setSearchResult({movies: []});
     setSearchTerms({
       ...searchTerms,
       ratings: ratings,
     })
   }
   const years = years => {
+    setSearchResult({movies: []});
     setSearchTerms({
       ...searchTerms,
       years: years,
     })
   }
   const genre = genre => {
+    setSearchResult({movies: []});
     setSearchTerms({
       ...searchTerms,
       genre: genre,
@@ -94,11 +98,9 @@ const SearchView = () => {
           <Search search={search} />
           <Filter ratings={ratings} years={years} genre={genre} />
           <div className="infiniteScroll" id="infiniteScroll">
-            {/* <div className="movies"> */}
-              {searchResult.movies.map((movie, index) => 
-                <Movie key={`${index}-${movie.title}`} movie={movie} />
-              )}
-            {/* </div> */}
+            {searchResult.movies.map((movie, index) => 
+              <Movie key={`${index}-${movie.title}`} movie={movie} />
+            )}
           </div>
         </div>
       </div>

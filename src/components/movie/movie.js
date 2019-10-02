@@ -10,7 +10,7 @@ const Movie = ({ movie }) => {
         src={movie.poster}
       />
       <div className="movieInfosDiv">
-        { movie.title.lenght > 40 ? (
+        { movie.title.length < 25 ? (
           <p className="movieTitle"><strong>{movie.title}</strong></p>
         ) : (
           <p className="movieTitle"><strong>{movie.title.substring(0, 25) + "..."}</strong></p>
