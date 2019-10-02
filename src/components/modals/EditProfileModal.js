@@ -12,7 +12,8 @@ import ErrorToast from "../../services/toasts/ErrorToasts";
 import CheckObjectsEquivalence from "../../services/CheckObjectsEquivalence";
 import { GlobalContext } from "../../context/GlobalContext";
 import AuthService from "../../services/AuthService";
-import ChangePassword from "../../components/password/ChangePassword";
+import ChangePassword from "../../components/account/password/ChangePassword";
+import DeleteAccount from "../../components/account/delete/DeleteAccount";
 import axios from "axios";
 
 const initialState = {
@@ -62,6 +63,7 @@ const EditProfileModal = props => {
   const context = useContext(GlobalContext);
   const [user, setUser] = useState(props.user);
   const [passwordSwitch, setPasswordSwitch] = useState(false);
+  const [delAccountSwitch, setDelAccountSwitch] = useState(false);
   const [error, setError] = useState(initialValidation);
   const event = new KeyboardEvent("keydown", { keyCode: 27 });
   const Auth = new AuthService();
@@ -93,7 +95,17 @@ const EditProfileModal = props => {
   }
 
   const handlePasswordSwitch = () => {
+    if (delAccountSwitch) {
+      setDelAccountSwitch(false);
+    }
     setPasswordSwitch(!passwordSwitch);
+  }
+
+  const handleDelAccountSwitch = () => {
+    if (passwordSwitch) {
+      setPasswordSwitch(false);
+    }
+    setDelAccountSwitch(!delAccountSwitch);
   }
 
   const handleSubmit = async e => {
@@ -211,13 +223,14 @@ const EditProfileModal = props => {
             />
           </span>
           <span className="profile-edit-actions-buttons">
-            <FunctionButtonSecondary text="delete account" />
+            <FunctionButtonSecondary text="delete account" func={handleDelAccountSwitch} />
           </span>
           <span className="profile-edit-actions-buttons">
             <FunctionButtonSecondary text="password" func={handlePasswordSwitch} />
           </span>
         </div>
         {passwordSwitch && <ChangePassword username={user.username} closePasswordSwitch={handlePasswordSwitch} />}
+        {delAccountSwitch && <DeleteAccount username={user.username} closeDelAccountSwitch={handleDelAccountSwitch} />}
       </div>
     </Modal>
   );

@@ -272,6 +272,7 @@ module.exports = {
   },
 
   resetPassword: async (req, res, next) => {
+    var err;
     if ((err = inputService.password(req.body.pwd1).error))
       return res.status(400).json({ error: 'password ' + err });
     if ((err = inputService.password(req.body.pwd2).error))
@@ -305,7 +306,7 @@ module.exports = {
   },
 
   changePassword: async (req, res, next) => {
-
+    var err;
     if ((err = inputService.password(req.body.pwd1).error))
       return res.status(400).json({ error: 'password ' + err });
     if ((err = inputService.password(req.body.pwd2).error))
@@ -334,6 +335,30 @@ module.exports = {
           });
         }
       );
+    }
+  },
+
+  deleteUser: async (req, res, next) => {
+    var token = jwtService.parseAuthorization(req.headers.authorization);
+    if (jwtService.verifyToken(token)) {
+      await User.findOne({ token: token }, function(err, user) {
+        if (err) {
+          return res.status(400).json({ error: 'Impossible to delete account...' });
+        }
+        if (!user) {
+          return res.status(400).json({ error: 'Impossible to delete account...' });
+        } else {
+          User.findOneAndRemove({ token: token }, (err) => {
+            if (err) {
+              return res.status(400).json({ error: 'Impossible to delete account...' });
+            } else {
+              return res.status(200).json({ status: 'success' });
+          }
+          });
+        }
+      })
+    } else {
+      return res.status(400).json({ error: 'Impossible to delete account...' });
     }
   }
 };
