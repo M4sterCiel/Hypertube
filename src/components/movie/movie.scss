@@ -5,31 +5,34 @@ h2 {
 }
 
 .movieInfosDiv {
-  margin-top: -40px;
+  margin-top: -100%;
   margin-left: 0px;
   width: 10vw;
   height: 2.64vh;
   visibility: hidden;
-  background-color: rgba(0, 0, 0, 0.74);
   position: absolute;
   z-index: 1000;
 }
 
 .movieInfos {
-  width: 10vw;
   font-size: 15px;
-  margin-top: 5px;
-  // margin-bottom: 0px;
+}
+.movieTitle {
+  font-size: 20px;
 }
 
 .movie {
   width: 10vw;
   margin-bottom: -6px;
   position: relative;
+  background-color: black;
 }
 
 .movie:hover > .movieInfosDiv {
   visibility:visible;
+}
+.movie:hover > img {
+  opacity: 0.18;
 }
 
 .movie img {
@@ -44,7 +47,7 @@ h2 {
   }
 }
 
-@media only screen and (max-width: 560px) {
+@media only screen and (max-width: 700px) {
   .movie, .movieInfos, .movieInfosDiv, .movie img {
     width: 50vw;
   }

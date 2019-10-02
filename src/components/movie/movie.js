@@ -2,6 +2,7 @@ import React from "react";
 import "./Movie.scss";
 
 const Movie = ({ movie }) => {
+
   return (
     <div className="movie">
       <img
@@ -9,8 +10,13 @@ const Movie = ({ movie }) => {
         src={movie.poster}
       />
       <div className="movieInfosDiv">
+        { movie.title.lenght > 40 ? (
+          <p className="movieTitle"><strong>{movie.title}</strong></p>
+        ) : (
+          <p className="movieTitle"><strong>{movie.title.substring(0, 25) + "..."}</strong></p>
+        )}
         <p className="movieInfos">
-          <strong>{movie.year} &nbsp;|&nbsp;</strong> {movie.rating} ☆
+          {movie.year} &nbsp;|&nbsp; {movie.rating} ☆
         </p>
       </div>
     </div>
