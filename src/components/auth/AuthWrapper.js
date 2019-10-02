@@ -13,10 +13,11 @@ export default function withAuth(AuthComponent) {
     };
 
     async componentDidMount() {
+      console.log(Auth.isTokenValid());
       if (!Auth.isTokenValid()) {
         this.props.history.replace("/users/login");
-      } else if (!Auth.isSessionValid()) {
-        this.props.history.replace("/users/login");
+     /*  } else if (!Auth.isSessionValid()) {
+        this.props.history.replace("/users/login"); */
       } else {
         try {
           const confirm = await Auth.getConfirm();

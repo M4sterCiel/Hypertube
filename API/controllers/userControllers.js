@@ -166,7 +166,7 @@ module.exports = {
       });
       req.logout();
       req.session = null;
-      return res.status(200).json({ message: 'Loggued out!' });
+      return res.status(200).json({ message: 'Logged out!' });
     }
   },
 

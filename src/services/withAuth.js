@@ -11,7 +11,7 @@ export default function withAuth(AuthComponent) {
     };
 
     async componentDidMount() {
-      if (!(await Auth.isTokenValid())) {
+/*       if (!(await Auth.isTokenValid())) {
         this.setState({
           validAuth: false
         });
@@ -21,7 +21,12 @@ export default function withAuth(AuthComponent) {
         this.setState({
           validAuth: false
         });
-        this.props.history.replace("/login");
+        this.props.history.replace("/login"); */
+        if (!await Auth.loggedIn()) {
+          this.setState({
+            validAuth: false
+          });
+          this.props.history.replace("/login");
       } else {
         this.setState({
           validAuth: true

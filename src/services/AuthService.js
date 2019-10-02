@@ -15,6 +15,24 @@ export default class AuthService {
   }
 
   // Checking if token exists and is still valid
+  loggedIn = async () => {
+    const token = await this.getToken();
+    if (!token) {
+      return false;
+    }
+    var valid = false;
+    await axios
+      .get("/users/session", { headers: { Authorization: token } })
+      .then(res => {
+        if (res.data._id) valid = true;
+      })
+      .catch(err => {
+        return false;
+      });
+    return !!token && !this.isTokenExpired(token) && valid;
+  };
+
+  // Checking if token exists and is still valid
   isTokenValid = async () => {
     const token = await this.getToken();
     return !!token && !this.isTokenExpired(token);

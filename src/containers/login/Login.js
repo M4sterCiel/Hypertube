@@ -36,7 +36,6 @@ class Login extends Component {
   async componentDidMount() {
     this._isMounted = true;
     if (await this.Auth.isTokenValid() /* && await this.Auth.isSessionValid() */) {
-      console.log("titi");
       var lang = await CustomLanguage.define(this.context.locale);
       InfoToast.custom.info(lang.already_logged, 4000);
       this.props.history.replace("/search");
@@ -91,11 +90,11 @@ class Login extends Component {
         username: this.state.login,
         password: this.state.password
       })
-      .then(res => {
+      .then(async res => {
         if (res.data.status === "success") {
-          this.context.updateContext({locale: res.data.user.language, username: res.data.user.username, firstname: res.data.user.firstname, lastname: res.data.user.lastname, email: res.data.user.email, picture: res.data.user.picture});
-          this.Auth.setToken(res.data.token);
-          this.props.history.replace("/search");
+          await this.context.updateContext({locale: res.data.user.language, username: res.data.user.username, firstname: res.data.user.firstname, lastname: res.data.user.lastname, email: res.data.user.email, picture: res.data.user.picture});
+          await this.Auth.setToken(res.data.token);
+          await this.props.history.replace("/search");
         } else {
           ErrorToast.custom.error(res.data.msg, 4000);
         }
