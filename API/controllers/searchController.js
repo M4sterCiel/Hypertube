@@ -17,7 +17,7 @@ const search = async (req, res) => {
             { $skip: skip },
         ]
         if (keywords !== '')
-            queryTerms.unshift({ $match: { ...queryTerms.$match, title: { $regex: keywords.toLowerCase()}}});
+            queryTerms.unshift({ $match: { ...queryTerms.$match, title: { $regex: keywords, $options: "i"}}});
         if (genre !== 'All')
             queryTerms.unshift({ $match: { ...queryTerms.$match, genres: genre.toLowerCase()}});
         movieList = await MovieModel.aggregate(queryTerms);

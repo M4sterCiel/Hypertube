@@ -22,10 +22,10 @@ async function connectDB() {
 
 const scrapYTS = async () => {
     const raw = [];
-    for (let i = 1; i <= 267; i++) {
+    for (let i = 1; i <= 267; i++) { //267
         const res = await axios.get(`https://yts.lt/api/v2/list_movies.json?limit=50&page=${i}`);
             if (!res.data.data.movies) break;
-        console.log(`${res.data.data.movies.length} movie(s) found on page ${i}.`);
+        console.log(`YTS ${res.data.data.movies.length} movie(s) found on page ${i}.`);
         raw.push(...res.data.data.movies)
     }
     const formated = raw.map(movie => {
@@ -60,14 +60,80 @@ const scrapYTS = async () => {
     return formated;
 }
 
+const scrapPopcorn = async () => {
+    const raw = [];
+    for (let i = 1; i <= 270; i++) { //271
+        try {
+            const res = await axios.get(`https://tv-v2.api-fetch.website/movies/${i}`);
+            console.log(`POPCORN ${res.data.length} movie(s) found on page ${i}.`);
+            raw.push(...res.data)
+        } catch (err) {     
+            console.log(err.message)
+            continue;
+        }
+    }
+    const formated = raw.map(movie => {
+        const torrents = [];
+        for (const language in movie.torrents) {
+            for (const quality in movie.torrents[language]) {
+                const torrent = {
+                    magnet: movie.torrents[language][quality].url,
+                    quality: quality,
+                    language: language,
+                    seed: movie.torrents[language][quality].seed,
+                    peer: movie.torrents[language][quality].peer,
+                    bytes: movie.torrents[language][quality].size,
+                    fileSize: movie.torrents[language][quality].filesize,
+                    source: 'Popcorn Time'
+                }
+                torrents.push(torrent);
+            }
+        }
+        const infos = {
+            imdbId: movie.imdb_id,
+            title: movie.title,
+            year: movie.year,
+            plot: movie.synopsis,
+            runtime: parseInt(movie.runtime),
+            trailer: movie.trailer,
+            poster: movie.images.poster,
+            genres: movie.genres ? movie.genres.map(genre => genre.toLowerCase()) : null,
+            rating: (movie.rating.percentage / 10),
+            torrents: torrents,
+        }
+        return infos
+    })
+    return formated;
+}
+
 const Scrap = async () => {
     try {
         await connectDB();
         const ytsRes = await scrapYTS();
-        await MovieSchema.collection.insertMany(ytsRes);
+        const popcornRes = await scrapPopcorn();
+       
+        console.log("*** Removing duplicates ***");
+        var ids = new Set(ytsRes.map(d => d.imdbId));
+        var movieList = [...ytsRes, ...popcornRes.filter(d => !ids.has(d.imdbId))];
+        
+        console.log("*** Removing movies without poster ***");
+        for(var a = 0; a < movieList.length; a++) {
+            if(movieList[a].poster === "N/A") {
+                movieList.splice(a, 1);
+                a--;
+                break;
+            }
+        }
+
+        console.log("PUSHING TO DATABASE");
+        await MovieSchema.collection.insertMany(movieList);
     }
-    catch (error) { log(error) }
-    finally { process.exit(0) }
+    catch (error) {
+        log(error)
+    }
+    finally {
+        process.exit(0)
+    }
 }
 
 Scrap();
