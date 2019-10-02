@@ -6,12 +6,13 @@
     justify-content: center;
 }
 
-.browser-default {
+#genreSelect {
     height: 37px;
     width: 92px;
     background-color: rgba(102, 65, 65, 0);
     border: 1px solid white;
     border-radius: 1px;
+    margin-top: 3px;
     color: white;
     cursor: pointer;
 }
@@ -26,15 +27,11 @@ label {
     margin-top: 10px;
 }
 
-.browser-default {
-    margin-top: 15px;
-}
-
 @media only screen and (max-width: 700px) {
     .all {
         display: inline-block;    
     }
-    .browser-default {
+    #genreSelect {
         margin-left: auto;
         margin-right: auto;
         margin-top: 20px;

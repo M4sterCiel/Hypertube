@@ -94,6 +94,7 @@ const Filter = ({ ratings, years, genre }) => {
               />
             </div>
             <select className="browser-default"
+                    id="genreSelect"
                     onChange={handleGenreChanges}
             >
               {genreList.map(genre => (

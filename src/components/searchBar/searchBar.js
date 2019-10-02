@@ -41,6 +41,7 @@ const Search = ({ search }) => {
                 disabled={searchValue.length < 2}
                 onClick={callSearchFunction}
                 type="submit"
+                id="submitSearchButton"
                 className="btn btn-secondary btn-medium waves-effect"
                 value={lang.search[0].search}
               >
