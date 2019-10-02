@@ -23,9 +23,10 @@ h2 {
 
 .movie {
   width: 10vw;
+  // max-height: 40vh;
   margin-bottom: -6px;
   position: relative;
-  background-color: black;
+  background-color: rgb(0, 0, 0);
 }
 
 .movie:hover > .movieInfosDiv {
@@ -58,10 +59,3 @@ h2 {
     width: 50vw;
   }
 }
-
-// @media only screen and (max-width: 320px) {
-//   .movie img {
-//     width: 100%;
-//     height: auto !important;
-//   }
-// }

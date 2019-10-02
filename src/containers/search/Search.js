@@ -44,6 +44,7 @@ const SearchView = () => {
     setSearchResult({movies: []});
     setSearchTerms({
       ...searchTerms,
+      page: 1,
       keywords: searchValue,
     })
   }
@@ -51,6 +52,7 @@ const SearchView = () => {
     setSearchResult({movies: []});
     setSearchTerms({
       ...searchTerms,
+      page: 1,
       ratings: ratings,
     })
   }
@@ -58,6 +60,7 @@ const SearchView = () => {
     setSearchResult({movies: []});
     setSearchTerms({
       ...searchTerms,
+      page: 1,
       years: years,
     })
   }
@@ -65,6 +68,7 @@ const SearchView = () => {
     setSearchResult({movies: []});
     setSearchTerms({
       ...searchTerms,
+      page: 1,
       genre: genre,
     })
   }
