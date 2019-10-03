@@ -1,5 +1,6 @@
 // Ignore npm packages
 node_modules/
+API/torrents
 *.mp4
 *.ogg
 *.webm
