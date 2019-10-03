@@ -4,7 +4,7 @@ import "./MoviePage.scss";
 
 const MoviePage = () => {
 
-    const [moviePageState, setMoviePage] = useState({
+    const [moviePageState, setMoviePageState] = useState({
         isPlayer: false,
     });
 
@@ -20,6 +20,6 @@ const MoviePage = () => {
             </div>
         </div>
     );
-    
 }
+
 export default withAuth(MoviePage);
