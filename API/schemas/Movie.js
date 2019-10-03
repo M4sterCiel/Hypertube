@@ -12,7 +12,6 @@ const MovieSchema = mongoose.Schema({
     rating: Number,
     torrents: Array,
     lastViewed: Date,
-    path720p: String,
-    path1080p: String
+    path: Array
 });
 module.exports = Movie = mongoose.model("Movie", MovieSchema);
