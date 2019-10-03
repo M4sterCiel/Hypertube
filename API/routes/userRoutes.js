@@ -10,11 +10,13 @@ exports.router = (() => {
   userRouter.route('/login').post(userController.login);
   userRouter.route('/activation').post(userController.activateAccount);
   userRouter.route('/forgot-password').post(userController.forgotPassword);
+  userRouter.route('/change-password').post(userController.changePassword);
   userRouter.route('/reset-password').post(userController.resetPassword);
   userRouter.route('/logout').get(userController.logout);
   userRouter.route('/profile').get(userController.getProfile);
-  userRouter.route('/get-profile').get(userController.getUser);
+  userRouter.route('/get-profile/:username').get(userController.getUserByUsername);
   userRouter.route('/update').post(userController.updateUser);
+  userRouter.route('/delete').delete(userController.deleteUser);
   userRouter.route('/session').get(userController.getSession);
 
   return userRouter;

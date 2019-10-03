@@ -1,2 +1,8 @@
 // Ignore npm packages
 node_modules/
+API/torrents
+*.mp4
+*.ogg
+*.webm
+.DS_Store
+.DS_STORE

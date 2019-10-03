@@ -5,7 +5,7 @@ exports.router = (() => {
     var movieRouter = express.Router();
 
     movieRouter
-        .route("/movie/:movieId/:quality")
+        .route("/:uid/:movieId/:quality/:source")
         .get(movieController.getMovieStream);
 
     return movieRouter;

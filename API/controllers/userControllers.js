@@ -76,7 +76,6 @@ module.exports = {
   },
 
   register: async (req, res, next) => {
-    //console.log(req.body);
     //Check inputs
     var lang = req.session.language;
     console.log(lang);
@@ -120,18 +119,35 @@ module.exports = {
   updateUser:  async (req, res, next) => {
     var token = jwtService.parseAuthorization(req.headers.authorization);
     if (jwtService.verifyToken(token)) {
-      User.findOneAndUpdate({ token: token }, req.body.data, err => {
-        if (err) console.log(err);
+      var err;
+      if (req.body.firstname !== undefined && (err = inputService.firstname(req.body.firstname).error)) {
+        return res.status(400).json({ error: 'firstname ' + err });
+      }
+      if (req.body.lastname !== undefined && (err = inputService.lastname(req.body.lastname).error)) {
+        return res.status(400).json({ error: 'lastname ' + err });
+      }
+      if (req.body.username !== undefined) {
+        err = await inputService.username(req.body.username);
+        if (err.error) {
+          return res.status(400).json({ error: 'username ' + err.error });
+        }
+      }
+      if (req.body.email !== undefined) {
+        err = await inputService.mail(req.body.email);
+        if (err.error) {
+          return res.status(400).json({ error: 'mail ' + err.error });
+        }
+      }
+      User.findOneAndUpdate({ token: token }, req.body, err => {
+        if (err) return res.status(400).json({error: "User update failed"});
       });
       return res.status(200).json({ message: 'User updated' });
     }
     return res.status(400).json({error: "User update failed"});
   },
 
-  getUser:  async (req, res, next) => {
-    console.log("Over here");
-    console.log(req);
-  /*   await User.findOne({ ...req.body.data }, function(err, user) {
+  getUserByUsername:  async (req, res, next) => {
+    await User.findOne({ username: req.params.username }, function(err, user) {
       if (err) {
         return res.status(401).json({ error: 'User not found' });
       }
@@ -139,9 +155,8 @@ module.exports = {
         return res.status(401).json({ error: 'User not found' });
       }
       return res.status(200).json(user);
-  }) */
-},
-
+    })
+  },
 
   logout: async (req, res, next) => {
     var token = jwtService.parseAuthorization(req.headers.authorization);
@@ -151,7 +166,7 @@ module.exports = {
       });
       req.logout();
       req.session = null;
-      return res.status(200).json({ message: 'Loggued out!' });
+      return res.status(200).json({ message: 'Logged out!' });
     }
   },
 
@@ -257,6 +272,7 @@ module.exports = {
   },
 
   resetPassword: async (req, res, next) => {
+    var err;
     if ((err = inputService.password(req.body.pwd1).error))
       return res.status(400).json({ error: 'password ' + err });
     if ((err = inputService.password(req.body.pwd2).error))
@@ -286,6 +302,63 @@ module.exports = {
           });
         }
       );
+    }
+  },
+
+  changePassword: async (req, res, next) => {
+    var err;
+    if ((err = inputService.password(req.body.pwd1).error))
+      return res.status(400).json({ error: 'password ' + err });
+    if ((err = inputService.password(req.body.pwd2).error))
+      return res.status(400).json({ error: 'password ' + err });
+    if (req.body.pwd1 !== req.body.pwd2)
+      return res.status(400).json({ error: 'password has to be identical' });
+
+    var result = await User.find({
+      username: sanitize(req.body.username)
+    });
+    if (result.length < 1)
+      return res.status(400).json({ error: 'Impossible to reset password...' });
+    else {
+      User.findOneAndUpdate(
+        { username: sanitize(req.body.username) },
+        {
+          activationKey: null
+        },
+        (err, user) => {
+          if (err) console.log(err);
+          user.setPassword(req.body.pwd1, () => {
+            user.save().catch(err => {
+              console.error(err);
+            });
+            return res.status(200).json({ status: 'success' });
+          });
+        }
+      );
+    }
+  },
+
+  deleteUser: async (req, res, next) => {
+    var token = jwtService.parseAuthorization(req.headers.authorization);
+    if (jwtService.verifyToken(token)) {
+      await User.findOne({ token: token }, function(err, user) {
+        if (err) {
+          return res.status(400).json({ error: 'Impossible to delete account...' });
+        }
+        if (!user) {
+          return res.status(400).json({ error: 'Impossible to delete account...' });
+        } else {
+          User.findOneAndRemove({ token: token }, (err) => {
+            if (err) {
+              return res.status(400).json({ error: 'Impossible to delete account...' });
+            } else {
+              return res.status(200).json({ status: 'success' });
+          }
+          });
+        }
+      })
+    } else {
+      return res.status(400).json({ error: 'Impossible to delete account...' });
     }
   }
 };

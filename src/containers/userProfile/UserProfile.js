@@ -1,4 +1,5 @@
-import React, { useReducer, useEffect, useContext } from 'react';
+import React, { useReducer, useEffect, useContext, useState } from 'react';
+import { withRouter } from "react-router-dom";
 import NavBar from '../../components/navbar/NavBar';
 import withAuth from "../../services/withAuth";
 import UserPictureView from '../../components/pictures/UserPictureView';
@@ -10,6 +11,7 @@ import { ModalButtonSecondary } from '../../components/buttons/ModalButtons';
 import EditProfileModal from '../../components/modals/EditProfileModal';
 import { GlobalContext } from '../../context/GlobalContext';
 import axios from "axios";
+import ErrorToast from "../../services/toasts/ErrorToasts";
 
 const initialState = {
   sendingRequest: false,
@@ -42,35 +44,24 @@ const reducer = (state, action) => {
         data: action.payload,
         status: 'Received'
       };
-    case 'USER_UPDATE_REQUEST':
-      return {
-        ...state,
-        sendingRequest: true,
-        requestReceived: false,
-        data: [],
-        status: 'Pending...'
-      };
-    case 'USER_UPDATE_SUCCESS':
-      return {
-        ...state,
-        sendingRequest: false,
-        requestReceived: true,
-        data: action.payload,
-        status: 'Updated'
-      };
     default:
       return state;
   }
 };
 
-const UserProfile = () => {
+const UserProfile = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [updating, setUpdating] = useState(false);
   const user = useContext(GlobalContext);
+  let url = document.location.href;
+  let username = url.split('/');
+  username = username[username.length - 1];
+
+  const userUpdate = () => {
+    setUpdating(true);
+  }
 
   useEffect(() => {
-    let url = document.location.href;
-    let username = url.split('/');
-    username = username[username.length - 1];
 
     dispatch({
       type: 'USER_PROFILE_REQUEST'
@@ -82,14 +73,19 @@ const UserProfile = () => {
           type: 'USER_PROFILE_SUCCESS',
           payload: user
         });
-      } else {
-        console.log("username:", username);
-        axios.get('/users/get-profile', "toto").then(res => {
-          console.log(res.data);
+      } else if (!updating) {
+        axios.get(`/users/get-profile/${username}`).then(res => {
+          dispatch({
+            type: 'USER_PROFILE_SUCCESS',
+            payload: res.data
+          });
+        }).catch(err => {
+          props.history.push("/search");
+          ErrorToast.custom.error("User not found", 4000);
         })
       }
     }
-  }, [user]);
+  }, [user, username]);
 
   const { data } = state;
 
@@ -107,22 +103,23 @@ const UserProfile = () => {
                 </div>
                 <div className="user-profile-info-text col l10 m8 s12">
                   <p className="user-profile-info-text-big">{data.username}</p>
-                  <p className="user-profile-info-text-regular">
+                  <p className="user-profile-info-text-regular text-first-letter-capital">
                     {data.firstname + ' ' + data.lastname}
                   </p>
                   <p className="user-profile-info-text-regular">
                     {'Preferred language: ' + languages[data.locale]}
                   </p>
-                  {/*                   <FunctionButtonSecondary
+                  { user.username !== "" && user.username === username ? 
+                  <ModalButtonSecondary
+                  text="EDIT"
+                  tooltip="Edit your profile"
+                  href="edit-profile-modal"
+                  /> :
+                  <FunctionButtonSecondary
                     text="follow"
                     func={() => console.log("toto")}
                     tooltip="Click to follow user"
-                  /> */}
-                  <ModalButtonSecondary
-                    text="EDIT"
-                    tooltip="Edit your profile"
-                    href="edit-profile-modal"
-                  />
+                  /> }
                 </div>
               </div>
               <div className="user-profile-movies-seen">
@@ -152,11 +149,11 @@ const UserProfile = () => {
               )}
             </div>
           </div>
-          {data.username && <EditProfileModal user={data} />}
+          {data.username === username && <EditProfileModal user={data} update={userUpdate} />}
         </div>
       </div>
     </div>
   );
 };
 
-export default withAuth(UserProfile);
+export default withAuth(withRouter(UserProfile));

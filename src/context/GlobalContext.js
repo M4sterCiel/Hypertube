@@ -10,6 +10,7 @@ export const GlobalContext = createContext({
   email: "",
   uid: "",
   picture: "",
+  loaded: false,
   setLocale: () => {},
   updateContext: () => {},
   resetContext: () => {}
@@ -26,6 +27,7 @@ class GlobalContextProvider extends Component {
       email: "",
       uid: "",
       picture: "",
+      loaded: true,
       setLocale: data => this.setState({ locale: data }),
       updateContext: data =>
         this.setState({
@@ -34,8 +36,8 @@ class GlobalContextProvider extends Component {
           firstname: data.firstname,
           lastname: data.lastname,
           email: data.email,
-          uid: data.username,
-          picture: data.picture
+          picture: data.picture,
+          loaded: true
         }),
         updatePicture: data => this.setState({
           picture: data
@@ -56,7 +58,7 @@ class GlobalContextProvider extends Component {
 
   async componentDidMount() {
     var token = await this.Auth.getToken();
-    if (token) {
+    if (token && this.state.username === "") {
       await axios
         .get("/users/session", { headers: { Authorization: token } })
         .then(async res => {
@@ -67,19 +69,24 @@ class GlobalContextProvider extends Component {
             lastname: res.data.lastname ? res.data.lastname : "",
             email: res.data.email ? res.data.email : "",
             uid: res.data._id ? res.data._id : "",
-            picture: res.data.img ? res.data.img : ""
+            picture: res.data.img ? res.data.img : "",
+            loaded: true
           });
         })
         .catch(err => {
-          console.log("fnejfdbvisdfbvi");
+          console.log("Cannot update GlobalContext");
         });
+    } else if (!token) {
+      await this.setState({
+        loaded: true
+      });
     }
   }
 
   render() {
     return (
       <GlobalContext.Provider value={{ ...this.state }}>
-        {this.props.children}
+        {this.state.loaded && this.props.children}
       </GlobalContext.Provider>
     );
   }
