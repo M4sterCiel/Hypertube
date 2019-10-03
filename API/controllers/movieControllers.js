@@ -110,8 +110,14 @@ module.exports = {
             User.findOne({ _id: req.params.uid }, (err, user) => {
                 console.log(user);
                 if (err) console.log(err);
-                user.movies_seen.push(req.params.movieId);
-                user.save();
+                var exists = false;
+                user.movies_seen.forEach(e => {
+                    if (e === req.params.movieId) exists = true;
+                });
+                if (!exists) {
+                    user.movies_seen.push(req.params.movieId);
+                    user.save();
+                }
             });
             var pathFile = undefined;
             if (result && result.path) {
@@ -192,8 +198,13 @@ module.exports = {
                             magnet = element.magnet;
                     });
                     if (magnet !== undefined) {
-                        magnet = magnet.split("/");
-                        magnet = magnet[magnet.length - 1];
+                        if (source === "Popcorn Time") {
+                            magnet = magnet.split(":")[3];
+                            magnet = magnet.split("&")[0];
+                        } else {
+                            magnet = magnet.split("/");
+                            magnet = magnet[magnet.length - 1];
+                        }
                         console.log("Magnet link: ", magnet);
                         const engine = TorrentStream(magnet, options);
 
