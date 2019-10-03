@@ -23,7 +23,6 @@ const SearchView = () => {
 
   useEffect(() => {
     const fetchMovies = async () => {
-      console.log(searchTerms);
       try {
         const res = await axios.post("/search/movies", searchTerms);
         if (res.data.length !== 0) {
