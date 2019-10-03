@@ -1,4 +1,5 @@
-import React, { useReducer, useEffect, useContext } from 'react';
+import React, { useReducer, useEffect, useContext, useState } from 'react';
+import { withRouter } from "react-router-dom";
 import NavBar from '../../components/navbar/NavBar';
 import withAuth from "../../services/withAuth";
 import UserPictureView from '../../components/pictures/UserPictureView';
@@ -48,12 +49,17 @@ const reducer = (state, action) => {
   }
 };
 
-const UserProfile = () => {
+const UserProfile = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [updating, setUpdating] = useState(false);
   const user = useContext(GlobalContext);
   let url = document.location.href;
   let username = url.split('/');
   username = username[username.length - 1];
+
+  const userUpdate = () => {
+    setUpdating(true);
+  }
 
   useEffect(() => {
 
@@ -67,13 +73,14 @@ const UserProfile = () => {
           type: 'USER_PROFILE_SUCCESS',
           payload: user
         });
-      } else {
+      } else if (!updating) {
         axios.get(`/users/get-profile/${username}`).then(res => {
           dispatch({
             type: 'USER_PROFILE_SUCCESS',
             payload: res.data
           });
         }).catch(err => {
+          props.history.push("/search");
           ErrorToast.custom.error("User not found", 4000);
         })
       }
@@ -142,11 +149,11 @@ const UserProfile = () => {
               )}
             </div>
           </div>
-          {data.username === username && <EditProfileModal user={data} />}
+          {data.username === username && <EditProfileModal user={data} update={userUpdate} />}
         </div>
       </div>
     </div>
   );
 };
 
-export default withAuth(UserProfile);
+export default withAuth(withRouter(UserProfile));

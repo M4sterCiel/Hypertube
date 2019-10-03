@@ -1,4 +1,5 @@
 import React, { useReducer, useState, useContext } from "react";
+import { withRouter } from 'react-router-dom';
 import { Modal, Select } from "react-materialize";
 import "./Modals.scss";
 import UserPictureModify from "../../components/pictures/UserPictureModify";
@@ -132,9 +133,15 @@ const EditProfileModal = props => {
         ...(user.picture !== props.user.picture && { img: user.picture})};
         
         axios.post("/users/update", {...data} , { headers: { Authorization: token }})
-        .then(res => {context.updateContext({ locale: user.locale, username: user.username.toLowerCase(), firstname: user.firstname.toLowerCase(), lastname: user.lastname.toLowerCase(), email: user.email.toLowerCase(), picture: user.picture });
-        InfoToast.custom.info("Saved", 4000);
-        document.dispatchEvent(event);})
+        .then(res => {
+          props.update();
+          context.updateContext({ locale: user.locale, username: user.username.toLowerCase(), firstname: user.firstname.toLowerCase(), lastname: user.lastname.toLowerCase(), email: user.email.toLowerCase(), picture: user.picture });
+          if (user.username.toLowerCase() !== props.user.username.toLowerCase()) {
+            props.history.push(user.username.toLowerCase());
+          }
+          InfoToast.custom.info("Saved", 4000);
+          document.dispatchEvent(event);
+      })
         .catch(err => ErrorToast.custom.error(err.response.data.error, 4000));
       } else {
         InfoToast.custom.info("Nothing changed", 4000);
@@ -236,4 +243,4 @@ const EditProfileModal = props => {
   );
 };
 
-export default EditProfileModal;
+export default withRouter(EditProfileModal);
