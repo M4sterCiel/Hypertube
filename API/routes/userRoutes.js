@@ -15,6 +15,8 @@ exports.router = (() => {
   userRouter.route('/logout').get(userController.logout);
   userRouter.route('/profile').get(userController.getProfile);
   userRouter.route('/get-profile/:username').get(userController.getUserByUsername);
+  userRouter.route('/follow').post(userController.followUser);
+  userRouter.route('/unfollow').post(userController.unfollowUser);
   userRouter.route('/update').post(userController.updateUser);
   userRouter.route('/delete').delete(userController.deleteUser);
   userRouter.route('/session').get(userController.getSession);

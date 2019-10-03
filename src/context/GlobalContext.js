@@ -10,6 +10,7 @@ export const GlobalContext = createContext({
   email: "",
   uid: "",
   picture: "",
+  following: [],
   loaded: false,
   setLocale: () => {},
   updateContext: () => {},
@@ -27,6 +28,7 @@ class GlobalContextProvider extends Component {
       email: "",
       uid: "",
       picture: "",
+      following: [],
       loaded: true,
       setLocale: data => this.setState({ locale: data }),
       updateContext: data =>
@@ -38,10 +40,10 @@ class GlobalContextProvider extends Component {
           email: data.email,
           picture: data.picture,
           loaded: true
-        }),
-        updatePicture: data => this.setState({
-          picture: data
-        }),
+      }),
+      updateFollowing: data => this.setState({
+        following: data
+      }),
       resetContext: () =>
         this.setState({
           locale: this.state.locale,
@@ -50,7 +52,8 @@ class GlobalContextProvider extends Component {
           lastname: "",
           email: "",
           uid: "",
-          picture: ""
+          picture: "",
+          following: []
         })
     };
     this.Auth = new AuthService();
@@ -63,13 +66,15 @@ class GlobalContextProvider extends Component {
         .get("/users/session", { headers: { Authorization: token } })
         .then(async res => {
           await this.setState({
-            locale: res.data.language ? res.data.language : this.state.locale,
+            locale: res.data.language ? res.data.language : "",
             username: res.data.username ? res.data.username : "",
             firstname: res.data.firstname ? res.data.firstname : "",
             lastname: res.data.lastname ? res.data.lastname : "",
             email: res.data.email ? res.data.email : "",
             uid: res.data._id ? res.data._id : "",
             picture: res.data.img ? res.data.img : "",
+            movies_seen: res.data.movies_seen ? res.data.movies_seen : [],
+            following: res.data.following ? res.data.following : [],
             loaded: true
           });
         })

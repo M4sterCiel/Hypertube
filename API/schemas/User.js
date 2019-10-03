@@ -11,6 +11,7 @@ const usersSchema = mongoose.Schema({
     active: { type: Boolean, default: 0 },
     language: { type: String, default: "en" },
     movies_seen: Array,
+    following: Array,
     token: String,
     oauthID: String,
     google: JSON,

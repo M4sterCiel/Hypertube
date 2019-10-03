@@ -360,5 +360,83 @@ module.exports = {
     } else {
       return res.status(400).json({ error: 'Impossible to delete account...' });
     }
+  },
+
+  followUser: async (req, res, next) => {
+    var token = jwtService.parseAuthorization(req.headers.authorization);
+    if (jwtService.verifyToken(token)) {
+      await User.findOne({ token: token }, async function(err, user) {
+        if (err) {
+          return res.status(400).json({ error: 'Impossible to follow user...' });
+        }
+        if (!user) {
+          return res.status(400).json({ error: 'Impossible to follow user...' });
+        } else {
+          await User.findOne({ username: req.body.username }, async function(err, result) {
+            if (err) {
+              return res.status(400).json({ error: 'Impossible to follow user...' });
+            }
+            if (!result) {
+              return res.status(400).json({ error: 'Impossible to follow user...' });
+            }
+            if (user._id === result._id) {
+              return res.status(400).json({ error: 'Impossible to follow yourself...' });
+            } else {
+              await User.find({ _id: user._id, following: {$in: result._id} }, function(err, check) {
+                if (err) {
+                  return res.status(400).json({ error: 'Impossible to follow user...' });
+                }
+                if (check.length) {
+                  return res.status(400).json({ error: 'Already following user' });
+                } else {
+                  user.following.push(result._id);
+                  user.save();
+                  return res.status(200).json({ message: 'Following user', userFollowed: result, followingList: user.following });
+                }
+              })
+            }
+          })
+        }
+      })
+    }
+  },
+
+  unfollowUser: async (req, res, next) => {
+    var token = jwtService.parseAuthorization(req.headers.authorization);
+    if (jwtService.verifyToken(token)) {
+      await User.findOne({ token: token }, async function(err, user) {
+        if (err) {
+          return res.status(400).json({ error: 'Impossible to unfollow user...' });
+        }
+        if (!user) {
+          return res.status(400).json({ error: 'Impossible to unfollow user...' });
+        } else {
+          await User.findOne({ username: req.body.username }, async function(err, result) {
+            if (err) {
+              return res.status(400).json({ error: 'Impossible to unfollow user...' });
+            }
+            if (!result) {
+              return res.status(400).json({ error: 'Impossible to unfollow user...' });
+            }
+            if (user._id === result._id) {
+              return res.status(400).json({ error: 'Impossible to unfollow yourself...' });
+            } else {
+              await User.find({ _id: user._id, following: {$in: result._id} }, function(err, check) {
+                if (err) {
+                  return res.status(400).json({ error: 'Impossible to unfollow user...' });
+                }
+                if (!check.length) {
+                  return res.status(400).json({ error: 'Already unfollowing user' });
+                } else {
+                  user.following.remove(result._id);
+                  user.save();
+                  return res.status(200).json({ message: 'Unfollowing user', userFollowed: result, followingList: user.following });
+                }
+              })
+            }
+          })
+        }
+      })
+    }
   }
 };
