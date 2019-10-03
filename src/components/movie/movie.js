@@ -1,5 +1,5 @@
 import React from "react";
-import "./movie.scss";
+import "./Movie.scss";
 
 const Movie = ({ movie }) => {
 

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./NavBar.scss";
 import AuthService from "../../services/AuthService";
 import { withRouter, NavLink } from "react-router-dom";
-import { LoginButton, LogoutButton, RegisterButton } from "../buttons/Buttons";
+import { LoginButton, RegisterButton } from "../buttons/Buttons";
 import { Button } from "react-materialize";
 import { makeStyles } from "@material-ui/core/styles";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
@@ -11,6 +11,7 @@ import ListItem from "@material-ui/core/ListItem";
 import logo from "../../assets/hyperflix_logo2.png";
 import { GlobalContext } from "../../context/GlobalContext";
 import CountryPicker from "../buttons/CountryPicker";
+import DefaultUserPic from "../../assets/default_user.png";
 import CustomLanguage from "../../services/DefineLocale";
 
 class NavBar extends Component {
@@ -239,7 +240,7 @@ class NavBar extends Component {
                     </i>
                   </NavLink>
                   <NavLink to={`/user/${context.username}`} className="nav-link">
-                    <div className="nav-link-img" style={{ backgroundImage: "url(" + context.picture + ")" }}></div>
+                    <div className="nav-link-img" style={{ backgroundImage: "url(" + (context.picture ? context.picture : DefaultUserPic) + ")" }}></div>
                   </NavLink>
                   <NavLink to="#" onClick={this.handleLogout} className="nav-link">
                     <i className="material-icons icons-white nav-link-icon">
