@@ -1,16 +1,15 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import withAuth from "../../services/withAuth";
+import "./MoviePage.scss";
 
-class MoviePage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isPlayer: false
-        };
-    }
+const MoviePage = () => {
 
-    render() {
-        return (
+    const [moviePageState, setMoviePage] = useState({
+        isPlayer: false,
+    });
+
+    return (
+        <div className="MoviePage">
             <div className="player">
                 <video controls>
                     <source
@@ -19,7 +18,8 @@ class MoviePage extends Component {
                     />
                 </video>
             </div>
-        );
-    }
+        </div>
+    );
+    
 }
 export default withAuth(MoviePage);

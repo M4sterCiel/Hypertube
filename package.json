@@ -75,5 +75,8 @@
             "last 1 safari version"
         ]
     },
-    "proxy": "http://localhost:5000"
+    "proxy": "http://localhost:5000",
+    "devDependencies": {
+        "case-sensitive-paths-webpack-plugin": "^2.2.0"
+    }
 }
