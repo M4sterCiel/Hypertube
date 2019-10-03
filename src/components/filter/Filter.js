@@ -1,10 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./Filter.scss";
 import Slider, { Range } from "rc-slider";
 import "rc-slider/assets/index.css";
 import { GlobalContext } from "../../context/GlobalContext";
+import SearchContext from '../../context/SearchContext'
 
-const Filter = ({ filter }) => {
+const Filter = ({ ratings, years, genre }) => {
+
+  const genreList = [
+    'All',
+    'Action',
+    'Adventure',
+    'Animation',
+    'Comedy',
+    'Crime',
+    'Documentary',
+    'Drama',
+    'Family',
+    'Fantasy',
+    'History',
+    'Horror',
+    'Music',
+    'Musical',
+    'Mystery',
+    'Romance',
+    'Sci-Fi',
+    'Sport',
+    'Thriller',
+    'War',
+    'Western'
+  ]
+
+  const searchTerms = useContext(SearchContext);
+
+  const handleRatingChanges = value => {
+    ratings(value);
+  };
+
+  const handleYearChanges = value => {
+    years(value);
+  };
+
+  const handleGenreChanges = e => {
+    if (e.target.value != "All")
+    {
+      genre(e.target.value.toLowerCase());
+    } else {
+      genre("All");
+    }
+  };
+
   const createSliderWithTooltip = Slider.createSliderWithTooltip;
   const Range = createSliderWithTooltip(Slider.Range);
 
@@ -27,39 +72,38 @@ const Filter = ({ filter }) => {
             lang = require("../../locale/en");
         }
         return (
-          <div class="all">
-            <div class="RatingRange">
+          <div className="all">
+            <div className="RatingRange">
               <label>{lang.search[0].rating}</label>
               <Range
                 min={0}
                 max={10}
                 allowCross={false}
-                defaultValue={[0, 10]}
+                defaultValue={searchTerms.ratings}
+                onAfterChange={handleRatingChanges}
               />
             </div>
-            <div class="YearRange">
+            <div className="YearRange">
               <label>{lang.search[0].year}</label>
               <Range
                 min={1915}
                 max={2019}
                 allowCross={false}
-                defaultValue={[1915, 2019]}
+                defaultValue={searchTerms.years}
+                onAfterChange={handleYearChanges}
               />
             </div>
-            <select class="browser-default">
-              <option value="" disabled selected>
-                {lang.search[0].genre}
+            <select className="browser-default"
+                    id="genreSelect"
+                    onChange={handleGenreChanges}
+            >
+              {genreList.map(genre => (
+              <option key={genre} 
+                      value={genre} 
+              >
+                {genre}
               </option>
-              <option value="0">any</option>
-              <option value="1">Action</option>
-              <option value="2">Comedy</option>
-              <option value="3">Horror</option>
-              <option value="4">Thriller</option>
-              <option value="5">Drama</option>
-              <option value="6">Adventure</option>
-              <option value="7">Fantasy</option>
-              <option value="8">Animation</option>
-              <option value="8">Sci-Fi</option>
+            ))}
             </select>
           </div>
         );

@@ -1,23 +1,24 @@
 import React from "react";
-import "./movie.scss";
-
-const DEFAULT_PLACEHOLDER_IMAGE =
-  "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg";
+import "./Movie.scss";
 
 const Movie = ({ movie }) => {
-  const poster =
-    movie.large_cover_image === "N/A"
-      ? DEFAULT_PLACEHOLDER_IMAGE
-      : movie.large_cover_image;
+
   return (
     <div className="movie">
-      {/* <h2><strong>{movie.title}</strong></h2> */}
-      <div>
-        <img alt={`The movie titled: ${movie.title}`} src={poster} />
+      <img
+        alt={`${movie.title}`}
+        src={movie.poster}
+      />
+      <div className="movieInfosDiv">
+        { movie.title.length < 25 ? (
+          <p className="movieTitle"><strong>{movie.title}</strong></p>
+        ) : (
+          <p className="movieTitle"><strong>{movie.title.substring(0, 25) + "..."}</strong></p>
+        )}
+        <p className="movieInfos">
+          {movie.year} &nbsp;|&nbsp; {movie.rating} ☆
+        </p>
       </div>
-      <p>
-        <strong>{movie.year} &nbsp;|&nbsp;</strong> {movie.rating} ☆
-      </p>
     </div>
   );
 };

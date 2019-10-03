@@ -1,115 +1,114 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, useState } from "react";
+import axios from 'axios';
 import withAuth from "../../services/withAuth";
 import "./Search.scss";
-// import Header from "./Header";
-import spinner from "../../spinner.gif";
-import Movie from "../../components/movie/movie";
-import Search from "../../components/searchBar/searchBar";
+import Movie from "../../components/movie/Movie";
+import Search from "../../components/searchBar/SearchBar";
 import Navbar from "../../components/navbar/NavBar";
 import Filter from "../../components/filter/Filter";
-
-const MOVIE_API_URL =
-  "https://yts.lt/api/v2/list_movies.json?minimum_rating=8.5&order_by=asc"; // https://yts.lt/api/v2/list_movies.json?query_term=man https://www.omdbapi.com/?s=man&apikey=4a3b711b
-
-const initialState = {
-  loading: true,
-  movies: [],
-  errorMessage: null
-};
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "SEARCH_MOVIES_REQUEST":
-      return {
-        ...state,
-        loading: true,
-        errorMessage: null
-      };
-    case "SEARCH_MOVIES_SUCCESS":
-      return {
-        ...state,
-        loading: false,
-        movies: action.payload
-      };
-    case "SEARCH_MOVIES_FAILURE":
-      return {
-        ...state,
-        loading: false,
-        errorMessage: "No movies found"
-      };
-    default:
-      return state;
-  }
-};
+import { SearchProvider } from '../../context/SearchContext';
 
 const SearchView = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const [searchTerms, setSearchTerms] = useState({
+    genre: "All",
+    page: 1,
+    ratings: [0, 10],
+    years: [1915, 2019],
+    keywords: "",
+    limit: 40
+  })
+
+  const [searchResult, setSearchResult] = useState({movies: []});
 
   useEffect(() => {
-    fetch(MOVIE_API_URL)
-      .then(response => response.json())
-      .then(jsonResponse => {
-        dispatch({
-          type: "SEARCH_MOVIES_SUCCESS",
-          payload: jsonResponse.data.movies
-        });
-      });
-  }, []);
-
-  // you can add this to the onClick listener of the Header component
-  //   const refreshPage = () => {
-  //     window.location.reload();
-  //   };
+    const fetchMovies = async () => {
+      console.log(searchTerms);
+      try {
+        const res = await axios.post("/search/movies", searchTerms);
+        if (res.data.length !== 0) {
+          if (searchTerms.page === 1)
+            setSearchResult({ movies: [...res.data] })
+          else
+            setSearchResult(prev => ({movies: prev.movies.concat(res.data)}))
+        }
+      } catch(err) {
+        if (err.response && err.response.status === 401) 
+          console.log(err.response);
+      }
+    }
+    fetchMovies();
+  }, [searchTerms])
 
   const search = searchValue => {
-    dispatch({
-      type: "SEARCH_MOVIES_REQUEST"
-    });
+    setSearchResult({movies: []});
+    setSearchTerms({
+      ...searchTerms,
+      page: 1,
+      keywords: searchValue,
+    })
+  }
+  const ratings = ratings => {
+    setSearchResult({movies: []});
+    setSearchTerms({
+      ...searchTerms,
+      page: 1,
+      ratings: ratings,
+    })
+  }
+  const years = years => {
+    setSearchResult({movies: []});
+    setSearchTerms({
+      ...searchTerms,
+      page: 1,
+      years: years,
+    })
+  }
+  const genre = genre => {
+    setSearchResult({movies: []});
+    setSearchTerms({
+      ...searchTerms,
+      page: 1,
+      genre: genre,
+    })
+  }
 
-    fetch(`https://yts.lt/api/v2/list_movies.json?query_term=${searchValue}`)
-      .then(response => response.json())
-      .then(jsonResponse => {
-        if (
-          jsonResponse.status_message === "Query was successful" &&
-          jsonResponse.data.movie_count > 0
-        ) {
-          dispatch({
-            type: "SEARCH_MOVIES_SUCCESS",
-            payload: jsonResponse.data.movies
-          });
-        } else {
-          dispatch({
-            type: "SEARCH_MOVIES_FAILURE",
-            error: jsonResponse.Error
-          });
+  useEffect(() => {
+    window.document.getElementById("infiniteScroll").addEventListener('scroll', handleScroll);
+    return () => window.document.getElementById("infiniteScroll").removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleScroll = () => {
+    if (window.document.getElementById("infiniteScroll").scrollTop + 
+        window.document.getElementById("infiniteScroll").clientHeight >= 
+        window.document.getElementById("infiniteScroll").scrollHeight - 120)
+    {
+      setSearchTerms(p => {
+        const terms = {
+            ...p,
+            page: p.page + 2
         }
-        console.log(jsonResponse);
-      });
-  };
-
-  const { movies, errorMessage, loading } = state;
+        return terms
+      })
+      return
+    }
+  }
 
   return (
-    <div className="SearchView">
-      <div className="layer">
-        <Navbar />
-        {/* <Header text="HyperFlix" /> */}
-        <Search search={search} />
-        <div class="infiniteScroll">
-          <div className="movies">
-            {loading && !errorMessage ? (
-              <img className="spinner" src={spinner} alt="Loading spinner" />
-            ) : errorMessage ? (
-              <div className="errorMessage">{errorMessage}</div>
-            ) : (
-              movies.map((movie, index) => (
-                <Movie key={`${index}-${movie.title}`} movie={movie} />
-              ))
+    <SearchProvider value={searchTerms}>
+      <div className="SearchView" id="SearchView"> 
+        <div className="layer">
+          <Navbar />
+          <Search search={search} />
+          <Filter ratings={ratings} years={years} genre={genre} />
+          <div className="infiniteScroll" id="infiniteScroll">
+            {searchResult.movies.map((movie, index) => 
+              <Movie key={`${index}-${movie.title}`} movie={movie} />
             )}
           </div>
         </div>
       </div>
-    </div>
+    </SearchProvider>
   );
 };
 
