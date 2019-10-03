@@ -27,8 +27,7 @@ class Login extends Component {
       loginValid: false,
       pwdValid: false,
       responseToPost: "",
-      locale: "en",
-      submitDisabled: false
+      locale: "en"
     };
     this.Auth = new AuthService();
     this._isMounted = false;
@@ -36,8 +35,7 @@ class Login extends Component {
 
   async componentDidMount() {
     this._isMounted = true;
-    if (await this.Auth.isTokenValid() /* && await this.Auth.isSessionValid() */) {
-      console.log("titi");
+    if (await this.Auth.isTokenValid()) {
       var lang = await CustomLanguage.define(this.context.locale);
       InfoToast.custom.info(lang.already_logged, 4000);
       this.props.history.replace("/search");
@@ -87,30 +85,21 @@ class Login extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-    this._isMounted && this.setState({
-      submitDisabled: true
-    })
     await axios
       .post("/users/login", {
         username: this.state.login,
         password: this.state.password
       })
-      .then(res => {
+      .then(async res => {
         if (res.data.status === "success") {
-          this.context.updateContext({locale: res.data.user.language, username: res.data.user.username, firstname: res.data.user.firstname, lastname: res.data.user.lastname, email: res.data.user.email, picture: res.data.user.picture});
-          this.Auth.setToken(res.data.token);
-          this.props.history.replace("/search");
+          await this.context.updateContext({locale: res.data.user.language, username: res.data.user.username, firstname: res.data.user.firstname, lastname: res.data.user.lastname, email: res.data.user.email, picture: res.data.user.picture});
+          await this.Auth.setToken(res.data.token);
+          await this.props.history.replace("/search");
         } else {
-          this._isMounted && this.setState({
-            submitDisabled: true
-          });
           ErrorToast.custom.error(res.data.msg, 4000);
         }
       })
       .catch(err => {
-        this._isMounted && this.setState({
-          submitDisabled: false
-        })
         ErrorToast.custom.error(err.response.data.error, 4000);
       });
   };
@@ -165,7 +154,7 @@ class Login extends Component {
                         value={lang.login[0].login}
                         className="btn btn-submit-form"
                         disabled={
-                          !this.state.loginValid || !this.state.pwdValid || this.state.submitDisabled
+                          !this.state.loginValid || !this.state.pwdValid
                         }
                       />
                     </form>

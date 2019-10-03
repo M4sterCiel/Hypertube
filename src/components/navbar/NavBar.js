@@ -28,8 +28,6 @@ class NavBar extends Component {
     this._isMounted = true;
     if (await this.Auth.isTokenValid()) {
       this._isMounted && this.setState({logged: true});
-    } else if (await !this.Auth.isSessionValid()) {
-      this._isMounted && this.setState({logged: false});
     }
   }
 
@@ -182,7 +180,7 @@ class NavBar extends Component {
                     </NavLink>
                   </ListItem>
                   <ListItem>
-                    <NavLink className="nav-mobile-menu-links" to="/user/lucas">
+                    <NavLink className="nav-mobile-menu-links" to={`/user/${context.username}`} >
                       <i className="material-icons icons-red link-icon nav-mobile-menu-icons">
                       person
                       </i>
@@ -232,23 +230,27 @@ class NavBar extends Component {
       return (
         <GlobalContext.Consumer>
           {context => {
-            return (
-              <div className="nav-btns-right">
-                <NavLink to="/search" className="nav-link">
-                  <i className="material-icons icons-white nav-link-icon">
-                  search
-                  </i>
-                </NavLink>
-                <NavLink to={`/user/${context.username}`} className="nav-link">
-                  <div className="nav-link-img" style={{ backgroundImage: "url(" + context.picture + ")" }}></div>
-                </NavLink>
-                <NavLink to="#" onClick={this.handleLogout} className="nav-link">
-                  <i className="material-icons icons-white nav-link-icon">
-                  exit_to_app
-                  </i>
-                </NavLink>
-              </div>
-            );
+            if (context.username !== "") {
+              return (
+                <div className="nav-btns-right">
+                  <NavLink to="/search" className="nav-link">
+                    <i className="material-icons icons-white nav-link-icon">
+                    search
+                    </i>
+                  </NavLink>
+                  <NavLink to={`/user/${context.username}`} className="nav-link">
+                    <div className="nav-link-img" style={{ backgroundImage: "url(" + context.picture + ")" }}></div>
+                  </NavLink>
+                  <NavLink to="#" onClick={this.handleLogout} className="nav-link">
+                    <i className="material-icons icons-white nav-link-icon">
+                    exit_to_app
+                    </i>
+                  </NavLink>
+                </div>
+              );
+            } else {
+              return null;
+            }
           }}
         </GlobalContext.Consumer>
       );
@@ -300,7 +302,6 @@ class NavBar extends Component {
   }
 
   handleLogout = async () => {
-    console.log("logout");
     await this.Auth.logout();
     await this.context.resetContext();
     this.props.history.replace("/login");

@@ -53,7 +53,7 @@ class Register extends Component {
 
   async componentDidMount() {
     this._isMounted = true;
-    if ((await this.Auth.isTokenValid()) && this.Auth.isSessionValid()) {
+    if (await this.Auth.isTokenValid()) {
       var lang = await CustomLanguage.define(this.context.locale);
       InfoToast.custom.info(lang.already_logged, 4000);
       this.props.history.replace("/search");

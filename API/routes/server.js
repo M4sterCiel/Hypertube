@@ -50,16 +50,17 @@ app.use(bodyParser.json({ limit: "10mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 app.use(bodyParser.json());
 app.use(
-    session({
-        secret: "hyperflix",
-        cookie: {
-            maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
-        },
-        store: store,
-        resave: false,
-        saveUninitialized: false,
-        unset: "destroy"
-    })
+  session({
+    secret: "hyperflix",
+    httpOnly: true,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+    },
+    store: store,
+    resave: false,
+    saveUninitialized: false,
+    unset: "destroy"
+  })
 );
 app.use(flash());
 
