@@ -2,7 +2,7 @@ import React, { useReducer, useEffect, useState } from "react";
 import axios from "axios";
 import withAuth from "../../services/withAuth";
 import "./Search.scss";
-import Movie from "../../components/movie/movie";
+import Movie from "../../components/movie/Movie";
 import Search from "../../components/searchBar/searchBar";
 import Navbar from "../../components/navbar/NavBar";
 import Filter from "../../components/filter/Filter";
