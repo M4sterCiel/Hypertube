@@ -191,8 +191,13 @@ module.exports = {
                             magnet = element.magnet;
                     });
                     if (magnet !== undefined) {
-                        magnet = magnet.split("/");
-                        magnet = magnet[magnet.length - 1];
+                        if (source === "Popcorn Time") {
+                            magnet = magnet.split(":")[3];
+                            magnet = magnet.split("&")[0];
+                        } else {
+                            magnet = magnet.split("/");
+                            magnet = magnet[magnet.length - 1];
+                        }
                         console.log("Magnet link: ", magnet);
                         const engine = TorrentStream(magnet, options);
 
