@@ -26,15 +26,8 @@ class NavBar extends Component {
 
   async componentDidMount() {
     this._isMounted = true;
-/*     if (await this.Auth.isTokenValid()) {
+    if (await this.Auth.isTokenValid()) {
       this._isMounted && this.setState({logged: true});
-    } else if (await !this.Auth.isSessionValid()) {
-      this._isMounted && this.setState({logged: false});
-    } */
-    if (await this.Auth.loggedIn()) {
-      this._isMounted && this.setState({logged: true});
-    } else {
-      this._isMounted && this.setState({logged: false});
     }
   }
 

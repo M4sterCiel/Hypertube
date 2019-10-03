@@ -3,12 +3,33 @@ import "materialize-css";
 import "materialize-css/dist/css/materialize.min.css";
 import "./LandingPage.scss";
 import Navbar from "../../components/navbar/NavBar";
+import AuthService from "../../services/AuthService";
 import { LpBigButton } from "../../components/buttons/BigButtons";
 import { withRouter } from "react-router-dom";
 import { GlobalContext } from "../../context/GlobalContext";
+import InfoToast from "../../services/toasts/InfoToasts";
 import CustomLanguage from "../../services/DefineLocale";
 
 class LandingPage extends Component {
+  constructor(props) {
+    super(props);
+    this.Auth = new AuthService();
+    this._isMounted = false;
+  }
+
+  async componentDidMount() {
+    this._isMounted = true;
+    if (await this.Auth.isTokenValid()) {
+      var lang = await CustomLanguage.define(this.context.locale);
+      InfoToast.custom.info(lang.already_logged, 4000);
+      this.props.history.replace("/search");
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   render() {
     return (
       <GlobalContext.Consumer>

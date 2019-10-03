@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import AuthService from "../services/AuthService";
+import LoadingFullScreen from "../components/loadingAnim/LoadingFullScreen";
 
 // HOC to wrap component and verify authentication
 export default function withAuth(AuthComponent) {
@@ -7,38 +8,27 @@ export default function withAuth(AuthComponent) {
 
   return class AuthWrapped extends Component {
     state = {
-      validAuth: true
+      loaded: false
     };
 
     async componentDidMount() {
-/*       if (!(await Auth.isTokenValid())) {
-        this.setState({
-          validAuth: false
-        });
-        this.props.history.replace("/login");
-      } else if (!(await Auth.isSessionValid())) {
+      if (!(await Auth.loggedIn())) {
         Auth.logout();
-        this.setState({
-          validAuth: false
-        });
-        this.props.history.replace("/login"); */
-        if (!await Auth.loggedIn()) {
-          this.setState({
-            validAuth: false
-          });
-          this.props.history.replace("/login");
+        this.props.history.replace("/login");
       } else {
         this.setState({
-          validAuth: true
+          loaded: true
         });
       }
     }
 
+    componentWillUnmount() {}
+
     render() {
-      if (this.state.validAuth) {
+      if (this.state.loaded === true) {
         return <AuthComponent history={this.props.history} />;
       } else {
-        return null;
+        return <LoadingFullScreen/>;
       }
     }
   };

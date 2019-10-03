@@ -51,6 +51,7 @@ app.use(bodyParser.json());
 app.use(
   session({
     secret: "hyperflix",
+    httpOnly: true,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
     },
