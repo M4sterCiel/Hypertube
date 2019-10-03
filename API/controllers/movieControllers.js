@@ -108,9 +108,16 @@ module.exports = {
                     .status(404)
                     .json({ error: "No movie corresponding..." });
             User.findOne({ _id: req.params.uid }, (err, user) => {
+                console.log(user);
                 if (err) console.log(err);
-                user.movies_seen.push(req.params.movieId);
-                user.save();
+                var exists = false;
+                user.movies_seen.forEach(e => {
+                    if (e === req.params.movieId) exists = true;
+                });
+                if (!exists) {
+                    user.movies_seen.push(req.params.movieId);
+                    user.save();
+                }
             });
             var pathFile = undefined;
             if (result && result.path) {
