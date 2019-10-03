@@ -1,16 +1,17 @@
 const fs = require("fs");
 const mime = require("mime");
 const pump = require("pump");
-const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 const ffmpeg = require("fluent-ffmpeg");
-ffmpeg.setFfmpegPath(ffmpegPath);
 const Movie = require("../schemas/Movie");
+const User = require("../schemas/User");
 const TorrentStream = require("torrent-stream");
+const OS = require("opensubtitles-api");
+const OpenSubtitles = new OS("OSTestUserAgentTemp");
 
 const options = {
     connections: 100,
     uploads: 10,
-    path: "/goinfre", // Where to save the files. Overrides `tmp`.
+    path: process.cwd() + "/API/torrents", // Where to save the files. Overrides `tmp`.
     verify: true,
     tracker: true, // Whether or not to use trackers from torrent file or magnet link
     // Defaults to true
@@ -43,46 +44,45 @@ const options = {
 module.exports = {
     streamMovie: async (res, path, start, end, mode) => {
         if (mode === 1) {
-            console.log(mime.getType(path.name));
+            //console.log(mime.getType(path.name));
             if (
                 mime.getType(path.name) !== "video/mp4" &&
                 mime.getType(path.name) !== "video/ogg"
             ) {
-                console.log("Starting conversion...");
+                //console.log("Starting conversion...");
 
                 let torrent = path.createReadStream({
                     start: start,
                     end: end
                 });
 
-                var stream = ffmpeg(torrent)
+                let stream = ffmpeg({
+                    source: torrent
+                })
                     .videoCodec("libvpx")
+                    .videoBitrate(1024)
                     .audioCodec("libopus")
                     .audioBitrate(128)
-                    .videoBitrate(1024)
-                    .format("webm")
                     .outputOptions([
                         "-crf 30",
                         "-deadline realtime",
                         "-cpu-used 2",
                         "-threads 3"
                     ])
+                    .format("webm")
                     .on("progress", progress => {
-                        /* console.log(
-                            "Converting " + progress.percent + "% done"
-                        );
-                        console.log("TEST >>>> ", progress); */
+                        console.log(progress);
+                    })
+                    .on("start", cmd => {
+                        console.log(cmd);
+                        console.log("Starting conversion...");
                     })
                     .on("error", (err, stdout, stderr) => {
                         console.log("Cannot process video: " + err.message);
-                        console.log("ffmpeg stdout: " + stdout);
-                        console.log("ffmpeg stderr: " + stderr);
                     })
-                    .on("end", () => {
-                        console.log("Converting is done !");
-                    });
+                    .stream(res, {});
 
-                pump(stream, res);
+                //pump(stream, res);
             } else {
                 let stream = path.createReadStream({
                     start: start,
@@ -101,62 +101,80 @@ module.exports = {
     },
 
     getMovieStream: async (req, res) => {
-        var customPath = "path" + req.params.quality;
+        var customPath = req.params.quality + "_" + req.params.source;
         Movie.findOne({ imdbId: req.params.movieId }, (err, result) => {
             if (err)
                 return res
                     .status(404)
                     .json({ error: "No movie corresponding..." });
-            if (result && result[customPath]) {
-                var pathFile = result[customPath];
+            User.findOne({ _id: req.params.uid }, (err, user) => {
+                console.log(user);
+                if (err) console.log(err);
+                user.movies_seen.push(req.params.movieId);
+                user.save();
+            });
+            var pathFile = undefined;
+            if (result && result.path) {
+                result.path.forEach(e => {
+                    if (e[customPath]);
+                    pathFile = e[customPath];
+                });
+                if (pathFile !== undefined) {
+                    const stat = fs.statSync(pathFile);
+                    const fileSize = stat.size;
+                    var otherstart = 0;
+                    var otherend = fileSize - 1;
+                    const range = req.headers.range;
+                    if (range) {
+                        const parts = range.replace(/bytes=/, "").split("-");
+                        const start = parseInt(parts[0], 10);
+                        const end = parts[1]
+                            ? parseInt(parts[1], 10)
+                            : fileSize - 1;
+                        const chunksize = end - start + 1;
 
-                const stat = fs.statSync(pathFile);
-                const fileSize = stat.size;
-                var otherstart = 0;
-                var otherend = fileSize - 1;
-                const range = req.headers.range;
-                if (range) {
-                    const parts = range.replace(/bytes=/, "").split("-");
-                    const start = parseInt(parts[0], 10);
-                    const end = parts[1]
-                        ? parseInt(parts[1], 10)
-                        : fileSize - 1;
-                    const chunksize = end - start + 1;
-
-                    const head = {
-                        "Content-Range": `bytes ${start}-${end}/${fileSize}`,
-                        "Accept-Ranges": "bytes",
-                        "Content-Length": chunksize,
-                        "Content-Type": mime.getType(pathFile)
-                    };
-                    res.writeHead(206, head);
-                    module.exports.streamMovie(res, pathFile, start, end);
-                } else {
-                    const head = {
-                        "Content-Length": fileSize,
-                        "Content-Type": mime.getType(pathFile)
-                    };
-                    res.writeHead(200, head);
-                    module.exports.streamMovie(
+                        const head = {
+                            "Content-Range": `bytes ${start}-${end}/${fileSize}`,
+                            "Accept-Ranges": "bytes",
+                            "Content-Length": chunksize,
+                            "Content-Type": mime.getType(pathFile)
+                        };
+                        res.writeHead(206, head);
+                        module.exports.streamMovie(res, pathFile, start, end);
+                    } else {
+                        const head = {
+                            "Content-Length": fileSize,
+                            "Content-Type": mime.getType(pathFile)
+                        };
+                        res.writeHead(200, head);
+                        module.exports.streamMovie(
+                            res,
+                            pathFile,
+                            otherstart,
+                            otherend,
+                            0
+                        );
+                    }
+                } else
+                    module.exports.downloadMovie(
+                        req,
                         res,
-                        pathFile,
-                        otherstart,
-                        otherend,
-                        0
+                        req.params.movieId,
+                        req.params.quality,
+                        req.params.source
                     );
-                }
             } else
                 module.exports.downloadMovie(
                     req,
                     res,
                     req.params.movieId,
                     req.params.quality,
-                    0
+                    req.params.source
                 );
         });
     },
 
-    downloadMovie: async (req, res, movieId, quality) => {
+    downloadMovie: async (req, res, movieId, quality, source) => {
         try {
             Movie.findOne({ imdbId: movieId }, (err, result) => {
                 if (err)
@@ -167,7 +185,10 @@ module.exports = {
                     console.log("Processing download...");
                     var magnet = undefined;
                     result.torrents.forEach(element => {
-                        if (element.quality === quality)
+                        if (
+                            element.quality === quality &&
+                            element.source === source
+                        )
                             magnet = element.magnet;
                     });
                     if (magnet !== undefined) {
@@ -193,7 +214,10 @@ module.exports = {
                                         if (ext !== ".mp4" && ".ogg")
                                             ext = ".webm";
                                         fileSize = file.length;
-                                        newFilePath = "/goinfre/" + file.path;
+                                        newFilePath =
+                                            process.cwd() +
+                                            "/API/torrents/" +
+                                            file.path;
 
                                         const range = req.headers.range;
                                         if (range) {
@@ -221,9 +245,16 @@ module.exports = {
                                                         ? mime.getType(
                                                               file.name
                                                           )
-                                                        : "video/webm"
+                                                        : "video/webm",
+                                                Connection: "keep-alive"
                                             };
-                                            res.writeHead(206, head);
+                                            if (
+                                                mime.getType(file.path) ==
+                                                    "video/mp4" ||
+                                                mime.getType(file.path) ==
+                                                    "video/ogg"
+                                            )
+                                                res.writeHead(206, head);
                                             module.exports.streamMovie(
                                                 res,
                                                 file,
@@ -268,11 +299,12 @@ module.exports = {
                             })
                             .on("idle", () => {
                                 console.log("Download complete!");
-                                var update = "path" + quality;
-                                result[update] = newFilePath;
+                                var update = quality + "_" + source;
+                                result.path.push({
+                                    [update]: newFilePath
+                                });
+                                result.lastViewed = new Date();
                                 result.save();
-                                /*                                 engine.destroy(() => {});
-                                 */
                             });
                     }
                 } else
