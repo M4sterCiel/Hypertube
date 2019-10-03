@@ -15,7 +15,7 @@ async function connectDB() {
           useNewUrlParser: true
         }
       );
-    var db = mongoose.connection;
+    // var db = mongoose.connection;
     // works only if the collection already exists
     await mongoose.connection.dropCollection("movies")
 }
@@ -112,11 +112,41 @@ const Scrap = async () => {
         const ytsRes = await scrapYTS();
         const popcornRes = await scrapPopcorn();
        
+        const completeRawResult = ytsRes.concat(popcornRes);
+        const filteredResults = [];
+        completeRawResult.map(movie => {
+            for (i = 0; i < filteredResults.length; i++) {
+                if (!movie.imdbId) return null;
+                if (filteredResults[i].imdbId === movie.imdbId) {
+                    filteredResults[i].torrents = [
+                        ...movie.torrents,
+                        ...filteredResults[i].torrents,
+                    ]
+                    return null
+                }
+            }
+            filteredResults.push(movie);
+        })
+
         console.log("*** Removing duplicates ***");
-        var ids = new Set(ytsRes.map(d => d.imdbId));
-        var movieList = [...ytsRes, ...popcornRes.filter(d => !ids.has(d.imdbId))];
+        
+        for (i = 0; i < completeRawResult.length; i++) {
+            for (j = 0; j < completeRawResult.length; j++) {
+                if (completeRawResult[i].imdbId === completeRawResult[j].imdbId) {
+                    if (completeRawResult[i].torrents.length > completeRawResult[j].torrents.length) {
+                        completeRawResult.splice(j, 1);
+                    } 
+                }
+            }
+        }
+
+        // console.log("*** Removing duplicates ***");
+        // var ids = new Set(ytsRes.map(d => d.imdbId));
+        // var movieList = [...ytsRes, ...popcornRes.filter(d => !ids.has(d.imdbId))];
         
         console.log("*** Removing movies without poster ***");
+
+        var movieList = completeRawResult;
         for(var a = 0; a < movieList.length; a++) {
             if(movieList[a].poster === "N/A") {
                 movieList.splice(a, 1);
