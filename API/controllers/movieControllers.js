@@ -108,7 +108,6 @@ module.exports = {
                     .status(404)
                     .json({ error: "No movie corresponding..." });
             User.findOne({ _id: req.params.uid }, (err, user) => {
-                console.log(user);
                 if (err) console.log(err);
                 user.movies_seen.push(req.params.movieId);
                 user.save();

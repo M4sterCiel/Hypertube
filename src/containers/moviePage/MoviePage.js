@@ -14,7 +14,7 @@ class MoviePage extends Component {
             <div className="player">
                 <video controls>
                     <source
-                        src="http://localhost:5000/movie/5d95c4a2562e78b6a52b8eb1/tt3700392/720p/YTS"
+                        src="http://localhost:5000/movie/5d95c4a2562e78b6a52b8eb1/tt0005077/720p/YTS"
                         type="video/webm"
                     />
                 </video>

@@ -1,2 +1,7 @@
 // Ignore npm packages
 node_modules/
+*.mp4
+*.ogg
+*.webm
+.DS_Store
+.DS_STORE
