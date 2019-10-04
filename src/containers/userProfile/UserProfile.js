@@ -10,8 +10,10 @@ import UsersList from '../../components/lists/UsersList';
 import { ModalButtonSecondary } from '../../components/buttons/ModalButtons';
 import EditProfileModal from '../../components/modals/EditProfileModal';
 import { GlobalContext } from '../../context/GlobalContext';
-import axios from "axios";
+import InfoToast from "../../services/toasts/InfoToasts";
 import ErrorToast from "../../services/toasts/ErrorToasts";
+import AuthService from "../../services/AuthService";
+import axios from "axios";
 
 const initialState = {
   sendingRequest: false,
@@ -52,13 +54,66 @@ const reducer = (state, action) => {
 const UserProfile = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [updating, setUpdating] = useState(false);
+  const [followingUser, setFollowingUser] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   const user = useContext(GlobalContext);
+  const Auth = new AuthService();
   let url = document.location.href;
   let username = url.split('/');
   username = username[username.length - 1];
 
   const userUpdate = () => {
     setUpdating(true);
+  }
+
+  const handleFollow = async () => {
+    if (!buttonDisabled) {
+
+      setButtonDisabled(true);
+      setTimeout(() => setButtonDisabled(false), 4000);
+      if (!updating) {
+        var token = await Auth.getToken();
+  
+        await axios.post('/users/follow', { username }, { headers: { Authorization: token }})
+        .then(async res => {
+          await user.updateFollowing(res.data.followingList);
+          await setFollowingUser(true);
+          InfoToast.custom.info("Following user", 4000);
+        })
+        .catch(err => {
+          ErrorToast.custom.error(err.response.data.error, 4000);
+        })
+      } else {
+        ErrorToast.custom.error('Impossible to follow user...', 4000);
+      }
+    } else {
+      InfoToast.custom.info("Hold on :)", 4000);
+    }
+  }
+
+  const handleUnfollow = async () => {
+    if (!buttonDisabled) {
+
+      setButtonDisabled(true);
+      setTimeout(() => setButtonDisabled(false), 4000);
+        if (!updating) {
+        var token = await Auth.getToken();
+
+        await axios.post('/users/unfollow', { username }, { headers: { Authorization: token }})
+        .then(async res => {
+          await user.updateFollowing(res.data.followingList);
+          await setFollowingUser(false);
+          InfoToast.custom.info("Unfollowing user", 4000);
+        })
+        .catch(err => {
+          ErrorToast.custom.error(err.response.data.error, 4000);
+        })
+      } else {
+        ErrorToast.custom.error('Impossible to unfollow user...', 4000);
+      }
+    } else {
+      InfoToast.custom.info("Hold on :)", 4000);
+    }
   }
 
   useEffect(() => {
@@ -77,8 +132,9 @@ const UserProfile = (props) => {
         axios.get(`/users/get-profile/${username}`).then(res => {
           dispatch({
             type: 'USER_PROFILE_SUCCESS',
-            payload: res.data
+            payload: {...res.data, locale: res.data.language}
           });
+          setFollowingUser(user.following.includes(res.data._id));
         }).catch(err => {
           props.history.push("/search");
           ErrorToast.custom.error("User not found", 4000);
@@ -115,10 +171,15 @@ const UserProfile = (props) => {
                   tooltip="Edit your profile"
                   href="edit-profile-modal"
                   /> :
-                  <FunctionButtonSecondary
+                  !followingUser ? <FunctionButtonSecondary
                     text="follow"
-                    func={() => console.log("toto")}
+                    func={handleFollow}
                     tooltip="Click to follow user"
+                  /> : 
+                  <FunctionButtonSecondary
+                    text="unfollow"
+                    func={handleUnfollow}
+                    tooltip="Click to unfollow user"
                   /> }
                 </div>
               </div>
