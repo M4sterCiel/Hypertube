@@ -114,6 +114,8 @@ const MoviePage = () => {
                                 <p className="moviePrimary">98min</p>
                                 <p className="movieSecondary">Director:</p>
                                 <p className="moviePrimary">Samuel Kraftman</p>
+                                <p className="movieSecondary">Starring:</p>
+                                <p className="moviePrimary">Joe Fyn, Sarah Beltion, Ed Fill</p>
                             </div>
                         </div>
                         <p className="movieSecondary">Synopsis:</p>
