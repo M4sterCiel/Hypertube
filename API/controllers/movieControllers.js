@@ -6,7 +6,7 @@ const Movie = require("../schemas/Movie");
 const User = require("../schemas/User");
 const TorrentStream = require("torrent-stream");
 const OS = require("opensubtitles-api");
-const OpenSubtitles = new OS("OSTestUserAgentTemp");
+const OpenSubtitles = new OS("TemporaryUserAgent");
 
 const options = {
     connections: 100,
@@ -42,6 +42,16 @@ const options = {
 };
 
 module.exports = {
+    getSubtitles: (res, movieId) => {
+        OpenSubtitles.search({
+            sublanguageid: ["fre", "eng", "spa"].join(),
+            extensions: "srt",
+            imdbid: movieId
+        }).then(subtitles => {
+            console.log(subtitles);
+        });
+    },
+
     convertVideo: (res, path) => {
         console.log("Starting conversion...");
 
@@ -106,6 +116,7 @@ module.exports = {
     },
 
     getMovieStream: async (req, res) => {
+        module.exports.getSubtitles(res, req.params.movieId);
         var customPath = req.params.quality + "_" + req.params.source;
         Movie.findOne({ imdbId: req.params.movieId }, (err, result) => {
             if (err || result === null)
