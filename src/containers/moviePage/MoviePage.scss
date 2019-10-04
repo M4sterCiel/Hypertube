@@ -23,35 +23,23 @@
 
 .movieTitle {
     font-size: 24px;
-    margin-top: 30px;
+    margin-top: 0px;
 }
 
 .player {
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
-.options {
-    margin-top: 30px;
-    width: 92px;
+.player, .videoSource {
+    max-width: 96vw;
     margin-left: auto;
     margin-right: auto;
-}
-
-#subtitlesSelect {
-    height: 37px;
-    width: 92px;
-    background-color: rgba(102, 65, 65, 0);
-    border: 1px solid white;
-    border-radius: 1px;
-    margin-top: 3px;
-    color: white;
-    cursor: pointer;
 }
 
 .bottomStuff {
     display: flex;
     width: 100%;
-    margin-top: 40px;
+    margin-top: 20px;
 }
 
 .commentSection {
@@ -67,7 +55,7 @@
 .infoSection {
     padding: 20px 20px;
     text-align: left;
-    width: 40vw;
+    width: 44vw;
     margin-left: 20px;
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.466);
@@ -75,6 +63,19 @@
 }
 
 .infoPoster {
- width: 300px;
- padding-bottom: 20px;
+    width: 280px;
+    padding-bottom: 20px;
+}
+
+.topBox {
+    display: flex;
+}
+
+.rightSide {
+    padding-left: 20px;
+}
+
+.movieSecondary {
+    font-weight: 200;
+    margin-bottom: 0;
 }

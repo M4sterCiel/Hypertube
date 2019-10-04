@@ -71,10 +71,10 @@ module.exports = {
                     ])
                     .format("webm")
                     .on("progress", progress => {
-                        console.log(progress);
+                       // console.log(progress);
                     })
                     .on("start", cmd => {
-                        console.log(cmd);
+                        //console.log(cmd);
                         console.log("Starting conversion...");
                     })
                     .on("error", (err, stdout, stderr) => {
@@ -108,7 +108,6 @@ module.exports = {
                     .status(404)
                     .json({ error: "No movie corresponding..." });
             User.findOne({ _id: req.params.uid }, (err, user) => {
-                console.log(user);
                 if (err) console.log(err);
                 var exists = false;
                 user.movies_seen.forEach(e => {
