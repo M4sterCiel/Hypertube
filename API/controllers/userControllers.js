@@ -57,7 +57,9 @@ module.exports = {
             firstname: user.firstname,
             lastname: user.lastname,
             email: user.email,
-            picture: user.img
+            picture: user.img,
+            movies_seen: user.movies_seen,
+            following: user.following
           };
           req.session.user = payload;
 

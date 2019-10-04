@@ -116,7 +116,9 @@ const EditProfileModal = props => {
             type: "USER_UPDATE_REQUEST"
         });
 
-        if (
+        if (user.email === undefined) {
+            ErrorToast.custom.error("Mail cannot be empty", 4000);
+        } else if (
             error.firstnameValid &&
             error.lastnameValid &&
             error.usernameValid &&
@@ -138,7 +140,9 @@ const EditProfileModal = props => {
                         props.user.lastname.toLowerCase() && {
                         lastname: user.lastname.toLowerCase()
                     }),
-                    ...(user.email.toLowerCase() !==
+                    ...(props.user.email === undefined ? {
+                        email: user.email.toLowerCase()
+                    } : user.email.toLowerCase() !==
                         props.user.email.toLowerCase() && {
                         email: user.email.toLowerCase()
                     }),
@@ -209,7 +213,7 @@ const EditProfileModal = props => {
                                         ? ""
                                         : "edit-profile-invalid-input"
                                 }`}
-                                value={user.username}
+                                value={user.username === undefined ? "" : user.username}
                                 onChange={handleChange}
                             ></input>
                             <input
@@ -221,7 +225,7 @@ const EditProfileModal = props => {
                                         ? ""
                                         : "edit-profile-invalid-input"
                                 }`}
-                                value={user.firstname}
+                                value={user.firstname === undefined ? "" : user.firstname}
                                 onChange={handleChange}
                             ></input>
                             <input
@@ -233,7 +237,7 @@ const EditProfileModal = props => {
                                         ? ""
                                         : "edit-profile-invalid-input"
                                 }`}
-                                value={user.lastname}
+                                value={user.username === undefined ? "" : user.lastname}
                                 onChange={handleChange}
                             ></input>
                             <input
@@ -245,7 +249,7 @@ const EditProfileModal = props => {
                                         ? ""
                                         : "edit-profile-invalid-input"
                                 }`}
-                                value={user.email}
+                                value={user.email === undefined ? "" : user.email}
                                 onChange={handleChange}
                             ></input>
                             <div className="profile-select-language">

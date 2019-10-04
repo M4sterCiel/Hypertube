@@ -93,6 +93,8 @@ class Login extends Component {
       .then(async res => {
         if (res.data.status === "success") {
           await this.context.updateContext({locale: res.data.user.language, username: res.data.user.username, firstname: res.data.user.firstname, lastname: res.data.user.lastname, email: res.data.user.email, picture: res.data.user.picture});
+          await this.context.updateMoviesSeen(res.data.user.movies_seen);
+          await this.context.updateFollowing(res.data.user.following);
           await this.Auth.setToken(res.data.token);
           await this.props.history.replace("/search");
         } else {

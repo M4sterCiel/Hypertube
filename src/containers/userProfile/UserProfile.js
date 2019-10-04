@@ -127,13 +127,13 @@ const UserProfile = (props) => {
   useEffect(() => {
     let isMounted = true
 
-    if (user.username !== "") {
+    if (user.username !== "" && user.username !== undefined) {
       if (user.username === username) {
         isMounted && dispatch({
           type: 'USER_PROFILE_SUCCESS',
           payload: user
         });
-        if (user.movies_seen.length) {
+        if (user.movies_seen !== undefined && user.movies_seen.length) {
           isMounted && axios.post("/movie/get-movies", {imdbIdArray: user.movies_seen}).then(res => {
             isMounted && dispatch({
               type: 'USER_MOVIES_SUCCESS',
@@ -143,7 +143,7 @@ const UserProfile = (props) => {
             console.log(err.response.data.error);
           })
         }
-        if (user.following.length) {
+        if (user.following !== undefined && user.following.length) {
           isMounted && axios.post("/users/get-users-from-ids", {IdArray: user.following}).then(res => {
             isMounted && dispatch({
               type: 'USER_FOLLOWING_SUCCESS',
