@@ -38,19 +38,23 @@
 
 .bottomStuff {
     display: flex;
-    width: 100%;
+    width: 88vw;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 20px;
 }
 
 // Comment section
 .commentSection {
-    padding: 20px 20px;
-    width: 50vw;
-    height: 50vh;
+    padding: 15px 15px;
+    width: 44vw;
+    max-width: 550px;
+    height: 55vh;
     background-color: rgba(0, 0, 0, 0.466);
     border: 1px solid rgba(255, 255, 255, 0.274);
     border-radius: 10px;
-    margin-left: 20px;
+    margin-left: 0px;
     float: left;
 }
 .comments {
@@ -86,9 +90,11 @@
 
 // Info section
 .infoSection {
-    padding: 20px 20px;
+    padding: 15px 15px;
     text-align: left;
     width: 44vw;
+    height: 55vh;
+    max-width: 550px;
     margin-left: 20px;
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.466);
@@ -96,7 +102,7 @@
 }
 
 .infoPoster {
-    width: 280px;
+    width: 300px;
     padding-bottom: 20px;
 }
 
