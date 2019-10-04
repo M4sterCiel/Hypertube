@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import withAuth from "../../services/withAuth";
 import "./Search.scss";
@@ -22,7 +22,6 @@ const SearchView = () => {
 
     useEffect(() => {
         const fetchMovies = async () => {
-            console.log(searchTerms);
             try {
                 const res = await axios.post("/search/movies", searchTerms);
                 if (res.data.length !== 0) {
@@ -122,19 +121,19 @@ const SearchView = () => {
     return (
         <SearchProvider value={searchTerms}>
             <div className="SearchView" id="SearchView">
-                <div className="layer">
-                    <Navbar />
-                    <Search search={search} />
-                    <Filter ratings={ratings} years={years} genre={genre} />
-                    <div className="infiniteScroll" id="infiniteScroll">
-                        {searchResult.movies.map((movie, index) => (
-                            <Movie
-                                key={`${index}-${movie.title}`}
-                                movie={movie}
-                            />
-                        ))}
-                    </div>
+            <Navbar />
+              <div className="layer">
+                <Search search={search} />
+                <Filter ratings={ratings} years={years} genre={genre} />
+                <div className="infiniteScroll" id="infiniteScroll">
+                  {searchResult.movies.map((movie, index) => (
+                    <Movie
+                      key={`${index}-${movie.title}`}
+                      movie={movie}
+                    />
+                  ))}
                 </div>
+              </div>
             </div>
         </SearchProvider>
     );
