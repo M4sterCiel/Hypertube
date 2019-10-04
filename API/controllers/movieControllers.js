@@ -65,7 +65,7 @@ module.exports = {
                             subPath + movieId + "_" + "en.vtt",
                             data
                         );
-                        var subPathEn = subPath + movieId + "_" + "en.vtt";
+                        subPathEn = subPath + movieId + "_" + "en.vtt";
                     })
                     .catch(err => {
                         console.log(err);
@@ -84,6 +84,7 @@ module.exports = {
                             subPath + movieId + "_" + "es.vtt",
                             data
                         );
+                        subPathEs = subPath + movieId + "_" + "es.vtt";
                     })
                     .catch(err => {
                         console.log(err);
@@ -102,6 +103,7 @@ module.exports = {
                             subPath + movieId + "_" + "fr.vtt",
                             data
                         );
+                        subPathFr = subPath + movieId + "_" + "fr.vtt";
                     })
                     .catch(err => {
                         console.log(err);
@@ -196,14 +198,14 @@ module.exports = {
                     user.save();
                 }
             });
-            // module.exports.getSubtitles(res, req.params.movieId);
             var pathFile = undefined;
             if (result && result.path) {
                 result.path.forEach(e => {
                     if (e[customPath]);
                     pathFile = e[customPath];
                 });
-                if (pathFile !== undefined) {
+                //console.log(fs.existsSync(pathFile));
+                if (pathFile !== undefined && fs.existsSync(pathFile)) {
                     const stat = fs.statSync(pathFile);
                     const fileSize = stat.size;
                     var otherstart = 0;
@@ -375,7 +377,9 @@ module.exports = {
                                                 1
                                             );
                                         }
-                                    } else file.deselect();
+                                    } else {
+                                        file.deselect();
+                                    }
                                 });
                             })
                             .on("download", () => {
