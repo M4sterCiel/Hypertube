@@ -7,6 +7,9 @@ exports.router = (() => {
     movieRouter
         .route("/:uid/:movieId/:quality/:source")
         .get(movieController.getMovieStream);
+    movieRouter
+        .route("/get-movies")
+        .post(movieController.getMoviesFromImdbIdArray);
 
     return movieRouter;
 })();

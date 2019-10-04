@@ -28,6 +28,7 @@ class GlobalContextProvider extends Component {
       email: "",
       uid: "",
       picture: "",
+      movies_seen: [],
       following: [],
       loaded: true,
       setLocale: data => this.setState({ locale: data }),
@@ -44,6 +45,9 @@ class GlobalContextProvider extends Component {
       updateFollowing: data => this.setState({
         following: data
       }),
+      updateMoviesSeen: data => this.setState({
+        movies_seen: data
+      }),
       resetContext: () =>
         this.setState({
           locale: this.state.locale,
@@ -53,7 +57,8 @@ class GlobalContextProvider extends Component {
           email: "",
           uid: "",
           picture: "",
-          following: []
+          following: [],
+          movies_seen: []
         })
     };
     this.Auth = new AuthService();

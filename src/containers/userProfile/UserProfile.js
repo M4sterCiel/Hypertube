@@ -30,20 +30,20 @@ const languages = {
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'USER_PROFILE_REQUEST':
-      return {
-        ...state,
-        sendingRequest: true,
-        requestReceived: false,
-        data: [],
-        status: 'Pending...'
-      };
     case 'USER_PROFILE_SUCCESS':
       return {
         ...state,
         sendingRequest: false,
         requestReceived: true,
         data: action.payload,
+        status: 'Received'
+      };
+    case 'USER_MOVIES_SUCCESS':
+      return {
+        ...state,
+        sendingRequest: false,
+        requestReceived: true,
+        data: {...state.data, movies_seen: action.payload},     
         status: 'Received'
       };
     default:
@@ -118,16 +118,22 @@ const UserProfile = (props) => {
 
   useEffect(() => {
 
-    dispatch({
-      type: 'USER_PROFILE_REQUEST'
-    });
-
     if (user.username !== "") {
       if (user.username === username) {
         dispatch({
           type: 'USER_PROFILE_SUCCESS',
           payload: user
         });
+        if (user.movies_seen.length) {
+          axios.post("/movie/get-movies", {imdbIdArray: user.movies_seen}).then(res => {
+            dispatch({
+              type: 'USER_MOVIES_SUCCESS',
+              payload: res.data.moviesList
+            });
+          }).catch(err => {
+            console.log(err.response.data.error);
+          })
+        }
       } else if (!updating) {
         axios.get(`/users/get-profile/${username}`).then(res => {
           dispatch({
@@ -135,6 +141,16 @@ const UserProfile = (props) => {
             payload: {...res.data, locale: res.data.language}
           });
           setFollowingUser(user.following.includes(res.data._id));
+          if (res.data.movies_seen.length) {
+            axios.post("/movie/get-movies", {imdbIdArray: res.data.movies_seen}).then(res => {
+              dispatch({
+                type: 'USER_MOVIES_SUCCESS',
+                payload: res.data.moviesList
+              });
+            }).catch(err => {
+              console.log(err.response.data.error);
+            })
+          }
         }).catch(err => {
           props.history.push("/search");
           ErrorToast.custom.error("User not found", 4000);
@@ -191,13 +207,13 @@ const UserProfile = (props) => {
                     {`(${data.movies_seen ? data.movies_seen.length : 0})`}
                   </span>
                 </p>
-                {data.movies_seen ? (
+                {data.movies_seen !== undefined && data.movies_seen.length !== 0 ? (
                   <MoviesPosters movies={data.movies_seen} />
                 ) : (
                   <p className="no-movies-message">No movies seen yet</p>
                 )}
               </div>
-              {data.following && (
+              {data.following !== undefined && data.following.length !== 0 && (
                 <div className="user-profile-following">
                   <p className="user-profile-info-text-big">
                     Following{' '}
