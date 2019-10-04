@@ -78,7 +78,25 @@ const MoviePage = () => {
                 </div>
                 <div className="bottomStuff">
                     <div className="commentSection">
-                        <p>/* Comment section */</p>
+                        <div className="comments">
+                            <div className="singleComment">
+                                <div className="top">
+                                    <p className="moviePrimary" id="commenter"><strong>Maxime</strong></p>
+                                    <p className="movieSecondary" id="timestamp">01/12/2019 at 12:34</p>
+                                </div>
+                                <div className="bottom">
+                                    <p className="movieSecondary" id="content">Amazing movie</p>
+                                </div>
+                            </div>
+                        </div>
+                        <form class="inputComment">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                <textarea id="textarea1" class="materialize-textarea"></textarea>
+                                <label for="textarea1">Enter your comment</label>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div className="infoSection">
                         <div className="topBox">
