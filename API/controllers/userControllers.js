@@ -440,5 +440,18 @@ module.exports = {
         }
       })
     }
-  }
+  },
+
+  getUsersFromIdArray: async (req, res, next) => {
+    await User.find({ _id: { $in: req.body.IdArray} }, async function(err, users) {
+        if (err) {
+            return res.status(400).json({ error: 'Impossible to retrieve users...' });
+        }
+        if (!users) {
+            return res.status(400).json({ error: 'Impossible to retrieve users...' });
+        } else {
+            return res.status(200).json({ usersList: users})
+        }
+    })
+}
 };

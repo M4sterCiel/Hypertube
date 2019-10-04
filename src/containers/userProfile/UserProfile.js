@@ -46,6 +46,14 @@ const reducer = (state, action) => {
         data: {...state.data, movies_seen: action.payload},     
         status: 'Received'
       };
+      case 'USER_FOLLOWING_SUCCESS':
+        return {
+          ...state,
+          sendingRequest: false,
+          requestReceived: true,
+          data: {...state.data, following: action.payload},     
+          status: 'Received'
+        };
     default:
       return state;
   }
@@ -117,16 +125,17 @@ const UserProfile = (props) => {
   }
 
   useEffect(() => {
+    let isMounted = true
 
     if (user.username !== "") {
       if (user.username === username) {
-        dispatch({
+        isMounted && dispatch({
           type: 'USER_PROFILE_SUCCESS',
           payload: user
         });
         if (user.movies_seen.length) {
-          axios.post("/movie/get-movies", {imdbIdArray: user.movies_seen}).then(res => {
-            dispatch({
+          isMounted && axios.post("/movie/get-movies", {imdbIdArray: user.movies_seen}).then(res => {
+            isMounted && dispatch({
               type: 'USER_MOVIES_SUCCESS',
               payload: res.data.moviesList
             });
@@ -134,18 +143,38 @@ const UserProfile = (props) => {
             console.log(err.response.data.error);
           })
         }
+        if (user.following.length) {
+          isMounted && axios.post("/users/get-users-from-ids", {IdArray: user.following}).then(res => {
+            isMounted && dispatch({
+              type: 'USER_FOLLOWING_SUCCESS',
+              payload: res.data.usersList
+            });
+          }).catch(err => {
+            console.log(err.response.data.error);
+          })
+        }
       } else if (!updating) {
-        axios.get(`/users/get-profile/${username}`).then(res => {
-          dispatch({
+        isMounted && axios.get(`/users/get-profile/${username}`).then(res => {
+          isMounted && dispatch({
             type: 'USER_PROFILE_SUCCESS',
-            payload: {...res.data, locale: res.data.language}
+            payload: {...res.data, locale: res.data.language, picture: res.data.img}
           });
-          setFollowingUser(user.following.includes(res.data._id));
+          isMounted && setFollowingUser(user.following.includes(res.data._id));
           if (res.data.movies_seen.length) {
-            axios.post("/movie/get-movies", {imdbIdArray: res.data.movies_seen}).then(res => {
-              dispatch({
+            isMounted && axios.post("/movie/get-movies", {imdbIdArray: res.data.movies_seen}).then(res => {
+              isMounted && dispatch({
                 type: 'USER_MOVIES_SUCCESS',
                 payload: res.data.moviesList
+              });
+            }).catch(err => {
+              console.log(err.response.data.error);
+            })
+          }
+          if (res.data.following.length) {
+            isMounted && axios.post("/users/get-users-from-ids", {IdArray: res.data.following}).then(res => {
+              dispatch({
+                type: 'USER_FOLLOWING_SUCCESS',
+                payload: res.data.usersList
               });
             }).catch(err => {
               console.log(err.response.data.error);
@@ -157,7 +186,8 @@ const UserProfile = (props) => {
         })
       }
     }
-  }, [user, username]);
+    return () => isMounted = false;
+  }, [user, username, updating, props]);
 
   const { data } = state;
 

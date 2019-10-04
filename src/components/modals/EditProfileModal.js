@@ -166,7 +166,6 @@ const EditProfileModal = props => {
                             email: user.email.toLowerCase(),
                             picture: user.picture
                         });
-                        console.log(user.username, props.user.username);
                         if (
                             user.username.toLowerCase() !==
                             props.user.username.toLowerCase()
@@ -183,6 +182,7 @@ const EditProfileModal = props => {
                 InfoToast.custom.info("Nothing changed", 4000);
             }
         } else {
+            console.log(state);
             ErrorToast.custom.error("Incorrect field(s), cannot save", 4000);
         }
     };
