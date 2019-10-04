@@ -4,6 +4,7 @@ const pump = require("pump");
 const ffmpeg = require("fluent-ffmpeg");
 const Movie = require("../schemas/Movie");
 const User = require("../schemas/User");
+const download = require("download");
 const TorrentStream = require("torrent-stream");
 const OS = require("opensubtitles-api");
 const OpenSubtitles = new OS("TemporaryUserAgent");
@@ -42,19 +43,78 @@ const options = {
 };
 
 module.exports = {
-    getSubtitles: (res, movieId) => {
+    getSubtitles: (req, res, next) => {
+        var movieId = req.params.movieId;
         OpenSubtitles.search({
             sublanguageid: ["fre", "eng", "spa"].join(),
             extensions: "srt",
             imdbid: movieId
         }).then(subtitles => {
-            console.log(subtitles);
+            var subPath = process.cwd() + "/src/subtitles/";
+            var subPathEn = undefined;
+            var subPathEs = undefined;
+            var subPathFr = undefined;
+            if (
+                subtitles.en &&
+                subtitles.en.vtt &&
+                !fs.existsSync(subPath + movieId + "_" + "en.vtt")
+            ) {
+                download(subtitles.en.vtt)
+                    .then(data => {
+                        fs.writeFileSync(
+                            subPath + movieId + "_" + "en.vtt",
+                            data
+                        );
+                        var subPathEn = subPath + movieId + "_" + "en.vtt";
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            } else if (fs.existsSync(subPath + movieId + "_" + "en.vtt")) {
+                var subPathEn = subPath + movieId + "_" + "en.vtt";
+            }
+            if (
+                subtitles.es &&
+                subtitles.es.vtt &&
+                !fs.existsSync(subPath + movieId + "_" + "es.vtt")
+            ) {
+                download(subtitles.es.vtt)
+                    .then(data => {
+                        fs.writeFileSync(
+                            subPath + movieId + "_" + "es.vtt",
+                            data
+                        );
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            } else if (fs.existsSync(subPath + movieId + "_" + "es.vtt")) {
+                var subPathEs = subPath + movieId + "_" + "es.vtt";
+            }
+            if (
+                subtitles.fr &&
+                subtitles.fr.vtt &&
+                !fs.existsSync(subPath + movieId + "_" + "fr.vtt")
+            ) {
+                download(subtitles.fr.vtt)
+                    .then(data => {
+                        fs.writeFileSync(
+                            subPath + movieId + "_" + "fr.vtt",
+                            data
+                        );
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            } else if (fs.existsSync(subPath + movieId + "_" + "fr.vtt")) {
+                var subPathFr = subPath + movieId + "_" + "fr.vtt";
+            }
+            return res.status(200).json({ subPathEn, subPathEs, subPathFr });
         });
     },
 
     convertVideo: (res, path) => {
         console.log("Starting conversion...");
-
         let stream = path.createReadStream({
             start: start,
             end: end
@@ -116,7 +176,6 @@ module.exports = {
     },
 
     getMovieStream: async (req, res) => {
-        module.exports.getSubtitles(res, req.params.movieId);
         var customPath = req.params.quality + "_" + req.params.source;
         Movie.findOne({ imdbId: req.params.movieId }, (err, result) => {
             if (err || result === null)
@@ -137,6 +196,7 @@ module.exports = {
                     user.save();
                 }
             });
+            // module.exports.getSubtitles(res, req.params.movieId);
             var pathFile = undefined;
             if (result && result.path) {
                 result.path.forEach(e => {
