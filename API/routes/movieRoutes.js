@@ -10,6 +10,9 @@ exports.router = (() => {
     movieRouter
         .route("/getSubtitles/:movieId")
         .get(movieController.getSubtitles);
+    movieRouter
+        .route("/get-movies")
+        .post(movieController.getMoviesFromImdbIdArray);
 
     return movieRouter;
 })();

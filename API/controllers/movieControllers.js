@@ -411,5 +411,18 @@ module.exports = {
                         .json({ error: "No movie corresponding..." });
             });
         } catch (err) {}
+    },
+
+    getMoviesFromImdbIdArray: async (req, res, next) => {
+        await Movie.find({ imdbId: { $in: req.body.imdbIdArray} }, async function(err, movies) {
+            if (err) {
+                return res.status(400).json({ error: 'Impossible to retrieve movies...' });
+            }
+            if (!movies) {
+                return res.status(400).json({ error: 'Impossible to retrieve movies...' });
+            } else {
+                return res.status(200).json({ moviesList: movies})
+            }
+        })
     }
 };

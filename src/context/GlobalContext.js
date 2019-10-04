@@ -18,47 +18,51 @@ export const GlobalContext = createContext({
 });
 
 class GlobalContextProvider extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            locale: "",
-            username: "",
-            firstname: "",
-            lastname: "",
-            email: "",
-            uid: "",
-            picture: "",
-            following: [],
-            loaded: true,
-            setLocale: data => this.setState({ locale: data }),
-            updateContext: data =>
-                this.setState({
-                    locale: data.locale,
-                    username: data.username,
-                    firstname: data.firstname,
-                    lastname: data.lastname,
-                    email: data.email,
-                    picture: data.picture,
-                    loaded: true
-                }),
-            updateFollowing: data =>
-                this.setState({
-                    following: data
-                }),
-            resetContext: () =>
-                this.setState({
-                    locale: this.state.locale,
-                    username: "",
-                    firstname: "",
-                    lastname: "",
-                    email: "",
-                    uid: "",
-                    picture: "",
-                    following: []
-                })
-        };
-        this.Auth = new AuthService();
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      locale: "",
+      username: "",
+      firstname: "",
+      lastname: "",
+      email: "",
+      uid: "",
+      picture: "",
+      movies_seen: [],
+      following: [],
+      loaded: true,
+      setLocale: data => this.setState({ locale: data }),
+      updateContext: data =>
+        this.setState({
+          locale: data.locale,
+          username: data.username,
+          firstname: data.firstname,
+          lastname: data.lastname,
+          email: data.email,
+          picture: data.picture,
+          loaded: true
+      }),
+      updateFollowing: data => this.setState({
+        following: data
+      }),
+      updateMoviesSeen: data => this.setState({
+        movies_seen: data
+      }),
+      resetContext: () =>
+        this.setState({
+          locale: this.state.locale,
+          username: "",
+          firstname: "",
+          lastname: "",
+          email: "",
+          uid: "",
+          picture: "",
+          following: [],
+          movies_seen: []
+        })
+    };
+    this.Auth = new AuthService();
+  }
 
     async componentDidMount() {
         var token = await this.Auth.getToken();
