@@ -23,34 +23,100 @@
 
 .movieTitle {
     font-size: 24px;
-    margin-top: 30px;
+    margin-top: 0px;
 }
 
 .player {
-    margin-top: 30px;
+    margin-top: 10px;
+}
+
+.player, .videoSource {
+    max-width: 96vw;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .bottomStuff {
-    display: inline-block;
+    display: flex;
+    width: 88vw;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
 }
 
+// Comment section
 .commentSection {
-    width: 35vw;
-    height: 30vh;
-    background-color: rgba(102, 65, 65, 0);
-    border: 1px solid white;
+    padding: 15px 15px;
+    width: 44vw;
+    max-width: 550px;
+    height: 55vh;
+    background-color: rgba(0, 0, 0, 0.466);
+    border: 1px solid rgba(255, 255, 255, 0.274);
     border-radius: 10px;
-    margin-top: 3px;
-    color: white;
+    margin-left: 0px;
     float: left;
 }
-
-.infoSection {
-    width: 35vw;
-    height: 30vh;
-    background-color: rgba(102, 65, 65, 0);
-    border: 1px solid white;
-    border-radius: 10px;
-    margin-top: 3px;
+.comments {
+    height: 85%;
+}
+.singleComment {
+    width: 100%;
+    height: 80px;
+    // background-color: rgba(255, 255, 255, 0.048);
+}
+.top {
+    width: 100%;
+    height: 22px;
+}
+.bottom {
+    width: 100%;
+    height: 40px;
+    margin-top: 0px;
+    display: flex;
+}
+#timestamp {
+    float: right;
+}
+#commenter {
+    float: left;
+}
+#content {
+    float: left;
+}
+.inputComment {
+    height: 10%;
+    background-color: rgba(255, 255, 255, 0.062);
     color: white;
+}
+
+// Info section
+.infoSection {
+    padding: 15px 15px;
+    text-align: left;
+    width: 44vw;
+    height: 55vh;
+    max-width: 550px;
+    margin-left: 20px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.466);
+    border: 1px solid rgba(255, 255, 255, 0.274);
+}
+
+.infoPoster {
+    width: 300px;
+    padding-bottom: 20px;
+}
+
+.topBox {
+    display: flex;
+}
+
+.rightSide {
+    padding-left: 20px;
+}
+
+.movieSecondary {
+    font-weight: 200;
+    margin-bottom: 0;
 }

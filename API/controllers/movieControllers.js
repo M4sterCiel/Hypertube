@@ -59,32 +59,33 @@ module.exports = {
                 subtitles.en.vtt &&
                 !fs.existsSync(subPath + movieId + "_" + "en.vtt")
             ) {
-                download(subtitles.en.vtt)
-                    .then(data => {
-                        fs.writeFileSync(
-                            subPath + movieId + "_" + "en.vtt",
-                            data
-                        );
-                        subPathEn = subPath + movieId + "_" + "en.vtt";
+                //console.log("Starting conversion...");
+
+                let torrent = path.createReadStream({
+                    start: start,
+                    end: end
+                });
+
+                let stream = ffmpeg({
+                    source: torrent
+                })
+                    .videoCodec("libvpx")
+                    .videoBitrate(1024)
+                    .audioCodec("libopus")
+                    .audioBitrate(128)
+                    .outputOptions([
+                        "-crf 30",
+                        "-deadline realtime",
+                        "-cpu-used 2",
+                        "-threads 3"
+                    ])
+                    .format("webm")
+                    .on("progress", progress => {
+                       // console.log(progress);
                     })
-                    .catch(err => {
-                        console.log(err);
-                    });
-            } else if (fs.existsSync(subPath + movieId + "_" + "en.vtt")) {
-                var subPathEn = subPath + movieId + "_" + "en.vtt";
-            }
-            if (
-                subtitles.es &&
-                subtitles.es.vtt &&
-                !fs.existsSync(subPath + movieId + "_" + "es.vtt")
-            ) {
-                download(subtitles.es.vtt)
-                    .then(data => {
-                        fs.writeFileSync(
-                            subPath + movieId + "_" + "es.vtt",
-                            data
-                        );
-                        subPathEs = subPath + movieId + "_" + "es.vtt";
+                    .on("start", cmd => {
+                        //console.log(cmd);
+                        console.log("Starting conversion...");
                     })
                     .catch(err => {
                         console.log(err);
@@ -185,10 +186,14 @@ module.exports = {
                     .status(404)
                     .json({ error: "No movie corresponding..." });
             User.findOne({ _id: req.params.uid }, (err, user) => {
+<<<<<<< HEAD
                 if (err)
                     return; /* res
                         .status(404)
                         .json({ error: "No user corresponding..." }); */
+=======
+                if (err) console.log(err);
+>>>>>>> mascagli
                 var exists = false;
                 user.movies_seen.forEach(e => {
                     if (e === req.params.movieId) exists = true;
