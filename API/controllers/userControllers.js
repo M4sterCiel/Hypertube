@@ -245,7 +245,9 @@ module.exports = {
             //mailService.sendNewPassword(user);
           }
         );
-        mailService.sendNewPassword(result[0], uniqid);
+        var statusMail = mailService.sendNewPassword(result[0], uniqid);
+        if (statusMail === 'error')
+          return res.status(400).json({ error: 'Invalid/unknown email!' });
         return res.status(200).json({ message: 'You will receive an email!' });
       }
     } else {
