@@ -121,19 +121,19 @@ const SearchView = () => {
     return (
         <SearchProvider value={searchTerms}>
             <div className="SearchView" id="SearchView">
-                <div className="layer">
-                    <Navbar />
-                    <Search search={search} />
-                    <Filter ratings={ratings} years={years} genre={genre} />
-                    <div className="infiniteScroll" id="infiniteScroll">
-                        {searchResult.movies.map((movie, index) => (
-                            <Movie
-                                key={`${index}-${movie.title}`}
-                                movie={movie}
-                            />
-                        ))}
-                    </div>
+            <Navbar />
+              <div className="layer">
+                <Search search={search} />
+                <Filter ratings={ratings} years={years} genre={genre} />
+                <div className="infiniteScroll" id="infiniteScroll">
+                  {searchResult.movies.map((movie, index) => (
+                    <Movie
+                      key={`${index}-${movie.title}`}
+                      movie={movie}
+                    />
+                  ))}
                 </div>
+              </div>
             </div>
         </SearchProvider>
     );

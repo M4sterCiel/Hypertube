@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import "./Filter.scss";
 import Slider from "rc-slider";
-// import "rc-slider/assets/index.css";
 import { GlobalContext } from "../../context/GlobalContext";
 import SearchContext from '../../context/SearchContext'
 

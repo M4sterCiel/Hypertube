@@ -1,5 +1,4 @@
 .MoviePage {
-    text-align: center;
     position: absolute;
     height: 100%;
     width: 100%;
@@ -10,6 +9,17 @@
     background-size: cover;
     color: white;
 }
+
+.layer {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.295);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin-top: 70px;
+  }
 
 .movieTitle {
     font-size: 24px;
