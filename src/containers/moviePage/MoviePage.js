@@ -13,6 +13,13 @@ const MoviePage = () => {
         subFr: undefined
     });
 
+    const sourcesList = [
+        'Sources',
+        'YTS 720p',
+        'YTS 1080p',
+        'POPCORN TIME 720p',
+      ]
+
     !moviePageState.loaded &&
         axios.get("/movie/getSubtitles/tt0446750").then(res => {
             setMoviePageState({

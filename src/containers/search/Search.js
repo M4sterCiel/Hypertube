@@ -91,52 +91,52 @@ const SearchView = () => {
     })
   }
 
-    useEffect(() => {
-        window.document
-            .getElementById("infiniteScroll")
-            .addEventListener("scroll", handleScroll);
-        return () =>
-            window.document
-                .getElementById("infiniteScroll")
-                .removeEventListener("scroll", handleScroll);
-    }, []);
+  useEffect(() => {
+      window.document
+          .getElementById("infiniteScroll")
+          .addEventListener("scroll", handleScroll);
+      return () =>
+          window.document
+              .getElementById("infiniteScroll")
+              .removeEventListener("scroll", handleScroll);
+  }, []);
 
-    const handleScroll = () => {
-        if (
-            window.document.getElementById("infiniteScroll").scrollTop +
-                window.document.getElementById("infiniteScroll").clientHeight >=
-            window.document.getElementById("infiniteScroll").scrollHeight - 120
-        ) {
-            setSearchTerms(p => {
-                const terms = {
-                    ...p,
-                    page: p.page + 2
-                };
-                return terms;
-            });
-            return;
-        }
-    };
+  const handleScroll = () => {
+      if (
+          window.document.getElementById("infiniteScroll").scrollTop +
+              window.document.getElementById("infiniteScroll").clientHeight >=
+          window.document.getElementById("infiniteScroll").scrollHeight - 120
+      ) {
+          setSearchTerms(p => {
+              const terms = {
+                  ...p,
+                  page: p.page + 2
+              };
+              return terms;
+          });
+          return;
+      }
+  };
 
-    return (
-        <SearchProvider value={searchTerms}>
-            <div className="SearchView" id="SearchView">
-            <Navbar />
-              <div className="layer">
-                <Search search={search} />
-                <Filter ratings={ratings} years={years} genre={genre} />
-                <div className="infiniteScroll" id="infiniteScroll">
-                  {searchResult.movies.map((movie, index) => (
-                    <Movie
-                      key={`${index}-${movie.title}`}
-                      movie={movie}
-                    />
-                  ))}
-                </div>
+  return (
+      <SearchProvider value={searchTerms}>
+          <div className="SearchView" id="SearchView">
+          <Navbar />
+            <div className="layer">
+              <Search search={search} />
+              <Filter ratings={ratings} years={years} genre={genre} />
+              <div className="infiniteScroll" id="infiniteScroll">
+                {searchResult.movies.map((movie, index) => (
+                  <Movie
+                    key={`${index}-${movie.title}`}
+                    movie={movie}
+                  />
+                ))}
               </div>
             </div>
-        </SearchProvider>
-    );
+          </div>
+      </SearchProvider>
+  );
 };
 
 export default withAuth(SearchView);
