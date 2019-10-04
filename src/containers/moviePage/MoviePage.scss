@@ -9,4 +9,38 @@
     background-color: rgb(0, 0, 0);
     background-size: cover;
     color: white;
-  }
+}
+
+.movieTitle {
+    font-size: 24px;
+    margin-top: 30px;
+}
+
+.player {
+    margin-top: 30px;
+}
+
+.bottomStuff {
+    display: inline-block;
+}
+
+.commentSection {
+    width: 35vw;
+    height: 30vh;
+    background-color: rgba(102, 65, 65, 0);
+    border: 1px solid white;
+    border-radius: 10px;
+    margin-top: 3px;
+    color: white;
+    float: left;
+}
+
+.infoSection {
+    width: 35vw;
+    height: 30vh;
+    background-color: rgba(102, 65, 65, 0);
+    border: 1px solid white;
+    border-radius: 10px;
+    margin-top: 3px;
+    color: white;
+}

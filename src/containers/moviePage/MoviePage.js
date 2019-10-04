@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import withAuth from "../../services/withAuth";
 import "./MoviePage.scss";
+import Navbar from "../../components/navbar/NavBar";
 
 const MoviePage = () => {
 
@@ -10,6 +11,8 @@ const MoviePage = () => {
 
     return (
         <div className="MoviePage">
+            <Navbar />
+            <p className="movieTitle"><strong>Movie Title</strong></p>
             <div className="player">
                 <video controls>
                     <source
@@ -17,6 +20,15 @@ const MoviePage = () => {
                         type="video/webm"
                     />
                 </video>
+            </div>
+            <div className="bottomStuff">
+                <div className="commentSection">
+                
+                </div>
+                <div className="infoSection">
+                    <p>1989</p>
+                    <p>98min</p>
+                </div>
             </div>
         </div>
     );
