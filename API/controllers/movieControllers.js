@@ -6,7 +6,7 @@ const Movie = require("../schemas/Movie");
 const User = require("../schemas/User");
 const TorrentStream = require("torrent-stream");
 const OS = require("opensubtitles-api");
-const OpenSubtitles = new OS("OSTestUserAgentTemp");
+const OpenSubtitles = new OS("TemporaryUserAgent");
 
 const options = {
     connections: 100,
@@ -42,47 +42,58 @@ const options = {
 };
 
 module.exports = {
+    getSubtitles: (res, movieId) => {
+        OpenSubtitles.search({
+            sublanguageid: ["fre", "eng", "spa"].join(),
+            extensions: "srt",
+            imdbid: movieId
+        }).then(subtitles => {
+            console.log(subtitles);
+        });
+    },
+
+    convertVideo: (res, path) => {
+        console.log("Starting conversion...");
+
+        let stream = path.createReadStream({
+            start: start,
+            end: end
+        });
+
+        ffmpeg({
+            source: stream
+        })
+            .videoCodec("libvpx")
+            .videoBitrate(1024)
+            .audioCodec("libopus")
+            .audioBitrate(128)
+            .outputOptions([
+                "-crf 30",
+                "-deadline realtime",
+                "-cpu-used 2",
+                "-threads 3"
+            ])
+            .format("webm")
+            .on("progress", progress => {
+                console.log(progress);
+            })
+            .on("start", cmd => {
+                console.log(cmd);
+                console.log("Starting conversion...");
+            })
+            .on("error", (err, stdout, stderr) => {
+                console.log("Cannot process video: " + err.message);
+            })
+            .stream(res, {});
+    },
+
     streamMovie: async (res, path, start, end, mode) => {
         if (mode === 1) {
-            //console.log(mime.getType(path.name));
             if (
                 mime.getType(path.name) !== "video/mp4" &&
                 mime.getType(path.name) !== "video/ogg"
             ) {
-                //console.log("Starting conversion...");
-
-                let torrent = path.createReadStream({
-                    start: start,
-                    end: end
-                });
-
-                let stream = ffmpeg({
-                    source: torrent
-                })
-                    .videoCodec("libvpx")
-                    .videoBitrate(1024)
-                    .audioCodec("libopus")
-                    .audioBitrate(128)
-                    .outputOptions([
-                        "-crf 30",
-                        "-deadline realtime",
-                        "-cpu-used 2",
-                        "-threads 3"
-                    ])
-                    .format("webm")
-                    .on("progress", progress => {
-                        console.log(progress);
-                    })
-                    .on("start", cmd => {
-                        console.log(cmd);
-                        console.log("Starting conversion...");
-                    })
-                    .on("error", (err, stdout, stderr) => {
-                        console.log("Cannot process video: " + err.message);
-                    })
-                    .stream(res, {});
-
-                //pump(stream, res);
+                module.exports.convertVideo(res, path);
             } else {
                 let stream = path.createReadStream({
                     start: start,
@@ -90,8 +101,12 @@ module.exports = {
                 });
                 pump(stream, res);
             }
+        } else if (
+            mime.getType(path) !== "video/mp4" &&
+            mime.getType(path) !== "video/ogg"
+        ) {
+            module.exports.convertVideo(res, path);
         } else {
-            //console.log(mime.getType(path));
             let stream = fs.createReadStream(path, {
                 start: start,
                 end: end
@@ -101,15 +116,18 @@ module.exports = {
     },
 
     getMovieStream: async (req, res) => {
+        module.exports.getSubtitles(res, req.params.movieId);
         var customPath = req.params.quality + "_" + req.params.source;
         Movie.findOne({ imdbId: req.params.movieId }, (err, result) => {
-            if (err)
+            if (err || result === null)
                 return res
                     .status(404)
                     .json({ error: "No movie corresponding..." });
             User.findOne({ _id: req.params.uid }, (err, user) => {
-                console.log(user);
-                if (err) console.log(err);
+                if (err)
+                    return; /* res
+                        .status(404)
+                        .json({ error: "No user corresponding..." }); */
                 var exists = false;
                 user.movies_seen.forEach(e => {
                     if (e === req.params.movieId) exists = true;
@@ -177,13 +195,15 @@ module.exports = {
                     req.params.quality,
                     req.params.source
                 );
+            result.lastViewed = new Date();
+            result.save();
         });
     },
 
     downloadMovie: async (req, res, movieId, quality, source) => {
         try {
             Movie.findOne({ imdbId: movieId }, (err, result) => {
-                if (err)
+                if (err || result === null)
                     return res
                         .status(404)
                         .json({ error: "No movie corresponding..." });
@@ -317,7 +337,10 @@ module.exports = {
                                 result.lastViewed = new Date();
                                 result.save();
                             });
-                    }
+                    } else
+                        return res
+                            .status(404)
+                            .json({ error: "No movie corresponding..." });
                 } else
                     return res
                         .status(404)
