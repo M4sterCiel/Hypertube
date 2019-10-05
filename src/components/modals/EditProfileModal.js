@@ -128,8 +128,6 @@ const EditProfileModal = props => {
             if (!CheckObjectsEquivalence(
                 {username: user.username, firstname: user.firstname, lastname: user.lastname, email: user.email, picture: user.picture, locale: user.locale},
                 {username: props.user.username, firstname: props.user.firstname, lastname: props.user.lastname, email: props.user.email, picture: props.user.picture, locale: props.user.locale})) {
-                console.log("USER", {user: user.username, firstname: user.firstname, lastname: user.lastname, email: user.email, picture: user.picture, locale: user.locale});
-                console.log("PROPS", {user: props.user.username, firstname: props.user.firstname, lastname: props.user.lastname, email: props.user.email, picture: props.user.picture, locale: props.user.locale});
                 var token = await Auth.getToken();
                 var data = {
                     ...(user.username.toLowerCase() !==

@@ -80,7 +80,6 @@ const UserProfile = (props) => {
       setButtonDisabled(true);
       setTimeout(() => setButtonDisabled(false), 4000);
       if (!updating) {
-        console.log("USER FOLLOW:", user);
         var token = await Auth.getToken();
   
         await axios.post('/users/follow', { username }, { headers: { Authorization: token }})
@@ -106,7 +105,6 @@ const UserProfile = (props) => {
       setButtonDisabled(true);
       setTimeout(() => setButtonDisabled(false), 4000);
         if (!updating) {
-          console.log("USER UNFOLLOW:", user);
         var token = await Auth.getToken();
 
         await axios.post('/users/unfollow', { username }, { headers: { Authorization: token }})
@@ -130,7 +128,6 @@ const UserProfile = (props) => {
     let isMounted = true
 
     if (user.username !== "" && user.username !== undefined) {
-      console.log(props);
       if (user.username === username) {
         isMounted && dispatch({
           type: 'USER_PROFILE_SUCCESS',
@@ -157,14 +154,12 @@ const UserProfile = (props) => {
           })
         }
       } else if (!updating) {
-        console.log("USER HOOK:", user);
         isMounted && axios.get(`/users/get-profile/${username}`).then(res => {
           isMounted && dispatch({
             type: 'USER_PROFILE_SUCCESS',
             payload: {...res.data, locale: res.data.language, picture: res.data.img}
           });
           isMounted && setFollowingUser(user.following.includes(res.data._id));
-          console.log("USER FOLLOWING", user.following.includes(res.data._id));
           if (res.data.movies_seen.length) {
             isMounted && axios.post("/movie/get-movies", {imdbIdArray: res.data.movies_seen}).then(res => {
               isMounted && dispatch({
