@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./UsersList.scss";
 import DefaultUserPic from "../../assets/default_user.png";
 
@@ -22,12 +22,12 @@ const UsersList = ({ users }) => {
     users.map(
       user =>
         user._id !== undefined && (
-          <NavLink to={`/user/${user.username}`} key={user._id}>
+          <Link to={`/user/${user.username}`} key={user._id}>
             <UserItem
               username={user.username}
               picture={user.img}
             />
-          </NavLink>
+          </Link>
         )
     );
 

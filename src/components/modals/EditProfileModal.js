@@ -125,7 +125,11 @@ const EditProfileModal = props => {
             error.emailValid &&
             error.pictureValid
         ) {
-            if (!CheckObjectsEquivalence(user, props.user)) {
+            if (!CheckObjectsEquivalence(
+                {username: user.username, firstname: user.firstname, lastname: user.lastname, email: user.email, picture: user.picture, locale: user.locale},
+                {username: props.user.username, firstname: props.user.firstname, lastname: props.user.lastname, email: props.user.email, picture: props.user.picture, locale: props.user.locale})) {
+                console.log("USER", {user: user.username, firstname: user.firstname, lastname: user.lastname, email: user.email, picture: user.picture, locale: user.locale});
+                console.log("PROPS", {user: props.user.username, firstname: props.user.firstname, lastname: props.user.lastname, email: props.user.email, picture: props.user.picture, locale: props.user.locale});
                 var token = await Auth.getToken();
                 var data = {
                     ...(user.username.toLowerCase() !==
@@ -161,7 +165,7 @@ const EditProfileModal = props => {
                         { headers: { Authorization: token } }
                     )
                     .then(res => {
-                        props.update();
+                        props.update(true);
                         context.updateContext({
                             locale: user.locale,
                             username: user.username.toLowerCase(),
@@ -170,6 +174,12 @@ const EditProfileModal = props => {
                             email: user.email.toLowerCase(),
                             picture: user.picture
                         });
+                        if (props.user.following) {
+                            context.updateFollowing(props.user.following);
+                        }
+                        if (props.user.movies_seen) {
+                            context.updateMoviesSeen(props.user.movies_seen);
+                        }
                         if (
                             user.username.toLowerCase() !==
                             props.user.username.toLowerCase()
@@ -178,6 +188,7 @@ const EditProfileModal = props => {
                         }
                         InfoToast.custom.info("Saved", 4000);
                         document.dispatchEvent(event);
+                        props.update(false);
                     })
                     .catch(err =>
                         ErrorToast.custom.error(err.response.data.error, 4000)
