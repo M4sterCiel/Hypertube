@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -12,6 +12,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Flag from "react-world-flags";
 import "./Buttons.scss";
+import { GlobalContext } from "../../context/GlobalContext";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -20,19 +21,20 @@ const useStyles = makeStyles(theme => ({
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120
+    minWidth: 120,
   }
 }));
 
 export default function DialogSelect() {
   const classes = useStyles();
+  const context = useContext(GlobalContext);
   const [state, setState] = React.useState({
     open: false,
-    locale: ""
+    locale: "en"
   });
 
-  const handleChange = name => event => {
-    setState({ ...state, [name]: String(event.target.value) });
+  const handleChange = event => {
+    setState({ ...state, locale: String(event.target.value) });
   };
 
   const handleClickOpen = () => {
@@ -41,12 +43,20 @@ export default function DialogSelect() {
 
   const handleClose = () => {
     setState({ ...state, open: false });
+    context.setLocale(state.locale);
   };
+
+  useEffect(() => {
+    let isMounted = true
+    isMounted && setState({...state, locale: context.locale});
+
+    return () => isMounted = false;
+  }, []);
 
   return (
     <div className="btn-country-picker">
       <Button onClick={handleClickOpen}>
-        <Flag code={"US"} height="16" />
+        <Flag code={state.locale === "en" ? "US" : state.locale.toUpperCase()} height="16" />
       </Button>
       <Dialog
         disableBackdropClick
@@ -54,46 +64,27 @@ export default function DialogSelect() {
         open={state.open}
         onClose={handleClose}
       >
-        <DialogTitle>Fill the form</DialogTitle>
+        <DialogTitle>Pick country/language</DialogTitle>
         <DialogContent>
           <form className={classes.container}>
             <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="locale-native-simple">locale</InputLabel>
+              <InputLabel htmlFor="locale-native-simple">list here</InputLabel>
               <Select
                 native
                 value={state.locale}
-                onChange={handleChange("locale")}
+                onChange={handleChange}
                 input={<Input id="locale-native-simple" />}
               >
-                <option value="" />
                 <option value={"en"}>English</option>
                 <option value={"es"}>Español</option>
                 <option value={"fr"}>Français</option>
-              </Select>
-            </FormControl>
-            <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="locale-simple">locale</InputLabel>
-              <Select
-                value={state.locale}
-                onChange={handleChange("locale")}
-                input={<Input id="locale-simple" />}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={"en"}>English</MenuItem>
-                <MenuItem value={"es"}>Español</MenuItem>
-                <MenuItem value={"fr"}>Français</MenuItem>
               </Select>
             </FormControl>
           </form>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleClose} color="primary">
-            Ok
+            OK
           </Button>
         </DialogActions>
       </Dialog>

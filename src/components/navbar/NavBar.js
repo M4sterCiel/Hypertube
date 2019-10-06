@@ -96,6 +96,9 @@ class NavBar extends Component {
                       </span>
                     </NavLink>
                   </ListItem>
+                  <ListItem>
+                    <CountryPicker />
+                  </ListItem>
                 </List>
               </div>
             );

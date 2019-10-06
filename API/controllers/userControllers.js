@@ -108,6 +108,7 @@ module.exports = {
       lastname: sanitize(req.body.lastname.toLowerCase()),
       email: sanitize(req.body.email.toLowerCase()),
       img: sanitize(req.body.picture),
+      language: sanitize(req.body.language.toLowerCase()),
       activationKey: uniqid
     });
 

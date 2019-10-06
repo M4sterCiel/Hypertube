@@ -105,7 +105,8 @@ class Register extends Component {
         email: this.state.email,
         pwd1: this.state.pwd1,
         pwd2: this.state.pwd2,
-        picture: this.state.pictureUrl
+        picture: this.state.pictureUrl,
+        language: this.context.locale
       })
       .then(res => {
         if (res.data.status === "success") {
