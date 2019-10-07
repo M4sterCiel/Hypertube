@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -7,7 +7,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
-import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Flag from "react-world-flags";
@@ -30,7 +29,7 @@ export default function DialogSelect() {
   const context = useContext(GlobalContext);
   const [state, setState] = React.useState({
     open: false,
-    locale: "en"
+    locale: context.locale
   });
 
   const handleChange = event => {
@@ -45,13 +44,6 @@ export default function DialogSelect() {
     setState({ ...state, open: false });
     context.setLocale(state.locale);
   };
-
-  useEffect(() => {
-    let isMounted = true
-    isMounted && setState({...state, locale: context.locale});
-
-    return () => isMounted = false;
-  }, []);
 
   return (
     <div className="btn-country-picker">
