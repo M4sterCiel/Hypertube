@@ -143,7 +143,6 @@ passport.use(
           if (err) {
             return done(err);
           }
-          //var token = jwtService.tokenGenerator();
           if (!user) {
             if (!(await userService.emailExists(profile._json.email))) {
               var uniqid =
