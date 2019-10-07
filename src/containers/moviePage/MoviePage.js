@@ -134,19 +134,15 @@ const MoviePage = () => {
                             </form>
                         </div>
                         <div className="infoSection">
-                            <div className="topBox">
-                                <img className="infoPoster" src={movieDetails.movie.poster}></img>
-                                <div className="rightSide">
-                                    <p className="movieSecondary">Theater release:</p>
-                                    <p className="moviePrimary">{movieDetails.movie.year}</p>
-                                    <p className="movieSecondary">Running time:</p>
-                                    <p className="moviePrimary">{movieDetails.movie.runtime}</p>
-                                    <p className="movieSecondary">Director:</p>
-                                    <p className="moviePrimary">Deedee Megadoodoo</p>
-                                    <p className="movieSecondary">Starring:</p>
-                                    <p className="moviePrimary">Joe Fyn, Sarah Beltion, Ed Fill</p>
-                                </div>
-                            </div>
+                            <img className="infoPoster" src={movieDetails.movie.poster}></img>
+                            <p className="movieSecondary">Theater release:</p>
+                            <p className="moviePrimary">{movieDetails.movie.year}</p>
+                            <p className="movieSecondary">Running time:</p>
+                            <p className="moviePrimary">{movieDetails.movie.runtime}</p>
+                            <p className="movieSecondary">Director:</p>
+                            <p className="moviePrimary">Deedee Megadoodoo</p>
+                            <p className="movieSecondary">Starring:</p>
+                            <p className="moviePrimary">Joe Fyn, Sarah Beltion, Ed Fill</p>
                             <p className="movieSecondary">Synopsis:</p>
                             <p>{movieDetails.movie.plot}</p>
                         </div>

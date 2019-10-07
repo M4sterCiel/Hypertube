@@ -95,8 +95,9 @@
     padding: 15px 15px;
     text-align: left;
     width: 44vw;
-    height: 55vh;
+    height: 100%;
     max-width: 550px;
+    min-width: 300px;
     margin-left: 20px;
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.466);
@@ -104,7 +105,7 @@
 }
 
 .infoPoster {
-    width: 300px;
+    width: 100%;
     padding-bottom: 20px;
 }
 
