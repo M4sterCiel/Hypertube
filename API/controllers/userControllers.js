@@ -83,21 +83,21 @@ module.exports = {
     console.log(lang);
     var err;
     if ((err = inputService.lastname(req.body.lastname).error))
-      return res.status(400).json({ error: 'lastname ' + err });
+      return res.status(400).json({ error: err});
     if ((err = inputService.firstname(req.body.firstname).error))
-      return res.status(400).json({ error: 'firstname ' + err });
+      return res.status(400).json({ error: err});
     if ((err = inputService.password(req.body.pwd1).error))
-      return res.status(400).json({ error: 'password ' + err });
+      return res.status(400).json({ error: err });
     if ((err = inputService.password(req.body.pwd2).error))
-      return res.status(400).json({ error: 'password ' + err });
+      return res.status(400).json({ error: err });
     if (req.body.pwd1 !== req.body.pwd2)
-      return res.status(400).json({ error: 'password has to be identical' });
+      return res.status(400).json({ error: 'unequal_passwords' });
 
     err = await inputService.username(req.body.username);
     if (err.error)
-      return res.status(400).json({ error: 'username ' + err.error });
+      return res.status(400).json({ error: err.error });
     err = await inputService.mail(req.body.email);
-    if (err.error) return res.status(400).json({ error: 'mail ' + err.error });
+    if (err.error) return res.status(400).json({ error: err.error });
 
     var uniqid =
       new Date().getTime() + Math.floor(Math.random() * 10000 + 1).toString(16);

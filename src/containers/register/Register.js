@@ -95,9 +95,11 @@ class Register extends Component {
       });
   };
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
-    axios
+
+    var lang = await CustomLanguage.define(this.context.locale);
+    await axios
       .post("/users/register", {
         username: this.state.username,
         firstname: this.state.firstname,
@@ -116,7 +118,7 @@ class Register extends Component {
         }
       })
       .catch(err => {
-        ErrorToast.custom.error(err.response.data.error, 4000);
+        ErrorToast.custom.error(lang.register_error[0][err.response.data.error], 4000);
       });
   };
 
@@ -168,7 +170,7 @@ class Register extends Component {
                           onChange={this.handleChange}
                         ></input>
                         <div className="register-error">
-                          {lang.firstname_error[0][this.state.firstError]}
+                          {lang.firstname_error[0][this.state.firstnameError]}
                         </div>
                         <label className="label-form" htmlFor="firstname">
                           {lang.register[0].firstname}

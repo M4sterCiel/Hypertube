@@ -83,11 +83,38 @@ var customLanguage = {
   login_error: [
     {
       login_failed: "Error al connectar...",
-      invalid_cred: "Apellido/Contraseña incorrecto",
+      invalid_cred: "Usuario/Contraseña incorrecto",
       login_inactive: "Esta cuenta no esta activada",
       invalid_login: "Nombre de usuario incorrecto",
       empty_login: "Nombre de usuario no puede estar vacío",
       length_login: "Nombre de usuario tiene que estar inferior a 30 caracteres"
+    }
+  ],
+  register_error: [
+    {
+      register_failed: "Error al registrar...",
+      invalid_lastname: "Apellido es invalid",
+      missing_lastname: "Apellido no puede estar vacío",
+      space_lastname: "El apellido no puede contener espacios",
+      length_lastname: "Apellido tiene que estar inferior a 30 caracteres",
+      invalid_firstname: "Nombre es invalid",
+      missing_firstname: "Nombre no puede estar vacío",
+      space_firstname: "El nombre no puede contener espacios",
+      length_firstname: "El nombre tiene que estar inferior a 30 caracteres",
+      invalid_username: "Nombre de usuario es invalid",
+      missing_username: "Nombre de usuario no puede estar vacío",
+      space_username: "El nombre de usuario no puede contener espacios",
+      length_username: "El nombre de usuario tiene que estar inferior a 30 caracteres",
+      already_registered_username: "Nombre de usuario ya existe",
+      invalid_email: "Correo incorrecto (example@email.com)",
+      missing_email: "Correo no puede estar vacío",
+      space_email: "El correo no puede contener espacios",
+      length_email: "Correo tiene que estar inferior a 30 caracteres",
+      already_registered_email: "Correo ya existe",
+      invalid_password: "Contraseña incorrecta",
+      missing_password: "Contraseña no puede estar vacío",
+      space_password: "Contraseña no puede contener espacios",
+      unequal_passwords: "Contraseñas no coinciden",
     }
   ],
   passwordSimple_error: [

@@ -90,6 +90,33 @@ var customLanguage = {
       length_login: "Username must be less or equal to 30 chars"
     }
   ],
+  register_error: [
+    {
+      register_failed: "Error while registering...",
+      invalid_lastname: "Invalid lastname",
+      missing_lastname: "Missing lastname",
+      space_lastname: "Lastname cannot contain spaces",
+      length_lastname: "Lastname must be less or equal to 30 chars",
+      invalid_firstname: "Invalid firstname",
+      missing_firstname: "Missing firstname",
+      space_firstname: "Firstname cannot contain spaces",
+      length_firstname: "Firstname must be less or equal to 30 chars",
+      invalid_username: "Invalid username",
+      missing_username: "Missing username",
+      space_username: "Username cannot contain spaces",
+      length_username: "Username must be less or equal to 30 chars",
+      already_registered_username: "Username already exists",
+      invalid_email: "Invalid email",
+      missing_email: "Missing email",
+      space_email: "Email cannot contain spaces",
+      length_email: "Email must be less or equal to 30 chars",
+      already_registered_email: "Email already exists",
+      invalid_password: "Invalid password",
+      missing_password: "Missing password",
+      space_password: "Password cannot contain spaces",
+      unequal_passwords: "Passwords need to match",
+    }
+  ],
   passwordSimple_error: [
     {
       invalid_pwd: "Please enter a valid password",
@@ -100,14 +127,16 @@ var customLanguage = {
     {
       no_space: "Firstname cannot contain spaces",
       invalid_firstname: "Firstname is invalid",
-      empty_firstname: "Firstname cannot be empty"
+      empty_firstname: "Firstname cannot be empty",
+      length_firstname: "Firstname must be less or equal to 30 chars"
     }
   ],
   lastname_error: [
     {
       no_space: "Lastname cannot contain spaces",
       invalid_lastname: "Lastname is invalid",
-      empty_lastname: "Lastname cannot be empty"
+      empty_lastname: "Lastname cannot be empty",
+      length_lastname: "Lastname must be less or equal to 30 chars"
     }
   ],
   username_error: [
