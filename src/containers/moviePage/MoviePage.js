@@ -16,10 +16,7 @@ const MoviePage = (props) => {
         subFr: undefined
     });
 
-    const [movieDetails, setMovieDetails] = useState({ movie: []});
-
-    var sourcesList = [];
-    const [formatedList, setFormatedList] = useState([]);
+    const [movieDetails, setMovieDetails] = useState({ movie: [], sources: []});
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -29,7 +26,7 @@ const MoviePage = (props) => {
             try {
                 const res = await axios.post("/search/singleMovie", imdbId);
                 if (res.data.length !== 0) {
-                    sourcesList = res.data[0].torrents;
+                    let sourcesList = res.data[0].torrents;
                     if (sourcesList.length > 0)
                     {
                         let i = 0;
@@ -39,9 +36,7 @@ const MoviePage = (props) => {
                             i++;
                         }
                         tmp.unshift("Source");
-                        setFormatedList([tmp]);
-                        console.log("tmp = ", tmp);
-                        setMovieDetails({ movie: res.data[0], validId: true });
+                        setMovieDetails({ movie: res.data[0], sources: tmp, validId: true });
                     }
                 } else {
                     setMovieDetails({ validId: false });
@@ -133,12 +128,12 @@ const MoviePage = (props) => {
                             <img className="infoPoster" src={movieDetails.movie.poster}></img>
                         </div>
                         <div className="infos">
-                            {formatedList.length > 0 ? (
+                            {movieDetails.sources.length > 0 ? (
                                  <select className="browser-default"
                                  id="sourceSelect"
                                  onChange={handleSourceSelection}
                                 >
-                                    {formatedList.map(genre => (
+                                    {movieDetails.sources.map(genre => (
                                         <option key={genre} 
                                                 value={genre} 
                                         >
@@ -149,19 +144,6 @@ const MoviePage = (props) => {
                             ) : ( 
                             <p>No source available for this file</p>
                             )}
-
-                            {/* // <select className="browser-default"
-                            //         id="sourceSelect"
-                            //         onChange={handleSourceSelection}
-                            // >
-                            //     {formatedList.map(genre => (
-                            //         <option key={genre} 
-                            //                 value={genre} 
-                            //         >
-                            //             {genre}
-                            //         </option>
-                            //     ))}
-                            // </select> */}
 
                             <p className="movieSecondary">Theater release:</p>
                             <p className="moviePrimary">{movieDetails.movie.year}</p>
