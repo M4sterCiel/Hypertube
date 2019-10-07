@@ -65,7 +65,22 @@ var customLanguage = {
     {
       language: "Preferred language: ",
       edit: "EDIT",
-      movies_seen: "Movies seen"
+      movies_seen: "Movies seen",
+      edit_tooltip: "Edit profile",
+      following: "Following",
+      no_movies: "No movies seen yet",
+      follow: "follow",
+      follow_tooltip: "Follow user",
+      unfollow: "unfollow",
+      unfollow_tooltip: "Unfollow user",
+      following_user: "Following",
+      follow_fail: "Impossible to follow user...",
+      unfollowing_user: "Unfollowing",
+      unfollow_fail: "Impossible to unfollow user....",
+      hold_on: "Please wait :)",
+      user_not_found: "User not found",
+      follow_already: "Already following user",
+      unfollow_already: "Already unfollowing user"
     }
   ],
   edit_profile: [

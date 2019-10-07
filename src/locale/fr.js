@@ -56,7 +56,22 @@ var customLanguage = {
     {
       language: "Langue préférée : ",
       edit: "MODIFIER",
-      movies_seen: "Films vus"
+      movies_seen: "Films vus",
+      following: "Abonnements",
+      no_movies: "Aucun film vu",
+      edit_tooltip: "Modifier le profil",
+      follow: "S'abonner",
+      follow_tooltip: "Suivre l'utilisateur",
+      unfollow: "se désabonner",
+      unfollow_tooltip: "Ne plus suivre l'utilisateur",
+      following_user: "Abonné",
+      follow_fail: "Impossible de suivre l'utilateur...",
+      unfollowing_user: "Désabonné",
+      unfollow_fail: "Impossible de se désabonner....",
+      hold_on: "Patience :)",
+      user_not_found: "Utilisateur non trouvé",
+      follow_already: "Déjà abonné",
+      unfollow_already: "Déjà désabonné",
     }
   ],
   edit_profile: [

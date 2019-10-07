@@ -372,31 +372,31 @@ module.exports = {
     if (jwtService.verifyToken(token)) {
       await User.findOne({ token: token }, async function(err, user) {
         if (err) {
-          return res.status(400).json({ error: 'Impossible to follow user...' });
+          return res.status(400).json({ error: 'follow_fail' });
         }
         if (!user) {
-          return res.status(400).json({ error: 'Impossible to follow user...' });
+          return res.status(400).json({ error: 'follow_fail' });
         } else {
           await User.findOne({ username: req.body.username }, async function(err, result) {
             if (err) {
-              return res.status(400).json({ error: 'Impossible to follow user...' });
+              return res.status(400).json({ error: 'follow_fail' });
             }
             if (!result) {
-              return res.status(400).json({ error: 'Impossible to follow user...' });
+              return res.status(400).json({ error: 'follow_fail' });
             }
             if (user._id === result._id) {
-              return res.status(400).json({ error: 'Impossible to follow yourself...' });
+              return res.status(400).json({ error: 'follow_fail' });
             } else {
               await User.find({ _id: user._id, following: {$in: result._id} }, function(err, check) {
                 if (err) {
-                  return res.status(400).json({ error: 'Impossible to follow user...' });
+                  return res.status(400).json({ error: 'follow_fail' });
                 }
                 if (check.length) {
-                  return res.status(400).json({ error: 'Already following user' });
+                  return res.status(400).json({ error: 'follow_already' });
                 } else {
                   user.following.push(result._id);
                   user.save();
-                  return res.status(200).json({ message: 'Following user', userFollowed: result, followingList: user.following });
+                  return res.status(200).json({ message: 'following_user', userFollowed: result, followingList: user.following });
                 }
               })
             }
@@ -411,31 +411,31 @@ module.exports = {
     if (jwtService.verifyToken(token)) {
       await User.findOne({ token: token }, async function(err, user) {
         if (err) {
-          return res.status(400).json({ error: 'Impossible to unfollow user...' });
+          return res.status(400).json({ error: 'unfollow_fail' });
         }
         if (!user) {
-          return res.status(400).json({ error: 'Impossible to unfollow user...' });
+          return res.status(400).json({ error: 'unfollow_fail' });
         } else {
           await User.findOne({ username: req.body.username }, async function(err, result) {
             if (err) {
-              return res.status(400).json({ error: 'Impossible to unfollow user...' });
+              return res.status(400).json({ error: 'unfollow_fail' });
             }
             if (!result) {
-              return res.status(400).json({ error: 'Impossible to unfollow user...' });
+              return res.status(400).json({ error: 'unfollow_fail' });
             }
             if (user._id === result._id) {
-              return res.status(400).json({ error: 'Impossible to unfollow yourself...' });
+              return res.status(400).json({ error: 'unfollow_fail' });
             } else {
               await User.find({ _id: user._id, following: {$in: result._id} }, function(err, check) {
                 if (err) {
-                  return res.status(400).json({ error: 'Impossible to unfollow user...' });
+                  return res.status(400).json({ error: 'unfollow_fail' });
                 }
                 if (!check.length) {
-                  return res.status(400).json({ error: 'Already unfollowing user' });
+                  return res.status(400).json({ error: 'unfollow_already' });
                 } else {
                   user.following.remove(result._id);
                   user.save();
-                  return res.status(200).json({ message: 'Unfollowing user', userFollowed: result, followingList: user.following });
+                  return res.status(200).json({ message: 'unfollowing_user', userFollowed: result, followingList: user.following });
                 }
               })
             }
