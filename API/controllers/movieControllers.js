@@ -45,7 +45,6 @@ const options = {
 module.exports = {
     getSubtitles: (req, res, next) => {
         var movieId = req.params.movieId;
-        console.log(movieId);
         OpenSubtitles.search({
             sublanguageid: ["fre", "eng", "spa"].join(),
             extensions: "srt",
@@ -116,14 +115,16 @@ module.exports = {
         });
     },
 
-    convertVideo: (res, path, start, end) => {
-        console.log("Starting conversion...");
-        let stream = path.createReadStream({
-            start: start,
-            end: end
-        });
+    convertVideo: async (res, path, start, end, mode) => {
+        let stream;
+        if (mode === 0) {
+         stream = path.createReadStream();
+        }
+        else {
+            stream = fs.createReadStream(path);
+        }
 
-        ffmpeg({
+        var newStream = ffmpeg({
             source: stream
         })
             .videoCodec("libvpx")
@@ -145,8 +146,9 @@ module.exports = {
             })
             .on("error", (err, stdout, stderr) => {
                 console.log("Cannot process video: " + err.message);
-            })
-            .stream(res, {});
+            });
+           
+            pump(newStream, res);
     },
 
     streamMovie: async (res, path, start, end, mode) => {
@@ -155,7 +157,7 @@ module.exports = {
                 mime.getType(path.name) !== "video/mp4" &&
                 mime.getType(path.name) !== "video/ogg"
             ) {
-                module.exports.convertVideo(res, path, start, end);
+                module.exports.convertVideo(res, path, start, end, 0);
             } else {
                 let stream = path.createReadStream({
                     start: start,
@@ -167,7 +169,7 @@ module.exports = {
             mime.getType(path) !== "video/mp4" &&
             mime.getType(path) !== "video/ogg"
         ) {
-            module.exports.convertVideo(res, path, start, end);
+            module.exports.convertVideo(res, path, start, end, 1);
         } else {
             let stream = fs.createReadStream(path, {
                 start: start,
@@ -180,7 +182,6 @@ module.exports = {
     getMovieStream: async (req, res) => {
         var customPath = req.params.quality + "_" + req.params.source;
         Movie.findOne({ imdbId: req.params.movieId }, (err, result) => {
-            console.log(result);
             if (err || result === null)
                 return res
                     .status(404)
@@ -202,7 +203,6 @@ module.exports = {
                     if (e[customPath]);
                     pathFile = e[customPath];
                 });
-                //console.log(fs.existsSync(pathFile));
                 if (pathFile !== undefined && fs.existsSync(pathFile)) {
                     const stat = fs.statSync(pathFile);
                     const fileSize = stat.size;
@@ -223,14 +223,14 @@ module.exports = {
                             "Content-Length": chunksize,
                             "Content-Type": mime.getType(pathFile)
                         };
-                        res.writeHead(206, head);
+                       // res.writeHead(206, head);
                         module.exports.streamMovie(res, pathFile, start, end);
                     } else {
                         const head = {
                             "Content-Length": fileSize,
                             "Content-Type": mime.getType(pathFile)
                         };
-                        res.writeHead(200, head);
+                        //res.writeHead(200, head);
                         module.exports.streamMovie(
                             res,
                             pathFile,
@@ -354,7 +354,7 @@ module.exports = {
                                                 1
                                             );
                                         } else {
-                                            const head = {
+                                            /* const head = {
                                                 "Content-Length": fileSize,
                                                 "Content-Type":
                                                     mime.getType(file.name) ===
@@ -366,7 +366,7 @@ module.exports = {
                                                           )
                                                         : "video/webm"
                                             };
-                                            res.writeHead(200, head);
+                                            res.writeHead(200, head); */
                                             module.exports.streamMovie(
                                                 res,
                                                 file,
