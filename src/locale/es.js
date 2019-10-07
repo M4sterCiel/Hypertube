@@ -65,6 +65,13 @@ var customLanguage = {
       reset_password_success: "Contraseña cambiada"
     }
   ],
+  picture_modify: [
+    {
+      incorrect_format: "Por favor cargue un formato correcto",
+      incorrect_size: "Por favor cargue un tamaño correcto (menos de 2mb)",
+      incorrect_picture: "Por favor cargue una foto correcta"
+    }
+  ],
   search: [
     {
       search: "Buscar",

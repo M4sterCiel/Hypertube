@@ -65,6 +65,13 @@ var customLanguage = {
       reset_password_success: "Le mot de passe a changé"
     }
   ],
+  picture_modify: [
+    {
+      incorrect_format: "Merci d'envoyer un format correct",
+      incorrect_size: "Merci d'envoyer une taille correcte (moins de 2mb)",
+      incorrect_picture: "Merci d'envoyer une photo correcte"
+    }
+  ],
   search: [
     {
       search: "Rechercher",

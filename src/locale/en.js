@@ -65,6 +65,13 @@ var customLanguage = {
       reset_password_success: "Password has been changed"
     }
   ],
+  picture_modify: [
+    {
+      incorrect_format: "Please upload a correct image format",
+      incorrect_size: "Please upload a correct image (less than 2mb)",
+      incorrect_picture: "Please upload a correct image"
+    }
+  ],
   search: [
     {
       search: "Search",
