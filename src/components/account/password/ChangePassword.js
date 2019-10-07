@@ -1,7 +1,9 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import ValidateInput from "../../../services/ValidateInput";
 import Infotoast from "../../../services/toasts/InfoToasts";
 import ErrorToast from "../../../services/toasts/ErrorToasts";
+import { GlobalContext } from "../../../context/GlobalContext";
+import CustomLanguage from "../../../services/DefineLocale";
 import axios from "axios";
 
 const initialState = {
@@ -18,6 +20,9 @@ const initialState = {
 
 const ChangePassword = (props) => {
   const [pwd, setPwd] = useState(initialState);
+  const context = useContext(GlobalContext);
+  const locale = context.locale;
+  var lang = CustomLanguage.define(locale);  
 
   const handleChange = e => {
       let result;
@@ -39,12 +44,12 @@ const ChangePassword = (props) => {
         })
       .then(res => {
           if (res.data.status === "success") {
-              Infotoast.custom.info("New password is set", 4000);
+              Infotoast.custom.info(lang.reset_password[0].reset_password_success, 4000);
               props.closePasswordSwitch();
           }
       })
       .catch(err => {
-          ErrorToast.custom.error(err.response.data.error, 4000);
+          ErrorToast.custom.error(lang.reset_password[0][err.response.data.error], 4000);
       });
   }
 
@@ -71,7 +76,7 @@ const ChangePassword = (props) => {
           className={"password-message " + pwd.pwd1VerifyBox}
         >
           <h3 id="pwd1-verify-title">
-            Password must contain the following:
+            {lang.register[0].spaces}
           </h3>
           <p
             id="letter"
@@ -79,7 +84,8 @@ const ChangePassword = (props) => {
               pwd.pwdHasLowercase ? "valid" : "invalid"
             }
           >
-            A <b>lowercase</b> letter
+            {lang.register[0].oneLetter}
+            <b>{lang.register[0].lowercase}</b>{" "}
           </p>
           <p
             id="capital"
@@ -87,23 +93,26 @@ const ChangePassword = (props) => {
               pwd.pwdHasUppercase ? "valid" : "invalid"
             }
           >
-            A <b>capital (uppercase)</b> letter
+            {lang.register[0].oneLetter}
+            <b>{lang.register[0].uppercase}</b>{" "}
           </p>
           <p
             id="number"
             className={pwd.pwdHasNumber ? "valid" : "invalid"}
           >
-            A <b>number</b>
+            {lang.register[0].oneNumber}{" "}
+            <b>{lang.register[0].number}</b>
           </p>
           <p
             id="length"
             className={pwd.pwdHasMinLen ? "valid" : "invalid"}
           >
-            Minimum <b>8 characters</b>
-          </p>
+          {lang.register[0].minimum}{" "}
+          <b>{lang.register[0].characters}</b>
+        </p>
         </div>
         <label className="label-form" htmlFor="pwd1">
-          Password
+          {lang.reset_password[0].pwd}
         </label>
       </div>
       <div className="input-field col s12">
@@ -116,17 +125,17 @@ const ChangePassword = (props) => {
         <div className="register-error">
           {pwd.pwd2 !== pwd.pwd1 &&
           pwd.pwd2 !== ""
-            ? "Passwords don't match"
+            ? lang.pwd_match_error
             : ""}
         </div>
         <label className="label-form" htmlFor="pwd2">
-          Repeat password
+          {lang.reset_password[0].repeat_pwd}
         </label>
       </div>
       <input
         type="submit"
         name="submit"
-        value="Change"
+        value={lang.reset_password[0].submit}
         className="btn btn-submit-form"
         disabled={
           !pwd.pwd1Valid || pwd.pwd2 !== pwd.pwd1

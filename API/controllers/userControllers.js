@@ -313,17 +313,17 @@ module.exports = {
   changePassword: async (req, res, next) => {
     var err;
     if ((err = inputService.password(req.body.pwd1).error))
-      return res.status(400).json({ error: 'password ' + err });
+      return res.status(400).json({ error: err });
     if ((err = inputService.password(req.body.pwd2).error))
-      return res.status(400).json({ error: 'password ' + err });
+      return res.status(400).json({ error: err });
     if (req.body.pwd1 !== req.body.pwd2)
-      return res.status(400).json({ error: 'password has to be identical' });
+      return res.status(400).json({ error: 'unequal_passwords' });
 
     var result = await User.find({
       username: sanitize(req.body.username)
     });
     if (result.length < 1)
-      return res.status(400).json({ error: 'Impossible to reset password...' });
+      return res.status(400).json({ error: 'reset_password_failed' });
     else {
       User.findOneAndUpdate(
         { username: sanitize(req.body.username) },
