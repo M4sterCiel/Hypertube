@@ -41,7 +41,6 @@ class ForgotPassword extends Component {
   handleSubmit = async e => {
     e.preventDefault();
     var lang = await CustomLanguage.define(this.context.locale);
-    console.log(this.context.locale);
 
     await axios
       .post("/users/forgot-password", {

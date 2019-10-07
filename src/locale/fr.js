@@ -54,6 +54,17 @@ var customLanguage = {
       receive_email: "Vous allez recevoir un email !"
     }
   ],
+  reset_password: [
+    {
+      title: "Changer mot de passe",
+      pwd: "Mot de passe",
+      repeat_pwd: "Répéter mot de passe",
+      submit: "Changer",
+      unequal_passwords: "Les mots de passe ne sont pas identiques",
+      reset_password_failed: "Le changement de mot de passe a échoué, merci de rééssayer...",
+      reset_password_success: "Le mot de passe a changé"
+    }
+  ],
   search: [
     {
       search: "Rechercher",
