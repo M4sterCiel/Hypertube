@@ -114,6 +114,21 @@
 .infos {
     width: 65%;
     float: left;
+    display: flex;
+    flex-direction: column;
+}
+
+#sourceSelect {
+    height: 37px;
+    width: 92px;
+    background-color: rgba(102, 65, 65, 0);
+    border: 1px solid white;
+    border-radius: 1px;
+    margin-top: 3px;
+    color: white;
+    cursor: pointer;
+    float: left;
+    margin-bottom: 20px;
 }
 
 .movieSecondary {
@@ -122,7 +137,7 @@
 }
 
 @media only screen and (max-width: 700px) {
-    .bottomStuff {
-        display: inline-block;
+    #synopsis {
+        font-size: 12px;
     }
   }

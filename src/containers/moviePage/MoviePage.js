@@ -18,12 +18,8 @@ const MoviePage = (props) => {
 
     const [movieDetails, setMovieDetails] = useState({ movie: []});
 
-    // const sourcesList = [
-    //     'Sources',
-    //     'YTS 720p',
-    //     'YTS 1080p',
-    //     'POPCORN TIME 720p',
-    //   ]
+    var sourcesList = [];
+    const [formatedList, setFormatedList] = useState([]);
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -33,7 +29,20 @@ const MoviePage = (props) => {
             try {
                 const res = await axios.post("/search/singleMovie", imdbId);
                 if (res.data.length !== 0) {
-                    setMovieDetails({ movie: res.data[0], validId: true });
+                    sourcesList = res.data[0].torrents;
+                    if (sourcesList.length > 0)
+                    {
+                        let i = 0;
+                        let tmp = [];
+                        while (i < sourcesList.length) {
+                            tmp[i] = sourcesList[i].quality.concat(' ', sourcesList[i].source);
+                            i++;
+                        }
+                        tmp.unshift("Source");
+                        setFormatedList([tmp]);
+                        console.log("tmp = ", tmp);
+                        setMovieDetails({ movie: res.data[0], validId: true });
+                    }
                 } else {
                     setMovieDetails({ validId: false });
                 }
@@ -46,8 +55,15 @@ const MoviePage = (props) => {
             props.history.push("/search");
             ErrorToast.custom.error("Movie not found", 4000);
         }
-        fetchMovies();
+        if (movieDetails.movie.length <= 0)
+        {
+            fetchMovies();
+        }
     }, [movieDetails]);
+
+    const handleSourceSelection = () => {
+        
+    }
 
     !moviePageState.loaded &&
         axios.get("/movie/getSubtitles/tt0446750").then(res => {
@@ -117,6 +133,36 @@ const MoviePage = (props) => {
                             <img className="infoPoster" src={movieDetails.movie.poster}></img>
                         </div>
                         <div className="infos">
+                            {formatedList.length > 0 ? (
+                                 <select className="browser-default"
+                                 id="sourceSelect"
+                                 onChange={handleSourceSelection}
+                                >
+                                    {formatedList.map(genre => (
+                                        <option key={genre} 
+                                                value={genre} 
+                                        >
+                                            {genre}
+                                        </option>
+                                    ))}
+                                </select>
+                            ) : ( 
+                            <p>No source available for this file</p>
+                            )}
+
+                            {/* // <select className="browser-default"
+                            //         id="sourceSelect"
+                            //         onChange={handleSourceSelection}
+                            // >
+                            //     {formatedList.map(genre => (
+                            //         <option key={genre} 
+                            //                 value={genre} 
+                            //         >
+                            //             {genre}
+                            //         </option>
+                            //     ))}
+                            // </select> */}
+
                             <p className="movieSecondary">Theater release:</p>
                             <p className="moviePrimary">{movieDetails.movie.year}</p>
                             <p className="movieSecondary">Running time:</p>
@@ -126,7 +172,12 @@ const MoviePage = (props) => {
                             <p className="movieSecondary">Starring:</p>
                             <p className="moviePrimary">Joe Fyn, Sarah Beltion, Ed Fill</p>
                             <p className="movieSecondary">Synopsis:</p>
-                            <p>{movieDetails.movie.plot}</p>
+                            {/* {movieDetails.movie.plot.length < 200 ? (
+                                <p id="synopsis" className="moviePrimary">{movieDetails.movie.plot}</p>
+                            ) : (
+                                <p id="synopsis" className="moviePrimary">{movieDetails.movie.plot.substring(0, 200) + "..."}</p>
+                            )} */}
+                            <p id="synopsis" className="moviePrimary">{movieDetails.movie.plot}</p>
                         </div>
                     </div>
                     <div className="commentSection">
