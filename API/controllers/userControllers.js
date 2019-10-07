@@ -29,15 +29,15 @@ module.exports = {
   login: async (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
       if (err) {
-        return res.json({ status: 'error', msg: 'Error while logging in.' });
+        return res.json({ status: 'error', msg: 'login_failed' });
       }
       if (!user) {
-        return res.json({ status: 'error', msg: 'Invalid username/password.' });
+        return res.json({ status: 'error', msg: 'invalid_cred' });
       }
       req.logIn(user, err => {
         if (err) {
           console.error(err);
-          return res.json({ status: 'error', msg: 'Error while logging in.' });
+          return res.json({ status: 'error', msg: 'login_failed' });
         }
 
         if (user.active === true) {
@@ -46,7 +46,7 @@ module.exports = {
             if (err)
               return res.json({
                 status: 'error',
-                msg: 'Error while logging in.'
+                msg: 'login_failed'
               });
           });
 
@@ -70,7 +70,7 @@ module.exports = {
         } else {
           return res.json({
             status: 'error',
-            msg: 'This account is not activated.'
+            msg: 'login_inactive'
           });
         }
       });

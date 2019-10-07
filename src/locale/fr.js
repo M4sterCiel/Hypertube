@@ -82,6 +82,9 @@ var customLanguage = {
   ],
   login_error: [
     {
+      login_failed: "Erreur durant la connexion...",
+      invalid_cred: "Identifiant/mot de passe incorrect",
+      login_inactive: "Le compte n'est pas activé",
       invalid_login: "Identifiant incorrect",
       empty_login: "L'identifiant ne peut être vide",
       length_login: "L'identifiant doit être inférieur ou égal à 30 caractères"
@@ -109,7 +112,7 @@ var customLanguage = {
   ],
   username_error: [
     {
-      no_space: "L'identifaint ne peut contenir d'espaces",
+      no_space: "L'identifiant ne peut contenir d'espaces",
       invalid_username:
         "Identifiant incorrect (lettres et chiffres uniquement)",
       empty_username: "L'identifiant' ne peut être vide",

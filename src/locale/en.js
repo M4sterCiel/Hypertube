@@ -82,6 +82,9 @@ var customLanguage = {
   ],
   login_error: [
     {
+      login_failed: "Error while logging in...",
+      invalid_cred: "Invalid username/password",
+      login_inactive: "This account is not activated",
       invalid_login: "Please enter a valid username",
       empty_login: "Username cannot be empty",
       length_login: "Username must be less or equal to 30 chars"

@@ -82,6 +82,9 @@ var customLanguage = {
   ],
   login_error: [
     {
+      login_failed: "Error al connectar...",
+      invalid_cred: "Apellido/Contraseña incorrecto",
+      login_inactive: "Esta cuenta no esta activada",
       invalid_login: "Nombre de usuario incorrecto",
       empty_login: "Nombre de usuario no puede estar vacío",
       length_login: "Nombre de usuario tiene que estar inferior a 30 caracteres"
