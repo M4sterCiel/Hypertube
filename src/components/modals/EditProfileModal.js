@@ -12,6 +12,7 @@ import InfoToast from "../../services/toasts/InfoToasts";
 import ErrorToast from "../../services/toasts/ErrorToasts";
 import CheckObjectsEquivalence from "../../services/CheckObjectsEquivalence";
 import { GlobalContext } from "../../context/GlobalContext";
+import CustomLanguage from "../../services/DefineLocale";
 import AuthService from "../../services/AuthService";
 import ChangePassword from "../../components/account/password/ChangePassword";
 import DeleteAccount from "../../components/account/delete/DeleteAccount";
@@ -68,6 +69,8 @@ const EditProfileModal = props => {
     const [error, setError] = useState(initialValidation);
     const event = new KeyboardEvent("keydown", { keyCode: 27 });
     const Auth = new AuthService();
+    const locale = context.locale;
+    var lang = CustomLanguage.define(locale);  
 
     const handleChange = e => {
         const { name, value } = e.target;
@@ -117,7 +120,7 @@ const EditProfileModal = props => {
         });
 
         if (user.email === undefined) {
-            ErrorToast.custom.error("Mail cannot be empty", 4000);
+            ErrorToast.custom.error(lang.edit_profile[0].empty_email, 4000);
         } else if (
             error.firstnameValid &&
             error.lastnameValid &&
@@ -184,26 +187,28 @@ const EditProfileModal = props => {
                         ) {
                             props.history.push(user.username.toLowerCase());
                         }
-                        InfoToast.custom.info("Saved", 4000);
+                        InfoToast.custom.info(lang.edit_profile[0].saved, 4000);
                         document.dispatchEvent(event);
                         props.update(false);
                     })
                     .catch(err =>
-                        ErrorToast.custom.error(err.response.data.error, 4000)
+                        {
+                            ErrorToast.custom.error(lang.update_user[0][err.response.data.error], 4000);
+                        }
                     );
             } else {
-                InfoToast.custom.info("Nothing changed", 4000);
+                InfoToast.custom.info(lang.edit_profile[0].nothing_changed, 4000);
             }
         } else {
             console.log(state);
-            ErrorToast.custom.error("Incorrect field(s), cannot save", 4000);
+            ErrorToast.custom.error(lang.edit_profile[0].incorrect_fields, 4000);
         }
     };
 
     return (
         <Modal id="edit-profile-modal" className="modal-black-background">
             <div className="modal-black-container">
-                <p className="modal-black-title">Edit profile</p>
+                <p className="modal-black-title">{lang.edit_profile[0].title}</p>
                 <div className="modal-black-content">
                     <div className="profile-picture-modify col l2 m4 s12 col-padding-zero">
                         <UserPictureModify
@@ -263,7 +268,7 @@ const EditProfileModal = props => {
                             ></input>
                             <div className="profile-select-language">
                                 <p className="profile-select-language-text">
-                                    Language:{" "}
+                                    {lang.edit_profile[0].language}{" "}
                                 </p>
                                 <Select
                                     value={user.locale}
@@ -281,25 +286,25 @@ const EditProfileModal = props => {
                 <div className="profile-edit-actions">
                     <span className="profile-edit-actions-buttons">
                         <FunctionButtonRegular
-                            text="save"
+                            text={lang.edit_profile[0].save}
                             func={handleSubmit}
                         />
                     </span>
                     <span className="profile-edit-actions-buttons">
                         <FunctionButtonSecondary
-                            text="cancel"
+                            text={lang.edit_profile[0].cancel}
                             func={handleCancel}
                         />
                     </span>
                     <span className="profile-edit-actions-buttons">
                         <FunctionButtonSecondary
-                            text="delete account"
+                            text={lang.edit_profile[0].delete}
                             func={handleDelAccountSwitch}
                         />
                     </span>
                     <span className="profile-edit-actions-buttons">
                         <FunctionButtonSecondary
-                            text="password"
+                            text={lang.edit_profile[0].password}
                             func={handlePasswordSwitch}
                         />
                     </span>

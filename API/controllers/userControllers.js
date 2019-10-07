@@ -124,29 +124,29 @@ module.exports = {
     if (jwtService.verifyToken(token)) {
       var err;
       if (req.body.firstname !== undefined && (err = inputService.firstname(req.body.firstname).error)) {
-        return res.status(400).json({ error: 'firstname ' + err });
+        return res.status(400).json({ error: err});
       }
       if (req.body.lastname !== undefined && (err = inputService.lastname(req.body.lastname).error)) {
-        return res.status(400).json({ error: 'lastname ' + err });
+        return res.status(400).json({ error: err});
       }
       if (req.body.username !== undefined) {
         err = await inputService.username(req.body.username);
         if (err.error) {
-          return res.status(400).json({ error: 'username ' + err.error });
+          return res.status(400).json({ error: err.error});
         }
       }
       if (req.body.email !== undefined) {
         err = await inputService.mail(req.body.email);
         if (err.error) {
-          return res.status(400).json({ error: 'mail ' + err.error });
+          return res.status(400).json({ error: err.error });
         }
       }
       User.findOneAndUpdate({ token: token }, req.body, err => {
-        if (err) return res.status(400).json({error: "User update failed"});
+        if (err) return res.status(400).json({error: "update_failed"});
       });
-      return res.status(200).json({ message: 'User updated' });
+      return res.status(200).json({ message: 'update_success' });
     }
-    return res.status(400).json({error: "User update failed"});
+    return res.status(400).json({error: "update_failed"});
   },
 
   getUserByUsername:  async (req, res, next) => {

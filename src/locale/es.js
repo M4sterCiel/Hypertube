@@ -76,14 +76,19 @@ var customLanguage = {
   ],
   edit_profile: [
     {
+      title: "Cambiar perfíl",
       username: "Nombre de usuario",
       firstname: "Nombre",
       lastname: "Apellido",
-      language: "Idioma",
+      language: "Idioma:",
       save: "GUARDAR",
       cancel: "CANCELAR",
       password: "CONTRASEÑA",
-      delete: "ELIMINAR CUENTA"
+      delete: "ELIMINAR CUENTA",
+      saved: "Guardado",
+      nothing_changed: "Nada ha cambiado",
+      incorrect_fields: "Datos incorrectos",
+      empty_email: "Correo no puede estar vacío",
     }
   ],
   navbar: [
@@ -130,6 +135,31 @@ var customLanguage = {
       missing_password: "Contraseña no puede estar vacío",
       space_password: "Contraseña no puede contener espacios",
       unequal_passwords: "Contraseñas no coinciden",
+    }
+  ],
+  update_user: [
+    {
+      register_failed: "Error al registrar...",
+      invalid_lastname: "Apellido es invalid",
+      missing_lastname: "Apellido no puede estar vacío",
+      space_lastname: "El apellido no puede contener espacios",
+      length_lastname: "Apellido tiene que estar inferior a 30 caracteres",
+      invalid_firstname: "Nombre es invalid",
+      missing_firstname: "Nombre no puede estar vacío",
+      space_firstname: "El nombre no puede contener espacios",
+      length_firstname: "El nombre tiene que estar inferior a 30 caracteres",
+      invalid_username: "Nombre de usuario es invalid",
+      missing_username: "Nombre de usuario no puede estar vacío",
+      space_username: "El nombre de usuario no puede contener espacios",
+      length_username: "El nombre de usuario tiene que estar inferior a 30 caracteres",
+      already_registered_username: "Nombre de usuario ya existe",
+      invalid_email: "Correo incorrecto (example@email.com)",
+      missing_email: "Correo no puede estar vacío",
+      space_email: "El correo no puede contener espacios",
+      length_email: "Correo tiene que estar inferior a 30 caracteres",
+      already_registered_email: "Correo ya existe",
+      update_failed: "Actualización fallida",
+      update_sucess: "Actualización exitosa"
     }
   ],
   passwordSimple_error: [

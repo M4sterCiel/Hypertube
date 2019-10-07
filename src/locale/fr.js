@@ -76,14 +76,19 @@ var customLanguage = {
   ],
   edit_profile: [
     {
+      title: "Modifier profil",
       username: "Identifiant",
       firstname: "Prénom",
       lastname: "Nom",
-      language: "Langue",
+      language: "Langue :",
       save: "SAUVEGARDER",
       cancel: "ANNULER",
       password: "MOT DE PASSE",
-      delete: "SUPPRIMER LE COMPTE"
+      delete: "SUPPRIMER LE COMPTE",
+      saved: "Sauvegardé",
+      nothing_changed: "Rien a changé",
+      incorrect_fields: "Champ(s) incorrect(s)",
+      empty_email: "L'email ne peut pas être vide"
     }
   ],
   navbar: [
@@ -130,6 +135,31 @@ var customLanguage = {
       missing_password: "Le mot de passe ne peut être vide",
       space_password: "Le mot de passe ne peut contenir d'espaces",
       unequal_passwords: "Les mots de passe ne sont pas identiques",
+    }
+  ],
+  update_user: [
+    {
+      register_failed: "Erreur lors de la connexion...",
+      invalid_lastname: "Nom incorrect",
+      missing_lastname: "Le nom ne peut être vide",
+      space_lastname: "Le nom ne peut contenir d'espaces",
+      length_lastname: "Le nom doit être inférieur ou égal à 30 caractères",
+      invalid_firstname: "Prénom incorrect",
+      missing_firstname: "Le prénom ne peut être vide",
+      space_firstname: "Le prénom ne peut contenir d'espaces",
+      length_firstname: "Le prénom doit être inférieur ou égal à 30 caractères",
+      invalid_username: "Identifiant incorrect",
+      missing_username: "L'identifiant ne peut être vide",
+      space_username: "L'identifiant ne peut contenir d'espaces",
+      length_username: "L'identifiant doit être inférieur ou égal à 30 caractères",
+      already_registered_username: "L'identifiant existe déjà",
+      invalid_email: "Email incorrect (example@email.com)",
+      missing_email: "L'email ne peut être vide",
+      space_email: "L'email ne peut contenir d'espaces",
+      length_email: "L'email doit être inférieur ou égal à 30 caractères",
+      already_registered_email: "L'email existe déjà",
+      update_failed: "Mise à jour échouée",
+      update_sucess: "Mise à jour réussie"
     }
   ],
   passwordSimple_error: [

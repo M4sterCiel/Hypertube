@@ -85,14 +85,19 @@ var customLanguage = {
   ],
   edit_profile: [
     {
+      title: "Edit profile",
       username: "Username",
       firstname: "Firstname",
       lastname: "Lastname",
-      language: "Language",
+      language: "Language:",
       save: "SAVE",
       cancel: "CANCEL",
       password: "PASSWORD",
-      delete: "DELETE ACCOUNT"
+      delete: "DELETE ACCOUNT",
+      saved: "Saved",
+      nothing_changed: "Nothing changed",
+      incorrect_fields: "Incorrect field(s), cannot save",
+      empty_email: "Mail cannot be empty"
     }
   ],
   login_error: [
@@ -130,6 +135,31 @@ var customLanguage = {
       missing_password: "Missing password",
       space_password: "Password cannot contain spaces",
       unequal_passwords: "Passwords need to match",
+    }
+  ],
+  update_user: [
+    {
+      register_failed: "Error while registering...",
+      invalid_lastname: "Invalid lastname",
+      missing_lastname: "Missing lastname",
+      space_lastname: "Lastname cannot contain spaces",
+      length_lastname: "Lastname must be less or equal to 30 chars",
+      invalid_firstname: "Invalid firstname",
+      missing_firstname: "Missing firstname",
+      space_firstname: "Firstname cannot contain spaces",
+      length_firstname: "Firstname must be less or equal to 30 chars",
+      invalid_username: "Invalid username",
+      missing_username: "Missing username",
+      space_username: "Username cannot contain spaces",
+      length_username: "Username must be less or equal to 30 chars",
+      already_registered_username: "Username already exists",
+      invalid_email: "Invalid email",
+      missing_email: "Missing email",
+      space_email: "Email cannot contain spaces",
+      length_email: "Email must be less or equal to 30 chars",
+      already_registered_email: "Email already exists",
+      update_failed: "User update failed",
+      update_sucess: "User update succeeded"
     }
   ],
   passwordSimple_error: [
