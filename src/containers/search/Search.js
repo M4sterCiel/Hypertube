@@ -7,6 +7,7 @@ import Search from "../../components/searchBar/SearchBar";
 import Navbar from "../../components/navbar/NavBar";
 import Filter from "../../components/filter/Filter";
 import { SearchProvider } from "../../context/SearchContext";
+import { Link } from 'react-router-dom';
 
 const SearchView = () => {
     const [searchTerms, setSearchTerms] = useState({
@@ -20,43 +21,25 @@ const SearchView = () => {
 
     const [searchResult, setSearchResult] = useState({ movies: [] });
 
-    useEffect(() => {
-        const fetchMovies = async () => {
-            try {
-                const res = await axios.post("/search/movies", searchTerms);
-                if (res.data.length !== 0) {
-                    if (searchTerms.page === 1)
-                        setSearchResult({ movies: [...res.data] });
-                    else
-                        setSearchResult(prev => ({
-                            movies: prev.movies.concat(res.data)
-                        }));
-                }
-            } catch (err) {
-                if (err.response && err.response.status === 401)
-                    console.log(err.response);
-            }
-        };
-        fetchMovies();
-    }, [searchTerms]);
-
   useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const res = await axios.post("/search/movies", searchTerms);
-        if (res.data.length !== 0) {
-          if (searchTerms.page === 1)
-            setSearchResult({ movies: [...res.data] })
-          else
-            setSearchResult(prev => ({movies: prev.movies.concat(res.data)}))
-        }
-      } catch(err) {
-        if (err.response && err.response.status === 401) 
-          console.log(err.response);
-      }
-    }
-    fetchMovies();
-  }, [searchTerms])
+      const fetchMovies = async () => {
+          try {
+              const res = await axios.post("/search/movies", searchTerms);
+              if (res.data.length !== 0) {
+                  if (searchTerms.page === 1)
+                      setSearchResult({ movies: [...res.data] });
+                  else
+                      setSearchResult(prev => ({
+                          movies: prev.movies.concat(res.data)
+                      }));
+              }
+          } catch (err) {
+              if (err.response && err.response.status === 401)
+                  console.log(err.response);
+          }
+      };
+      fetchMovies();
+  }, [searchTerms]);
 
   const search = searchValue => {
     setSearchResult({movies: []});
@@ -127,10 +110,12 @@ const SearchView = () => {
               <Filter ratings={ratings} years={years} genre={genre} />
               <div className="infiniteScroll" id="infiniteScroll">
                 {searchResult.movies.map((movie, index) => (
-                  <Movie
-                    key={`${index}-${movie.title}`}
-                    movie={movie}
-                  />
+                  <Link to={`/movie/${movie.imdbId}`} style={{textDecoration:'none'}} key={index}>
+                    <Movie
+                      key={`${index}-${movie.title}`}
+                      movie={movie}
+                    />
+                  </Link>
                 ))}
               </div>
             </div>

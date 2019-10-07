@@ -1,10 +1,11 @@
-  import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import withAuth from "../../services/withAuth";
 import "./MoviePage.scss";
 import Navbar from "../../components/navbar/NavBar";
 import axios from "axios";
 
 const MoviePage = () => {
+
     const [moviePageState, setMoviePageState] = useState({
         isPlayer: false,
         loaded: false,
@@ -13,12 +14,32 @@ const MoviePage = () => {
         subFr: undefined
     });
 
+    const [movieDetails, setMovieDetails] = useState({ movie: []});
+
     const sourcesList = [
         'Sources',
         'YTS 720p',
         'YTS 1080p',
         'POPCORN TIME 720p',
       ]
+
+    useEffect(() => {
+    const fetchMovies = async () => {
+        let url = document.location.href;
+        let split = url.split("/");
+        let imdbId = {id: split[4]};
+        try {
+            const res = await axios.post("/search/singleMovie", imdbId);
+            if (res.data.length !== 0) {
+                setMovieDetails({ movie: res.data[0] });
+            }
+        } catch (err) {
+            if (err.response && err.response.status === 401)
+                console.log(err.response);
+        }
+    };
+    fetchMovies();
+}, [movieDetails]);
 
     !moviePageState.loaded &&
         axios.get("/movie/getSubtitles/tt0446750").then(res => {
@@ -43,7 +64,7 @@ const MoviePage = () => {
         <div className="MoviePage">
             <Navbar />
             <div className="layer">
-                <p className="movieTitle"><strong>7 Days To Vegas</strong></p>
+                <p className="movieTitle"><strong>{movieDetails.movie.title}</strong></p>
                 <div className="player">
                     <video className="videoSource" controls>
                         <source
@@ -95,10 +116,10 @@ const MoviePage = () => {
                                 </div>
                             </div>
                         </div>
-                        <form class="inputComment">
-                            <div class="row">
-                                <div class="input-field col s12">
-                                <textarea id="textarea1" class="materialize-textarea"></textarea>
+                        <form className="inputComment">
+                            <div className="row">
+                                <div className="input-field col s12">
+                                <textarea id="textarea1" className="materialize-textarea"></textarea>
                                 <label for="textarea1">Enter your comment</label>
                                 </div>
                             </div>
@@ -106,20 +127,20 @@ const MoviePage = () => {
                     </div>
                     <div className="infoSection">
                         <div className="topBox">
-                            <img className="infoPoster" src="https://img.yts.lt/assets/images/movies/7_days_to_vegas_2019/large-cover.jpg"></img>
+                            <img className="infoPoster" src={movieDetails.movie.poster}></img>
                             <div className="rightSide">
-                            <p className="movieSecondary">Theater release:</p>
-                                <p className="moviePrimary">1989</p>
+                                <p className="movieSecondary">Theater release:</p>
+                                <p className="moviePrimary">{movieDetails.movie.year}</p>
                                 <p className="movieSecondary">Running time:</p>
-                                <p className="moviePrimary">98min</p>
+                                <p className="moviePrimary">{movieDetails.movie.runtime}</p>
                                 <p className="movieSecondary">Director:</p>
-                                <p className="moviePrimary">Samuel Kraftman</p>
+                                <p className="moviePrimary">Deedee Megadoodoo</p>
                                 <p className="movieSecondary">Starring:</p>
                                 <p className="moviePrimary">Joe Fyn, Sarah Beltion, Ed Fill</p>
                             </div>
                         </div>
                         <p className="movieSecondary">Synopsis:</p>
-                        <p>After a mobster agrees to cooperate with an FBI investigation in order to stay out of prison, he's relocated by the authorities to a life of suburban anonymity as part of a witness protection program. It's not long before a couple of his new neighbours figure out his true identity and come knocking to see if he'd be up for one more hit—suburban style.</p>
+                        <p>{movieDetails.movie.plot}</p>
                     </div>
                 </div>
             </div>
