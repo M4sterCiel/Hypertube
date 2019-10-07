@@ -41,7 +41,7 @@ const Filter = ({ ratings, years, genre }) => {
   };
 
   const handleGenreChanges = e => {
-    if (e.target.value != "All")
+    if (e.target.value !== "All")
     {
       genre(e.target.value.toLowerCase());
     } else {

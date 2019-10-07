@@ -54,7 +54,7 @@ const MoviePage = (props) => {
         {
             fetchMovies();
         }
-    }, [movieDetails]);
+    }, [movieDetails, props.history]);
 
     const handleSourceSelection = () => {
         
@@ -125,7 +125,7 @@ const MoviePage = (props) => {
                 <div className="bottomStuff">
                     <div className="infoSection">
                         <div className="poster">
-                            <img className="infoPoster" src={movieDetails.movie.poster}></img>
+                            <img className="infoPoster" alt="movie poster" src={movieDetails.movie.poster}></img>
                         </div>
                         <div className="infos">
                             {movieDetails.sources.length > 0 ? (
@@ -154,12 +154,11 @@ const MoviePage = (props) => {
                             <p className="movieSecondary">Starring:</p>
                             <p className="moviePrimary">Joe Fyn, Sarah Beltion, Ed Fill</p>
                             <p className="movieSecondary">Synopsis:</p>
-                            {/* {movieDetails.movie.plot.length < 200 ? (
-                                <p id="synopsis" className="moviePrimary">{movieDetails.movie.plot}</p>
+                            {movieDetails.movie.plot && movieDetails.movie.plot.length > 330 ? (
+                                <p id="synopsis" className="moviePrimary">{movieDetails.movie.plot.substring(0, 330) + "..."}</p>
                             ) : (
-                                <p id="synopsis" className="moviePrimary">{movieDetails.movie.plot.substring(0, 200) + "..."}</p>
-                            )} */}
-                            <p id="synopsis" className="moviePrimary">{movieDetails.movie.plot}</p>
+                                <p id="synopsis" className="moviePrimary">{movieDetails.movie.plot}</p>
+                            )}
                         </div>
                     </div>
                     <div className="commentSection">
