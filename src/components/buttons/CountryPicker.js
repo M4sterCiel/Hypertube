@@ -12,6 +12,7 @@ import Select from "@material-ui/core/Select";
 import Flag from "react-world-flags";
 import "./Buttons.scss";
 import { GlobalContext } from "../../context/GlobalContext";
+import CustomLanguage from "../../services/DefineLocale";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -31,6 +32,8 @@ export default function DialogSelect() {
     open: false,
     locale: context.locale
   });
+  const locale = context.locale;
+  var lang = CustomLanguage.define(locale);  
 
   const handleChange = event => {
     setState({ ...state, locale: String(event.target.value) });
@@ -56,11 +59,11 @@ export default function DialogSelect() {
         open={state.open}
         onClose={handleClose}
       >
-        <DialogTitle>Pick country/language</DialogTitle>
+        <DialogTitle>{lang.country_picker[0].title}</DialogTitle>
         <DialogContent>
           <form className={classes.container}>
             <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="locale-native-simple">list here</InputLabel>
+              <InputLabel htmlFor="locale-native-simple">{lang.country_picker[0].list_title}</InputLabel>
               <Select
                 native
                 value={state.locale}

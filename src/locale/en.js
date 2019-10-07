@@ -61,6 +61,12 @@ var customLanguage = {
       profile: "PROFILE"
     }
   ],
+  country_picker: [
+    {
+      title: "Pick country/language",
+      list_title: "List here",
+    }
+  ],
   profile: [
     {
       language: "Preferred language: ",

@@ -100,6 +100,12 @@ var customLanguage = {
       profile: "PERFÍL"
     }
   ],
+  country_picker: [
+    {
+      title: "Elige un país/idioma",
+      list_title: "Lista",
+    }
+  ],
   login_error: [
     {
       login_failed: "Error al connectar...",
