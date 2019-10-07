@@ -31,7 +31,9 @@ const MoviePage = () => {
         try {
             const res = await axios.post("/search/singleMovie", imdbId);
             if (res.data.length !== 0) {
-                setMovieDetails({ movie: res.data[0] });
+                setMovieDetails({ movie: res.data[0], validId: true });
+            } else {
+                setMovieDetails({ validId: false });
             }
         } catch (err) {
             if (err.response && err.response.status === 401)
@@ -64,85 +66,93 @@ const MoviePage = () => {
         <div className="MoviePage">
             <Navbar />
             <div className="layer">
-                <p className="movieTitle"><strong>{movieDetails.movie.title}</strong></p>
-                <div className="player">
-                    <video className="videoSource" controls>
-                        <source
-                            // src="http://localhost:5000/movie/5d95c4a2562e78b6a52b8eb17777/tt0446750/720p/YTS"
-                            type="video/webm"
-                        />
-                        {moviePageState.subEn !== undefined ? (
-                            <track
-                                label="English"
-                                kind="subtitles"
-                                srcLang="en"
-                                src={moviePageState.subEn}
+                {movieDetails.validId === false ? (
+                    <React.Fragment>
+                    <p className="movieTitle"><strong>Invalid imdb id</strong></p>
+                    </React.Fragment>
+                ) : (
+                    <React.Fragment>
+                    <p className="movieTitle"><strong>{movieDetails.movie.title}</strong></p>
+                    <div className="player">
+                        <video className="videoSource" controls>
+                            <source
+                                // src="http://localhost:5000/movie/5d95c4a2562e78b6a52b8eb17777/tt0446750/720p/YTS"
+                                type="video/webm"
                             />
-                        ) : (
-                            ""
-                        )}
-                        {moviePageState.subFr !== undefined ? (
-                            <track
-                                label="Français"
-                                kind="subtitles"
-                                srcLang="fr"
-                                src={moviePageState.subFr}
-                            />
-                        ) : (
-                            ""
-                        )}
-                        {moviePageState.subEs !== undefined ? (
-                            <track
-                                label="Español"
-                                kind="subtitles"
-                                srcLang="es"
-                                src={moviePageState.subEs}
-                            />
-                        ) : (
-                            ""
-                        )}
-                    </video>
-                </div>
-                <div className="bottomStuff">
-                    <div className="commentSection">
-                        <div className="comments">
-                            <div className="singleComment">
-                                <div className="top">
-                                    <p className="moviePrimary" id="commenter"><strong>Maxime</strong></p>
-                                    <p className="movieSecondary" id="timestamp">01/12/2019 at 12:34</p>
-                                </div>
-                                <div className="bottom">
-                                    <p className="movieSecondary" id="content">Amazing movie</p>
-                                </div>
-                            </div>
-                        </div>
-                        <form className="inputComment">
-                            <div className="row">
-                                <div className="input-field col s12">
-                                <textarea id="textarea1" className="materialize-textarea"></textarea>
-                                <label for="textarea1">Enter your comment</label>
-                                </div>
-                            </div>
-                        </form>
+                            {moviePageState.subEn !== undefined ? (
+                                <track
+                                    label="English"
+                                    kind="subtitles"
+                                    srcLang="en"
+                                    src={moviePageState.subEn}
+                                />
+                            ) : (
+                                ""
+                            )}
+                            {moviePageState.subFr !== undefined ? (
+                                <track
+                                    label="Français"
+                                    kind="subtitles"
+                                    srcLang="fr"
+                                    src={moviePageState.subFr}
+                                />
+                            ) : (
+                                ""
+                            )}
+                            {moviePageState.subEs !== undefined ? (
+                                <track
+                                    label="Español"
+                                    kind="subtitles"
+                                    srcLang="es"
+                                    src={moviePageState.subEs}
+                                />
+                            ) : (
+                                ""
+                            )}
+                        </video>
                     </div>
-                    <div className="infoSection">
-                        <div className="topBox">
-                            <img className="infoPoster" src={movieDetails.movie.poster}></img>
-                            <div className="rightSide">
-                                <p className="movieSecondary">Theater release:</p>
-                                <p className="moviePrimary">{movieDetails.movie.year}</p>
-                                <p className="movieSecondary">Running time:</p>
-                                <p className="moviePrimary">{movieDetails.movie.runtime}</p>
-                                <p className="movieSecondary">Director:</p>
-                                <p className="moviePrimary">Deedee Megadoodoo</p>
-                                <p className="movieSecondary">Starring:</p>
-                                <p className="moviePrimary">Joe Fyn, Sarah Beltion, Ed Fill</p>
+                    <div className="bottomStuff">
+                        <div className="commentSection">
+                            <div className="comments">
+                                <div className="singleComment">
+                                    <div className="top">
+                                        <p className="moviePrimary" id="commenter"><strong>Maxime</strong></p>
+                                        <p className="movieSecondary" id="timestamp">01/12/2019 at 12:34</p>
+                                    </div>
+                                    <div className="bottom">
+                                        <p className="movieSecondary" id="content">Amazing movie</p>
+                                    </div>
+                                </div>
                             </div>
+                            <form className="inputComment">
+                                <div className="row">
+                                    <div className="input-field col s12">
+                                    <textarea id="textarea1" className="materialize-textarea"></textarea>
+                                    <label for="textarea1">Enter your comment</label>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <p className="movieSecondary">Synopsis:</p>
-                        <p>{movieDetails.movie.plot}</p>
+                        <div className="infoSection">
+                            <div className="topBox">
+                                <img className="infoPoster" src={movieDetails.movie.poster}></img>
+                                <div className="rightSide">
+                                    <p className="movieSecondary">Theater release:</p>
+                                    <p className="moviePrimary">{movieDetails.movie.year}</p>
+                                    <p className="movieSecondary">Running time:</p>
+                                    <p className="moviePrimary">{movieDetails.movie.runtime}</p>
+                                    <p className="movieSecondary">Director:</p>
+                                    <p className="moviePrimary">Deedee Megadoodoo</p>
+                                    <p className="movieSecondary">Starring:</p>
+                                    <p className="moviePrimary">Joe Fyn, Sarah Beltion, Ed Fill</p>
+                                </div>
+                            </div>
+                            <p className="movieSecondary">Synopsis:</p>
+                            <p>{movieDetails.movie.plot}</p>
+                        </div>
                     </div>
-                </div>
+                    </React.Fragment>
+                )}
             </div>
         </div>
     );
