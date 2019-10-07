@@ -72,54 +72,51 @@ const MoviePage = (props) => {
         <div className="MoviePage">
             <Navbar />
             <div className="layer">
-                {movieDetails.validId === false ? (
-                    <React.Fragment>
-                    <p className="movieTitle"><strong></strong></p>
-                    </React.Fragment>
-                ) : (
-                    <React.Fragment>
-                    <p className="movieTitle"><strong>{movieDetails.movie.title}</strong></p>
-                    <div className="player">
-                        <video className="videoSource" controls>
-                            <source
-                                // src="http://localhost:5000/movie/5d95c4a2562e78b6a52b8eb17777/tt0446750/720p/YTS"
-                                type="video/webm"
+                <p className="movieTitle"><strong>{movieDetails.movie.title}</strong></p>
+                <div className="player">
+                    <video className="videoSource" controls>
+                        <source
+                            // src="http://localhost:5000/movie/5d95c4a2562e78b6a52b8eb17777/tt0446750/720p/YTS"
+                            type="video/webm"
+                        />
+                        {moviePageState.subEn !== undefined ? (
+                            <track
+                                label="English"
+                                kind="subtitles"
+                                srcLang="en"
+                                src={moviePageState.subEn}
                             />
-                            {moviePageState.subEn !== undefined ? (
-                                <track
-                                    label="English"
-                                    kind="subtitles"
-                                    srcLang="en"
-                                    src={moviePageState.subEn}
-                                />
-                            ) : (
-                                ""
-                            )}
-                            {moviePageState.subFr !== undefined ? (
-                                <track
-                                    label="Français"
-                                    kind="subtitles"
-                                    srcLang="fr"
-                                    src={moviePageState.subFr}
-                                />
-                            ) : (
-                                ""
-                            )}
-                            {moviePageState.subEs !== undefined ? (
-                                <track
-                                    label="Español"
-                                    kind="subtitles"
-                                    srcLang="es"
-                                    src={moviePageState.subEs}
-                                />
-                            ) : (
-                                ""
-                            )}
-                        </video>
-                    </div>
-                    <div className="bottomStuff">
-                        <div className="infoSection">
+                        ) : (
+                            ""
+                        )}
+                        {moviePageState.subFr !== undefined ? (
+                            <track
+                                label="Français"
+                                kind="subtitles"
+                                srcLang="fr"
+                                src={moviePageState.subFr}
+                            />
+                        ) : (
+                            ""
+                        )}
+                        {moviePageState.subEs !== undefined ? (
+                            <track
+                                label="Español"
+                                kind="subtitles"
+                                srcLang="es"
+                                src={moviePageState.subEs}
+                            />
+                        ) : (
+                            ""
+                        )}
+                    </video>
+                </div>
+                <div className="bottomStuff">
+                    <div className="infoSection">
+                        <div className="poster">
                             <img className="infoPoster" src={movieDetails.movie.poster}></img>
+                        </div>
+                        <div className="infos">
                             <p className="movieSecondary">Theater release:</p>
                             <p className="moviePrimary">{movieDetails.movie.year}</p>
                             <p className="movieSecondary">Running time:</p>
@@ -131,30 +128,27 @@ const MoviePage = (props) => {
                             <p className="movieSecondary">Synopsis:</p>
                             <p>{movieDetails.movie.plot}</p>
                         </div>
-                        <div className="commentSection">
-                            <div className="comments">
-                                <div className="singleComment">
-                                    <div className="top">
-                                        <p className="moviePrimary" id="commenter"><strong>Maxime</strong></p>
-                                        <p className="movieSecondary" id="timestamp">01/12/2019 at 12:34</p>
-                                    </div>
-                                    <div className="bottom">
-                                        <p className="movieSecondary" id="content">Amazing movie</p>
-                                    </div>
+                    </div>
+                    <div className="commentSection">
+                        <div className="comments">
+                            <div className="singleComment">
+                                <div className="top">
+                                    <p className="moviePrimary" id="commenter"><strong>Maxime</strong></p>
+                                    <p className="movieSecondary" id="timestamp">01/12/2019 at 12:34</p>
+                                </div>
+                                <div className="bottom">
+                                    <p className="movieSecondary" id="content">Amazing movie</p>
                                 </div>
                             </div>
-                            <form className="inputComment">
-                                <div className="row">
-                                    <div className="input-field col s12">
-                                    <textarea id="textarea1" className="materialize-textarea"></textarea>
-                                    <label for="textarea1">Enter your comment</label>
-                                    </div>
-                                </div>
-                            </form>
                         </div>
+                        <form className="inputComment">
+                            <div className="input-field col s12">
+                                <textarea id="textarea1" className="materialize-textarea"></textarea>
+                                <label for="textarea1">Enter your comment</label>
+                            </div>
+                        </form>
                     </div>
-                    </React.Fragment>
-                )}
+                </div>
             </div>
         </div>
     );
