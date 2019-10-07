@@ -43,6 +43,17 @@ var customLanguage = {
       confirmation: "Un email de confirmation vous a été envoyé"
     }
   ],
+  forgot_password: [
+    {
+      title: "Mot de passe oublé",
+      input_title: "Nom d'utilisateur ou email",
+      submit: "Récupérer",
+      invalid_username: "Nom d'utilisateur non valide",
+      invalid_unknown_email: "Email non valide ou inconnu",
+      invalid_email: "Email non valide",
+      receive_email: "Vous allez recevoir un email !"
+    }
+  ],
   search: [
     {
       search: "Rechercher",

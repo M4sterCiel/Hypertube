@@ -233,7 +233,7 @@ module.exports = {
     if (!mailPattern.test(data)) {
       var result = await User.find({ username: sanitize(data) });
       if (result.length < 1)
-        return res.status(400).json({ error: 'Invalid username' });
+        return res.status(400).json({ error: 'invalid_username' });
       else {
         var uniqid =
           new Date().getTime() +
@@ -250,13 +250,13 @@ module.exports = {
         );
         var statusMail = mailService.sendNewPassword(result[0], uniqid);
         if (statusMail === 'error')
-          return res.status(400).json({ error: 'Invalid/unknown email!' });
-        return res.status(200).json({ message: 'You will receive an email!' });
+          return res.status(400).json({ error: 'invalid_unknown_email' });
+        return res.status(200).json({ message: 'receive_email' });
       }
     } else {
       var result = await User.find({ email: sanitize(data) });
       if (result.length < 1)
-        return res.status(400).json({ error: 'Invalid email' });
+        return res.status(400).json({ error: 'invalid_email' });
       else {
         var uniqid =
           new Date().getTime() +
@@ -271,7 +271,7 @@ module.exports = {
           }
         );
         mailService.sendNewPassword(result[0], uniqid);
-        return res.status(200).json({ message: 'You will receive an email!' });
+        return res.status(200).json({ message: 'receive_email' });
       }
     }
   },

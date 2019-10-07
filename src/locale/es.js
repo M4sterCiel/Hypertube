@@ -43,6 +43,17 @@ var customLanguage = {
       confirmation: "Correo de confirmación enviado"
     }
   ],
+  forgot_password: [
+    {
+      title: "Contraseña olvidada",
+      input_title: "Nombre de usuario o correo",
+      submit: "Recuperar",
+      invalid_username: "Nombre de usuario es incorrecto",
+      invalid_unknown_email: "Correo es incorrecto o desconocido",
+      invalid_email: "Correo es incorrecto",
+      receive_email: "Hemos enviado un correo!"
+    }
+  ],
   search: [
     {
       search: "Buscar",

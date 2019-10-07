@@ -43,6 +43,17 @@ var customLanguage = {
       confirmation: "An email has been sent!"
     }
   ],
+  forgot_password: [
+    {
+      title: "Forgot password",
+      input_title: "Username or email",
+      submit: "Retrieve",
+      invalid_username: "Invalid username",
+      invalid_unknown_email: "Invalid/unknown email",
+      invalid_email: "Invalid email",
+      receive_email: "You will receive an email!"
+    }
+  ],
   search: [
     {
       search: "Search",
@@ -111,7 +122,7 @@ var customLanguage = {
       login_failed: "Error while logging in...",
       invalid_cred: "Invalid username/password",
       login_inactive: "This account is not activated",
-      invalid_login: "Please enter a valid username",
+      invalid_login: "Please enter a valid login",
       empty_login: "Username cannot be empty",
       length_login: "Username must be less or equal to 30 chars"
     }
