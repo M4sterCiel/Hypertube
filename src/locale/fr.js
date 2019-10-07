@@ -72,6 +72,21 @@ var customLanguage = {
       incorrect_picture: "Merci d'envoyer une photo correcte"
     }
   ],
+  delete_account: [
+    {
+      cancel: "Annuler",
+      delete: "Supprimer",
+      delete_account_failed: "La suppression du compte a échoué",
+      delete_account_success: "Compte supprimé"
+    }
+  ],
+  activate_account: [
+    {
+      activation_success: "Votre compte est prêt !",
+      activation_failed: "Erreur pendant l'activation de votre compte...",
+      already_active: "Compte déjà actif !",
+    }
+  ],
   search: [
     {
       search: "Rechercher",

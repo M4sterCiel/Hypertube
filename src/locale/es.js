@@ -72,6 +72,21 @@ var customLanguage = {
       incorrect_picture: "Por favor cargue una foto correcta"
     }
   ],
+  delete_account: [
+    {
+      cancel: "Cancelar",
+      delete: "Eliminar",
+      delete_account_failed: "La eliminacíon de la cuenta ha fallado",
+      delete_account_success: "Cuenta eliminada"
+    }
+  ],
+  activate_account: [
+    {
+      activation_success: "Su cuenta esta lista!",
+      activation_failed: "Error durante la activacíon de su cuente...",
+      already_active: "Cuenta ya activa!",
+    }
+  ],
   search: [
     {
       search: "Buscar",

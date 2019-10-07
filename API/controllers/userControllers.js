@@ -204,7 +204,7 @@ module.exports = {
         if (response && response.active)
           return res
             .status(200)
-            .json({ message: 'Account already activated!' });
+            .json({ message: 'already_active' });
         if (err) return res.json({ status: 'error' });
         if (response === null || response.activationKey !== req.body.key)
           return res.status(400).json({ status: false });

@@ -72,6 +72,21 @@ var customLanguage = {
       incorrect_picture: "Please upload a correct image"
     }
   ],
+  delete_account: [
+    {
+      cancel: "Cancel",
+      delete: "Delete",
+      delete_account_failed: "Account deletion failed",
+      delete_account_success: "Account deleted"
+    }
+  ],
+  activate_account: [
+    {
+      activation_success: "Your account is now ready!",
+      activation_failed: "Error activating your account...",
+      already_active: "Account already activated!",
+    }
+  ],
   search: [
     {
       search: "Search",
