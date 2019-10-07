@@ -14,7 +14,7 @@ const MoviePage = () => {
     });
 
     !moviePageState.loaded &&
-        axios.get("/movie/getSubtitles/tt0446750").then(res => {
+        axios.get("/movie/getSubtitles/tt0112442").then(res => {
             setMoviePageState({
                 subEn:
                     res.data.subPathEn !== undefined

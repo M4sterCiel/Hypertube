@@ -45,6 +45,7 @@ const options = {
 module.exports = {
     getSubtitles: (req, res, next) => {
         var movieId = req.params.movieId;
+        console.log(movieId);
         OpenSubtitles.search({
             sublanguageid: ["fre", "eng", "spa"].join(),
             extensions: "srt",
@@ -137,10 +138,9 @@ module.exports = {
             ])
             .format("webm")
             .on("progress", progress => {
-                console.log(progress);
+                //console.log(progress);
             })
             .on("start", cmd => {
-                console.log(cmd);
                 console.log("Starting conversion...");
             })
             .on("error", (err, stdout, stderr) => {
@@ -180,6 +180,7 @@ module.exports = {
     getMovieStream: async (req, res) => {
         var customPath = req.params.quality + "_" + req.params.source;
         Movie.findOne({ imdbId: req.params.movieId }, (err, result) => {
+            console.log(result);
             if (err || result === null)
                 return res
                     .status(404)
