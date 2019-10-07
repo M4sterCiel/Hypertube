@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { withRouter } from "react-router-dom";
 import withAuth from "../../services/withAuth";
 import "./MoviePage.scss";
 import Navbar from "../../components/navbar/NavBar";
 import axios from "axios";
+import ErrorToast from "../../services/toasts/ErrorToasts";
 
-const MoviePage = () => {
+const MoviePage = (props) => {
 
     const [moviePageState, setMoviePageState] = useState({
         isPlayer: false,
@@ -16,32 +18,36 @@ const MoviePage = () => {
 
     const [movieDetails, setMovieDetails] = useState({ movie: []});
 
-    const sourcesList = [
-        'Sources',
-        'YTS 720p',
-        'YTS 1080p',
-        'POPCORN TIME 720p',
-      ]
+    // const sourcesList = [
+    //     'Sources',
+    //     'YTS 720p',
+    //     'YTS 1080p',
+    //     'POPCORN TIME 720p',
+    //   ]
 
     useEffect(() => {
-    const fetchMovies = async () => {
-        let url = document.location.href;
-        let split = url.split("/");
-        let imdbId = {id: split[4]};
-        try {
-            const res = await axios.post("/search/singleMovie", imdbId);
-            if (res.data.length !== 0) {
-                setMovieDetails({ movie: res.data[0], validId: true });
-            } else {
-                setMovieDetails({ validId: false });
+        const fetchMovies = async () => {
+            let url = document.location.href;
+            let split = url.split("/");
+            let imdbId = {id: split[4]};
+            try {
+                const res = await axios.post("/search/singleMovie", imdbId);
+                if (res.data.length !== 0) {
+                    setMovieDetails({ movie: res.data[0], validId: true });
+                } else {
+                    setMovieDetails({ validId: false });
+                }
+            } catch (err) {
+                if (err.response && err.response.status === 401)
+                    console.log(err.response);
             }
-        } catch (err) {
-            if (err.response && err.response.status === 401)
-                console.log(err.response);
+        };
+        if (movieDetails.validId === false) {
+            props.history.push("/search");
+            ErrorToast.custom.error("Movie not found", 4000);
         }
-    };
-    fetchMovies();
-}, [movieDetails]);
+        fetchMovies();
+    }, [movieDetails]);
 
     !moviePageState.loaded &&
         axios.get("/movie/getSubtitles/tt0446750").then(res => {
@@ -68,7 +74,7 @@ const MoviePage = () => {
             <div className="layer">
                 {movieDetails.validId === false ? (
                     <React.Fragment>
-                    <p className="movieTitle"><strong>Invalid imdb id</strong></p>
+                    <p className="movieTitle"><strong></strong></p>
                     </React.Fragment>
                 ) : (
                     <React.Fragment>
@@ -112,6 +118,19 @@ const MoviePage = () => {
                         </video>
                     </div>
                     <div className="bottomStuff">
+                        <div className="infoSection">
+                            <img className="infoPoster" src={movieDetails.movie.poster}></img>
+                            <p className="movieSecondary">Theater release:</p>
+                            <p className="moviePrimary">{movieDetails.movie.year}</p>
+                            <p className="movieSecondary">Running time:</p>
+                            <p className="moviePrimary">{movieDetails.movie.runtime}</p>
+                            <p className="movieSecondary">Director:</p>
+                            <p className="moviePrimary">Deedee Megadoodoo</p>
+                            <p className="movieSecondary">Starring:</p>
+                            <p className="moviePrimary">Joe Fyn, Sarah Beltion, Ed Fill</p>
+                            <p className="movieSecondary">Synopsis:</p>
+                            <p>{movieDetails.movie.plot}</p>
+                        </div>
                         <div className="commentSection">
                             <div className="comments">
                                 <div className="singleComment">
@@ -133,19 +152,6 @@ const MoviePage = () => {
                                 </div>
                             </form>
                         </div>
-                        <div className="infoSection">
-                            <img className="infoPoster" src={movieDetails.movie.poster}></img>
-                            <p className="movieSecondary">Theater release:</p>
-                            <p className="moviePrimary">{movieDetails.movie.year}</p>
-                            <p className="movieSecondary">Running time:</p>
-                            <p className="moviePrimary">{movieDetails.movie.runtime}</p>
-                            <p className="movieSecondary">Director:</p>
-                            <p className="moviePrimary">Deedee Megadoodoo</p>
-                            <p className="movieSecondary">Starring:</p>
-                            <p className="moviePrimary">Joe Fyn, Sarah Beltion, Ed Fill</p>
-                            <p className="movieSecondary">Synopsis:</p>
-                            <p>{movieDetails.movie.plot}</p>
-                        </div>
                     </div>
                     </React.Fragment>
                 )}
@@ -154,4 +160,4 @@ const MoviePage = () => {
     );
 };
 
-export default withAuth(MoviePage);
+export default withAuth(withRouter(MoviePage));
