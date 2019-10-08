@@ -85,7 +85,7 @@ const SearchView = () => {
         .getElementById("infiniteScroll")
         .removeEventListener("scroll", handleScroll);
     }
-  }, []);
+  }, [searchResult]);
 
   const handleScroll = () => {
     if (

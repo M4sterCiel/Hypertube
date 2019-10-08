@@ -160,7 +160,7 @@ const MoviePage = (props) => {
                     </video>
                 </div>
                 ) : (
-                    <p>Select a source to start streaming the movie</p>
+                    <p>Select a source below to start streaming the movie</p>
                 )}
                 <div className="bottomStuff">
                     <div className="infoSection">
