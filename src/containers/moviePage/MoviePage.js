@@ -63,8 +63,8 @@ const MoviePage = (props) => {
     }, [movieDetails, props.history]);
 
     useEffect(() => {
-        movieId.length > 0 && !moviePageState.loaded &&
-        axios.get(`/movie/getSubtitles/${movieId}`).then(res => {
+        movieId.id && !moviePageState.loaded &&
+        axios.get(`/movie/getSubtitles/${movieId.id}`).then(res => {
             setMoviePageState({
                 subEn:
                     res.data.subPathEn !== undefined
@@ -116,7 +116,8 @@ const MoviePage = (props) => {
             <Navbar />
             <div className="layer">
                 <p className="movieTitle"><strong>{movieDetails.movie.title}</strong></p>
-                <div className="player">
+                {streamURL ? (
+                    <div className="player">
                     <video className="videoSource" controls>
                         <source
                             src={streamURL}
@@ -154,6 +155,9 @@ const MoviePage = (props) => {
                         )}
                     </video>
                 </div>
+                ) : (
+                    <p>Select a source to start streaming the movie</p>
+                )}
                 <div className="bottomStuff">
                     <div className="infoSection">
                         <div className="poster">
