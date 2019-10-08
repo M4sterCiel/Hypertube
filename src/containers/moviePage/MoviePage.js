@@ -139,6 +139,7 @@ const MoviePage = (props) => {
                         <source
                             src={streamURL}
                             type="video/webm"
+                            onPlay={() => context.updateMoviesSeen([...context.movies_seen, movieId])}
                         />
                         {moviePageState.subEn !== undefined ? (
                             <track
