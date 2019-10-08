@@ -18,14 +18,17 @@ const MoviePage = (props) => {
     });
 
     const context = useContext(GlobalContext);
+    const [movieId, setMovieId] = useState("");
     const [movieDetails, setMovieDetails] = useState({ movie: [], sources: []});
     const [commentValue, setCommentValue] = useState("");
+    const [streamURL, setStreamURL] = useState("");
 
     useEffect(() => {
         const fetchMovies = async () => {
             let url = document.location.href;
             let split = url.split("/");
             let imdbId = {id: split[4]};
+            setMovieId(imdbId);
             try {
                 const res = await axios.post("/search/singleMovie", imdbId);
                 if (res.data.length !== 0) {
@@ -59,8 +62,36 @@ const MoviePage = (props) => {
         }
     }, [movieDetails, props.history]);
 
-    const handleSourceSelection = () => {
-        console.log(context.id);
+    useEffect(() => {
+        movieId.length > 0 && !moviePageState.loaded &&
+        axios.get(`/movie/getSubtitles/${movieId}`).then(res => {
+            setMoviePageState({
+                subEn:
+                    res.data.subPathEn !== undefined
+                        ? require("../../" + res.data.subPathEn.substr(-26))
+                        : undefined,
+                subEs:
+                    res.data.subPathEs !== undefined
+                        ? require("../../" + res.data.subPathEs.substr(-26))
+                        : undefined,
+                subFr:
+                    res.data.subPathFr !== undefined
+                        ? require("../../" + res.data.subPathFr.substr(-26))
+                        : undefined,
+                loaded: true
+            });
+        });
+    }, [movieId]);
+
+    const constructURL = e => {
+        let userId = context.uid;
+        let movieId = movieDetails.movie.imdbId;
+        let params = e.target.value.split(' ');
+        let quality = params[0];
+        let source = params[1];
+        let route = "http://localhost:5000/movie";
+        let url = route.concat('/', userId).concat('/', movieId).concat('/', quality).concat('/', source);
+        setStreamURL(url);
     }
 
     const handleNewComment = e => {
@@ -80,25 +111,6 @@ const MoviePage = (props) => {
         setCommentValue("");
     };
 
-    !moviePageState.loaded &&
-        axios.get("/movie/getSubtitles/tt0446750").then(res => {
-            setMoviePageState({
-                subEn:
-                    res.data.subPathEn !== undefined
-                        ? require("../../" + res.data.subPathEn.substr(-26))
-                        : undefined,
-                subEs:
-                    res.data.subPathEs !== undefined
-                        ? require("../../" + res.data.subPathEs.substr(-26))
-                        : undefined,
-                subFr:
-                    res.data.subPathFr !== undefined
-                        ? require("../../" + res.data.subPathFr.substr(-26))
-                        : undefined,
-                loaded: true
-            });
-        });
-
     return (
         <div className="MoviePage">
             <Navbar />
@@ -107,7 +119,7 @@ const MoviePage = (props) => {
                 <div className="player">
                     <video className="videoSource" controls>
                         <source
-                            // src="http://localhost:5000/movie/5d95c4a2562e78b6a52b8eb17777/tt0446750/720p/YTS"
+                            src={streamURL}
                             type="video/webm"
                         />
                         {moviePageState.subEn !== undefined ? (
@@ -151,13 +163,13 @@ const MoviePage = (props) => {
                             {movieDetails.sources.length > 0 ? (
                                  <select className="browser-default"
                                  id="sourceSelect"
-                                 onChange={handleSourceSelection}
+                                 onChange={constructURL}
                                 >
-                                    {movieDetails.sources.map(genre => (
-                                        <option key={genre} 
-                                                value={genre} 
+                                    {movieDetails.sources.map(source => (
+                                        <option key={source} 
+                                                value={source} 
                                         >
-                                            {genre}
+                                            {source}
                                         </option>
                                     ))}
                                 </select>
