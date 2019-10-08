@@ -25,11 +25,11 @@ mongoose.set("useFindAndModify", false);
 mongoose.set("useCreateIndex", true);
 mongoose.set("useUnifiedTopology", true);
 /* mongoose.connect(
-    "mongodb+srv://Team:Apkm5VCrxWTRPYxK@cluster0-shqxc.mongodb.net/hypertube_db?retryWrites=true&w=majority",
-    {
-        useUnifiedTopology: true,
-        useNewUrlParser: true
-    }
+  "mongodb+srv://Team:Apkm5VCrxWTRPYxK@cluster0-shqxc.mongodb.net/hypertube_db?retryWrites=true&w=majority",
+  {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+  }
 ); */
 mongoose.connect("mongodb://localhost:27017/hypertube_db", {
   useUnifiedTopology: true,
@@ -47,9 +47,9 @@ var store = new MongoDBStore({
   collection: "MySessions"
 });
 /* var store = new MongoDBStore({
-    uri:
-        "mongodb+srv://Team:Apkm5VCrxWTRPYxK@cluster0-shqxc.mongodb.net/hypertube_db?retryWrites=true&w=majority",
-    collection: "MySessions"
+  uri:
+    "mongodb+srv://Team:Apkm5VCrxWTRPYxK@cluster0-shqxc.mongodb.net/hypertube_db?retryWrites=true&w=majority",
+  collection: "MySessions"
 }); */
 
 /* Middleware */

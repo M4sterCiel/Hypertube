@@ -64,7 +64,7 @@ const MoviePage = props => {
   }, [movieDetails, props.history]);
 
   const handleSourceSelection = () => {
-    console.log(context.id);
+    console.log(context);
   };
 
   const handleNewComment = e => {
@@ -80,6 +80,12 @@ const MoviePage = props => {
 
   const resetInputField = () => {
     setCommentValue("");
+  };
+
+  const updateContext = () => {
+    /* var data = context. */
+    console.log("ca passe");
+    context.updateMoviesSeen(['tt0446750']);
   };
 
   !moviePageState.loaded &&
@@ -111,8 +117,9 @@ const MoviePage = props => {
         <div className="player">
           <video className="videoSource" controls>
             <source
-              // src="http://localhost:5000/movie/5d95c4a2562e78b6a52b8eb17777/tt0446750/720p/YTS"
+              src="http://localhost:5000/movie/5d9c8f8725e6fab140a3acbd/tt0446750/720p/YTS"
               type="video/webm"
+              onPlay={updateContext}
             />
             {moviePageState.subEn !== undefined ? (
               <track

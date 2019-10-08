@@ -3,18 +3,19 @@ import axios from "axios";
 import AuthService from "../services/AuthService";
 
 export const GlobalContext = createContext({
-    locale: "en",
-    username: "",
-    firstname: "",
-    lastname: "",
-    email: "",
-    uid: "",
-    picture: "",
-    following: [],
-    loaded: false,
-    setLocale: () => {},
-    updateContext: () => {},
-    resetContext: () => {}
+  locale: "en",
+  username: "",
+  firstname: "",
+  lastname: "",
+  email: "",
+  uid: "",
+  picture: "",
+  following: [],
+  loaded: false,
+  setLocale: () => {},
+  updateContext: () => {},
+  resetContext: () => {},
+  updateMoviesSeen: () => {}
 });
 
 class GlobalContextProvider extends Component {
@@ -41,13 +42,15 @@ class GlobalContextProvider extends Component {
           email: data.email,
           picture: data.picture,
           loaded: true
-      }),
-      updateFollowing: data => this.setState({
-        following: data
-      }),
-      updateMoviesSeen: data => this.setState({
-        movies_seen: data
-      }),
+        }),
+      updateFollowing: data =>
+        this.setState({
+          following: data
+        }),
+      updateMoviesSeen: data =>
+        this.setState({
+          movies_seen: data
+        }),
       resetContext: () =>
         this.setState({
           locale: this.state.locale,
@@ -64,43 +67,41 @@ class GlobalContextProvider extends Component {
     this.Auth = new AuthService();
   }
 
-    async componentDidMount() {
-        var token = await this.Auth.getToken();
-        if (token && this.state.username === "") {
-            await axios
-                .get("/users/session", { headers: { Authorization: token } })
-                .then(async res => {
-                    await this.setState({
-                        locale: res.data.language ? res.data.language : "",
-                        username: res.data.username ? res.data.username : "",
-                        firstname: res.data.firstname ? res.data.firstname : "",
-                        lastname: res.data.lastname ? res.data.lastname : "",
-                        email: res.data.email ? res.data.email : "",
-                        uid: res.data._id ? res.data._id : "",
-                        picture: res.data.img ? res.data.img : "",
-                        movies_seen: res.data.movies_seen
-                            ? res.data.movies_seen
-                            : [],
-                        following: res.data.following ? res.data.following : [],
-                        loaded: true
-                    });
-                })
-                .catch(err => {
-                    console.log("Cannot update GlobalContext");
-                });
-        } else if (!token) {
-            await this.setState({
-                loaded: true
-            });
-        }
+  async componentDidMount() {
+    var token = await this.Auth.getToken();
+    if (token && this.state.username === "") {
+      await axios
+        .get("/users/session", { headers: { Authorization: token } })
+        .then(async res => {
+          await this.setState({
+            locale: res.data.language ? res.data.language : "",
+            username: res.data.username ? res.data.username : "",
+            firstname: res.data.firstname ? res.data.firstname : "",
+            lastname: res.data.lastname ? res.data.lastname : "",
+            email: res.data.email ? res.data.email : "",
+            uid: res.data._id ? res.data._id : "",
+            picture: res.data.img ? res.data.img : "",
+            movies_seen: res.data.movies_seen ? res.data.movies_seen : [],
+            following: res.data.following ? res.data.following : [],
+            loaded: true
+          });
+        })
+        .catch(err => {
+          console.log("Cannot update GlobalContext");
+        });
+    } else if (!token) {
+      await this.setState({
+        loaded: true
+      });
     }
+  }
 
-    render() {
-        return (
-            <GlobalContext.Provider value={{ ...this.state }}>
-                {this.state.loaded && this.props.children}
-            </GlobalContext.Provider>
-        );
-    }
+  render() {
+    return (
+      <GlobalContext.Provider value={{ ...this.state }}>
+        {this.state.loaded && this.props.children}
+      </GlobalContext.Provider>
+    );
+  }
 }
 export default GlobalContextProvider;
