@@ -60,7 +60,9 @@ passport.use(
                 Math.floor(Math.random() * 10000 + 1).toString(16);
 
               user = new User({
-                username: await userService.usernameExists(profile.displayName.replace(" ", "_")),
+                username: await userService.usernameExists(
+                  profile.displayName.replace(" ", "_")
+                ),
                 email: profile.emails[0] ? profile.emails[0].value : "",
                 language: profile._json.locale,
                 firstname: profile.name.givenName ? profile.name.givenName : "",
@@ -154,8 +156,12 @@ passport.use(
                   profile._json.screen_name
                 ),
                 email: profile._json.email ? profile._json.email : "",
-                firstname: profile._json.name ? profile._json.name.split(' ')[0] : "",
-                lastname: profile._json.name ? profile._json.name.split(' ')[1] : "",
+                firstname: profile._json.name
+                  ? profile._json.name.split(" ")[0]
+                  : "",
+                lastname: profile._json.name
+                  ? profile._json.name.split(" ")[1]
+                  : "",
                 img: profile.photos[0] ? profile.photos[0].value : "",
                 activationKey: uniqid,
                 token: userToken,
@@ -237,8 +243,12 @@ passport.use(
               user = new User({
                 username: await userService.usernameExists(profile._json.login),
                 email: profile.emails[0] ? profile.emails[0].value : "",
-                firstname: profile._json.name ? profile._json.name.split(" ")[0] : '',
-                lastname: profile._json.name ? profile._json.name.split(" ")[1] : '',
+                firstname: profile._json.name
+                  ? profile._json.name.split(" ")[0]
+                  : "",
+                lastname: profile._json.name
+                  ? profile._json.name.split(" ")[1]
+                  : "",
                 img: profile._json.avatar_url ? profile._json.avatar_url : "",
                 activationKey: uniqid,
                 active: true,
