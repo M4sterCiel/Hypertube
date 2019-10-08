@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "materialize-css/dist/css/materialize.min.css";
 import ErrorToast from "../../services/toasts/ErrorToasts";
 import AuthService from "../../services/AuthService";
-import GlobalContext from "../../context/GlobalContext";
 
 class ActivateOauth extends Component {
     constructor(props) {
@@ -18,7 +17,6 @@ class ActivateOauth extends Component {
         token = token.split("?token=");
         token = token[token.length - 1];
         if (token) {
-            console.log(token);
             this.Auth.setToken(token);
             this.props.history.replace("/search");
         } else {
