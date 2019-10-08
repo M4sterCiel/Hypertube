@@ -207,38 +207,9 @@ const MoviePage = (props) => {
                         </form>
                     </div>
                 </div>
-              </div>
-            </form>
-          </div>
-          <div className="infoSection">
-            <div className="topBox">
-              <img
-                className="infoPoster"
-                src="https://img.yts.lt/assets/images/movies/7_days_to_vegas_2019/large-cover.jpg"
-              ></img>
-              <div className="rightSide">
-                <p className="movieSecondary">Theater release:</p>
-                <p className="moviePrimary">1989</p>
-                <p className="movieSecondary">Running time:</p>
-                <p className="moviePrimary">98min</p>
-                <p className="movieSecondary">Director:</p>
-                <p className="moviePrimary">Samuel Kraftman</p>
-              </div>
             </div>
-            <p className="movieSecondary">Synopsis:</p>
-            <p>
-              After a mobster agrees to cooperate with an FBI investigation in
-              order to stay out of prison, he's relocated by the authorities to
-              a life of suburban anonymity as part of a witness protection
-              program. It's not long before a couple of his new neighbours
-              figure out his true identity and come knocking to see if he'd be
-              up for one more hit—suburban style.
-            </p>
-          </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default withAuth(withRouter(MoviePage));
