@@ -23,14 +23,15 @@ const SearchView = () => {
   const [searchResult, setSearchResult] = useState();
 
   useEffect(() => {
+    let isMounted = true;
     const fetchMovies = async () => {
       try {
-        const res = await axios.post("/search/movies", searchTerms);
+        const res = isMounted && await axios.post("/search/movies", searchTerms);
         if (res.data.length !== 0) {
           if (searchTerms.page === 1)
-            setSearchResult({ movies: [...res.data] });
+          isMounted && setSearchResult({ movies: [...res.data] });
           else
-            setSearchResult(prev => ({
+          isMounted && setSearchResult(prev => ({
               movies: prev.movies.concat(res.data)
             }));
         }
@@ -40,6 +41,7 @@ const SearchView = () => {
       }
     };
     fetchMovies();
+    return () => isMounted = false;
   }, [searchTerms]);
 
   const search = searchValue => {
@@ -76,7 +78,8 @@ const SearchView = () => {
   };
 
   useEffect(() => {
-    if (searchResult) {
+    let isMounted = true;
+    if (isMounted && searchResult) {
       window.document
       .getElementById("infiniteScroll")
       .addEventListener("scroll", handleScroll);
@@ -85,6 +88,7 @@ const SearchView = () => {
         .getElementById("infiniteScroll")
         .removeEventListener("scroll", handleScroll);
     }
+    return () => isMounted = false;
   }, [searchResult]);
 
   const handleScroll = () => {
