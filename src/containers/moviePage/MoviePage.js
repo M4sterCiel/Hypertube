@@ -189,6 +189,7 @@ const MoviePage = (props) => {
                                 <div className="bottom">
                                     <p className="movieSecondary" id="content">Amazing movie</p>
                                 </div>
+                                <hr className="commentSeparator"></hr>
                             </div>
                         </div>
                         <form className="inputComment">
@@ -196,6 +197,7 @@ const MoviePage = (props) => {
                                 value={commentValue}
                                 onChange={handleNewComment}
                                 type="text"
+                                maxlength="100"
                                 className="comment-input-field s1"
                                 placeholder="Enter your comment"
                             />
