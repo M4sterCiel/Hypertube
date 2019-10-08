@@ -174,9 +174,9 @@ const MoviePage = (props) => {
                             </div>
                         </div>
                         <form className="inputComment">
-                            <div className="input-field col s12">
+                            <div className="comment-input-field col s12">
                                 <textarea id="textarea1" className="materialize-textarea"></textarea>
-                                <label for="textarea1">Enter your comment</label>
+                                {/* <label for="textarea1">Enter your comment</label> */}
                             </div>
                         </form>
                     </div>

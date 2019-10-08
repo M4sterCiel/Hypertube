@@ -45,6 +45,7 @@
 }
 
 // Comment section
+// --------------------------------------------------------------------
 .commentSection {
     padding: 15px 15px;
     width: 90vw;
@@ -89,8 +90,18 @@
     background-color: rgba(255, 255, 255, 0.062);
     color: white;
 }
+.inputComment input:focus {
+    border-bottom: 1px solid white !important;
+}
+.comment-input-field {
+    color: white;
+}
+.input-field {
+    color: white;
+  }
 
 // Info section
+// --------------------------------------------------------------------
 .infoSection {
     padding: 15px 15px;
     max-width: 1070px;
