@@ -96,6 +96,24 @@ var customLanguage = {
       genre: "Tipo"
     }
   ],
+  movie: [
+    {
+      select_source: "Selecciona una fuente para comenzar a transmitir la película",
+      source: "Fuente",
+      no_source: "No fuente disponible para este fichero",
+      theater_release: "Estreno de la película:",
+      duration: "Duracíon:",
+      director: "Director:",
+      starring: "Protagonistas:",
+      synopsis: "Sinopsis:"
+    }
+  ],
+  comments: [
+    {
+      placeholder: "Deja un comentario...",
+      button: "ENVIAR"
+    }
+  ],
   profile: [
     {
       language: "Idioma favorito: ",

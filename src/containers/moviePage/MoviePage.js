@@ -7,6 +7,7 @@ import Loading from "../../components/loadingAnim/LoadingFullScreen";
 import axios from "axios";
 import ErrorToast from "../../services/toasts/ErrorToasts";
 import { GlobalContext } from "../../context/GlobalContext";
+import CustomLanguage from "../../services/DefineLocale";
 
 const MoviePage = (props) => {
 
@@ -23,6 +24,8 @@ const MoviePage = (props) => {
     const [movieDetails, setMovieDetails] = useState({ movie: [], sources: []});
     const [commentValue, setCommentValue] = useState("");
     const [streamURL, setStreamURL] = useState("");
+    const locale = context.locale;
+    var lang = CustomLanguage.define(locale);  
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -160,7 +163,7 @@ const MoviePage = (props) => {
                     </video>
                 </div>
                 ) : (
-                    <p>Select a source below to start streaming the movie</p>
+                    <p>{lang.movie[0].select_source}</p>
                 )}
                 <div className="bottomStuff">
                     <div className="infoSection">
@@ -182,18 +185,18 @@ const MoviePage = (props) => {
                                     ))}
                                 </select>
                             ) : ( 
-                            <p>No source available for this file</p>
+                            <p>{lang.movie[0].no_source}</p>
                             )}
 
-                            <p className="movieSecondary">Theater release:</p>
+                            <p className="movieSecondary">{lang.movie[0].theater_release}</p>
                             <p className="moviePrimary">{movieDetails.movie.year}</p>
-                            <p className="movieSecondary">Running time:</p>
+                            <p className="movieSecondary">{lang.movie[0].duration}</p>
                             <p className="moviePrimary">{movieDetails.movie.runtime}</p>
-                            <p className="movieSecondary">Director:</p>
+                            <p className="movieSecondary">{lang.movie[0].director}</p>
                             <p className="moviePrimary">Deedee Megadoodoo</p>
-                            <p className="movieSecondary">Starring:</p>
+                            <p className="movieSecondary">{lang.movie[0].starring}</p>
                             <p className="moviePrimary">Joe Fyn, Sarah Beltion, Ed Fill</p>
-                            <p className="movieSecondary">Synopsis:</p>
+                            <p className="movieSecondary">{lang.movie[0].synopsis}</p>
                             {movieDetails.movie.plot && movieDetails.movie.plot.length > 330 ? (
                                 <p id="synopsis" className="moviePrimary">{movieDetails.movie.plot.substring(0, 330) + "..."}</p>
                             ) : (
@@ -225,7 +228,7 @@ const MoviePage = (props) => {
                                 type="text"
                                 maxLength="100"
                                 className="comment-input-field s1"
-                                placeholder="Enter your comment"
+                                placeholder={lang.comments[0].placeholder}
                             />
                             <button
                                 disabled={commentValue.length < 4}
@@ -235,7 +238,7 @@ const MoviePage = (props) => {
                                 className="btn btn-secondary btn-medium waves-effect"
                                 value="submit"
                             >
-                                SEND
+                                {lang.comments[0].button}
                             </button>
                         </form>
                     </div>
