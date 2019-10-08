@@ -96,6 +96,24 @@ var customLanguage = {
       genre: "Genre"
     }
   ],
+  movie: [
+    {
+      select_source: "Select a source below to start streaming the movie",
+      source: "Source",
+      no_source: "No source available for this file",
+      theater_release: "Theater release:",
+      duration: "Running time:",
+      director: "Director:",
+      starring: "Starring:",
+      synopsis: "Synopsis:"
+    }
+  ],
+  comments: [
+    {
+      placeholder: "Enter your comment...",
+      button: "SEND"
+    }
+  ],
   navbar: [
     {
       register: "REGISTER",

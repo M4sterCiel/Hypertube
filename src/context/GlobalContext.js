@@ -69,10 +69,10 @@ class GlobalContextProvider extends Component {
         this._isMounted = true;
         var token = await this.Auth.getToken();
         if (token && this.state.username === "") {
-            await axios
+          this._isMounted && await axios
                 .get("/users/session", { headers: { Authorization: token } })
                 .then(async res => {
-                    await this.setState({
+                  this._isMounted && await this.setState({
                         locale: res.data.language ? res.data.language : "",
                         username: res.data.username ? res.data.username : "",
                         firstname: res.data.firstname ? res.data.firstname : "",
@@ -91,10 +91,14 @@ class GlobalContextProvider extends Component {
                     console.log("Cannot update GlobalContext");
                 });
         } else if (!token) {
-            await this.setState({
+          this._isMounted && await this.setState({
                 loaded: true
             });
         }
+    }
+
+    componentWillUnmount() {
+      this._isMounted = false;
     }
 
     render() {
