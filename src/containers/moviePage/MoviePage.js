@@ -25,15 +25,17 @@ const MoviePage = (props) => {
     const [streamURL, setStreamURL] = useState("");
 
     useEffect(() => {
+        let isMounted = true;
         const fetchMovies = async () => {
             let url = document.location.href;
             let split = url.split("/");
             let imdbId = {id: split[4]};
-            setMovieId(imdbId);
+            isMounted && setMovieId(imdbId);
             try {
-                const res = await axios.post("/search/singleMovie", imdbId);
-                if (res.data.length !== 0) {
-                    let sourcesList = res.data[0].torrents;
+                const movieRes = isMounted && await axios.post("/search/singleMovie", imdbId);
+                const omdbComplementaryDataRes = isMounted && await axios.post(`http://www.omdbapi.com/?i=${imdbId.id}&apikey=bb5842e5`);
+                if (movieRes.data.length !== 0) {
+                    let sourcesList = movieRes.data[0].torrents;
                     if (sourcesList.length > 0)
                     {
                         let i = 0;
@@ -43,10 +45,15 @@ const MoviePage = (props) => {
                             i++;
                         }
                         tmp.unshift("Source");
-                        setMovieDetails({ movie: res.data[0], sources: tmp, validId: true });
+                        if (omdbComplementaryDataRes.data) {
+                            if (omdbComplementaryDataRes.data.Director && omdbComplementaryDataRes.data.Actors)
+                                isMounted && setMovieDetails({ movie: movieRes.data[0], sources: tmp, director: omdbComplementaryDataRes.data.Director, casting: omdbComplementaryDataRes.data.Actors, validId: true });
+                        } else {
+                            isMounted && setMovieDetails({ movie: movieRes.data[0], sources: tmp, director: "Deedee Megadoodoo", casting: "Hugh Mungus, Bette Davis, Sarah Connor", validId: true });
+                        }
                     }
                 } else {
-                    setMovieDetails({ validId: false });
+                    isMounted && setMovieDetails({ validId: false });
                 }
             } catch (err) {
                 if (err.response && err.response.status === 401)
@@ -59,15 +66,17 @@ const MoviePage = (props) => {
         }
         if (movieDetails.validId !== false && movieDetails.movie.length <= 0)
         {
-            fetchMovies();
+            isMounted && fetchMovies();
         }
+        return () => isMounted = false;
     }, [movieDetails, props.history]);
 
     useEffect(() => {
-        if (movieId.id) {
-            !moviePageState.loaded &&
+        let isMounted = true;
+        if (isMounted && movieId.id) {
+            !moviePageState.loaded && isMounted &&
             axios.get(`/movie/getSubtitles/${movieId.id}`).then(res => {
-                setMoviePageState({
+                isMounted && setMoviePageState({
                     subEn:
                         res.data.subPathEn !== undefined
                             ? require("../../" + res.data.subPathEn.substr(-26))
@@ -84,6 +93,7 @@ const MoviePage = (props) => {
                 });
             });
         }
+        return () => isMounted = false;
     }, [movieId, moviePageState.loaded]);
 
     const constructURL = e => {
@@ -190,9 +200,9 @@ const MoviePage = (props) => {
                             <p className="movieSecondary">Running time:</p>
                             <p className="moviePrimary">{movieDetails.movie.runtime}</p>
                             <p className="movieSecondary">Director:</p>
-                            <p className="moviePrimary">Deedee Megadoodoo</p>
+                            <p className="moviePrimary">{movieDetails.director}</p>
                             <p className="movieSecondary">Starring:</p>
-                            <p className="moviePrimary">Joe Fyn, Sarah Beltion, Ed Fill</p>
+                            <p className="moviePrimary">{movieDetails.casting}</p>
                             <p className="movieSecondary">Synopsis:</p>
                             {movieDetails.movie.plot && movieDetails.movie.plot.length > 330 ? (
                                 <p id="synopsis" className="moviePrimary">{movieDetails.movie.plot.substring(0, 330) + "..."}</p>
