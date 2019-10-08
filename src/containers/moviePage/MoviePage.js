@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import withAuth from "../../services/withAuth";
 import "./MoviePage.scss";
 import Navbar from "../../components/navbar/NavBar";
 import axios from "axios";
 import ErrorToast from "../../services/toasts/ErrorToasts";
+import { GlobalContext } from "../../context/GlobalContext";
 
 const MoviePage = (props) => {
 
@@ -16,6 +17,7 @@ const MoviePage = (props) => {
         subFr: undefined
     });
 
+    const context = useContext(GlobalContext);
     const [movieDetails, setMovieDetails] = useState({ movie: [], sources: []});
     const [commentValue, setCommentValue] = useState("");
 
@@ -58,7 +60,7 @@ const MoviePage = (props) => {
     }, [movieDetails, props.history]);
 
     const handleSourceSelection = () => {
-        
+        console.log(context.id);
     }
 
     const handleNewComment = e => {
@@ -197,7 +199,7 @@ const MoviePage = (props) => {
                                 value={commentValue}
                                 onChange={handleNewComment}
                                 type="text"
-                                maxlength="100"
+                                maxLength="100"
                                 className="comment-input-field s1"
                                 placeholder="Enter your comment"
                             />

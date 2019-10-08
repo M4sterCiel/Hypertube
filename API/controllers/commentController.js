@@ -1,4 +1,4 @@
-const MovieModel = require('../schemas/Comment');
+const MovieModel = require('../schemas/Comments');
 
 const loadComment = async (req, res) => {
     try {
