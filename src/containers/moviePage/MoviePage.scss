@@ -85,22 +85,25 @@
 #content {
     float: left;
 }
+
 .inputComment {
     height: 10%;
-    background-color: rgba(255, 255, 255, 0.062);
     color: white;
+    width: 100%;
+    margin-left: 10px;
+    float: left;
 }
+.comment-input-field {
+    color: white;
+    width: 72% !important;
+    background-color: rgba(255, 255, 255, 0.062);
 
-.input-field {
-color: white;
 }
-
 .input-field::placeholder {
-color: rgba(255, 255, 255, 0.486);
+    color: rgba(255, 255, 255, 0.486);
 }
-
 .inputComment input:focus {
-border-bottom: 1px solid rgba(255, 255, 255, 0.781) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.781) !important;
 }
 
 #submitCommentButton {

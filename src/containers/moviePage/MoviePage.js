@@ -61,17 +61,22 @@ const MoviePage = (props) => {
         
     }
 
-    const handleNewComment = () => {
-
+    const handleNewComment = e => {
+        setCommentValue(e.target.value);
     }
 
-    const saveComment = () => {
-
+    const saveComment = e => {
+        e.preventDefault();
+        resetInputField();
     }
 
     const deleteComment = () => {
 
     }
+
+    const resetInputField = () => {
+        setCommentValue("");
+    };
 
     !moviePageState.loaded &&
         axios.get("/movie/getSubtitles/tt0446750").then(res => {
