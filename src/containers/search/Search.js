@@ -8,6 +8,7 @@ import Navbar from "../../components/navbar/NavBar";
 import Filter from "../../components/filter/Filter";
 import { SearchProvider } from "../../context/SearchContext";
 import { Link } from "react-router-dom";
+import Loading from "../../components/loadingAnim/LoadingFullScreen";
 
 const SearchView = () => {
   const [searchTerms, setSearchTerms] = useState({
@@ -19,7 +20,7 @@ const SearchView = () => {
     limit: 40
   });
 
-  const [searchResult, setSearchResult] = useState({ movies: [] });
+  const [searchResult, setSearchResult] = useState();
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -75,14 +76,16 @@ const SearchView = () => {
   };
 
   useEffect(() => {
-    window.document
+    if (searchResult) {
+      window.document
       .getElementById("infiniteScroll")
       .addEventListener("scroll", handleScroll);
     return () =>
       window.document
         .getElementById("infiniteScroll")
         .removeEventListener("scroll", handleScroll);
-  }, []);
+    }
+  }, [searchResult]);
 
   const handleScroll = () => {
     if (
@@ -105,7 +108,8 @@ const SearchView = () => {
     <SearchProvider value={searchTerms}>
       <div className="SearchView" id="SearchView">
         <Navbar />
-        <div className="layer">
+        {searchResult ? (
+          <div className="layer">
           <Search search={search} />
           <Filter ratings={ratings} years={years} genre={genre} />
           <div className="infiniteScroll" id="infiniteScroll">
@@ -120,6 +124,9 @@ const SearchView = () => {
             ))}
           </div>
         </div>
+        ) : (
+          <Loading></Loading>
+        )}
       </div>
     </SearchProvider>
   );

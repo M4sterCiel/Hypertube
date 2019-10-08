@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import withAuth from "../../services/withAuth";
 import "./MoviePage.scss";
 import Navbar from "../../components/navbar/NavBar";
+import Loading from "../../components/loadingAnim/LoadingFullScreen";
 import axios from "axios";
 import ErrorToast from "../../services/toasts/ErrorToasts";
 import { GlobalContext } from "../../context/GlobalContext";
@@ -18,14 +19,17 @@ const MoviePage = (props) => {
     });
 
     const context = useContext(GlobalContext);
+    const [movieId, setMovieId] = useState("");
     const [movieDetails, setMovieDetails] = useState({ movie: [], sources: []});
     const [commentValue, setCommentValue] = useState("");
+    const [streamURL, setStreamURL] = useState("");
 
     useEffect(() => {
         const fetchMovies = async () => {
             let url = document.location.href;
             let split = url.split("/");
             let imdbId = {id: split[4]};
+            setMovieId(imdbId);
             try {
                 const res = await axios.post("/search/singleMovie", imdbId);
                 if (res.data.length !== 0) {
@@ -53,14 +57,44 @@ const MoviePage = (props) => {
             props.history.push("/search");
             ErrorToast.custom.error("Movie not found", 4000);
         }
-        if (movieDetails.movie.length <= 0)
+        if (movieDetails.validId !== false && movieDetails.movie.length <= 0)
         {
             fetchMovies();
         }
     }, [movieDetails, props.history]);
 
-    const handleSourceSelection = () => {
-        console.log(context.id);
+    useEffect(() => {
+        if (movieId.id) {
+            !moviePageState.loaded &&
+            axios.get(`/movie/getSubtitles/${movieId.id}`).then(res => {
+                setMoviePageState({
+                    subEn:
+                        res.data.subPathEn !== undefined
+                            ? require("../../" + res.data.subPathEn.substr(-26))
+                            : undefined,
+                    subEs:
+                        res.data.subPathEs !== undefined
+                            ? require("../../" + res.data.subPathEs.substr(-26))
+                            : undefined,
+                    subFr:
+                        res.data.subPathFr !== undefined
+                            ? require("../../" + res.data.subPathFr.substr(-26))
+                            : undefined,
+                    loaded: true
+                });
+            });
+        }
+    }, [movieId, moviePageState.loaded]);
+
+    const constructURL = e => {
+        let userId = context.uid;
+        let movieId = movieDetails.movie.imdbId;
+        let params = e.target.value.split(' ');
+        let quality = params[0];
+        let source = params[1];
+        let route = "http://localhost:5000/movie";
+        let url = route.concat('/', userId).concat('/', movieId).concat('/', quality).concat('/', source);
+        setStreamURL(url);
     }
 
     const handleNewComment = e => {
@@ -80,34 +114,17 @@ const MoviePage = (props) => {
         setCommentValue("");
     };
 
-    !moviePageState.loaded &&
-        axios.get("/movie/getSubtitles/tt0446750").then(res => {
-            setMoviePageState({
-                subEn:
-                    res.data.subPathEn !== undefined
-                        ? require("../../" + res.data.subPathEn.substr(-26))
-                        : undefined,
-                subEs:
-                    res.data.subPathEs !== undefined
-                        ? require("../../" + res.data.subPathEs.substr(-26))
-                        : undefined,
-                subFr:
-                    res.data.subPathFr !== undefined
-                        ? require("../../" + res.data.subPathFr.substr(-26))
-                        : undefined,
-                loaded: true
-            });
-        });
-
     return (
         <div className="MoviePage">
             <Navbar />
-            <div className="layer">
+            {movieDetails.validId === true ? (
+                <div className="layer">
                 <p className="movieTitle"><strong>{movieDetails.movie.title}</strong></p>
-                <div className="player">
+                {streamURL ? (
+                    <div className="player">
                     <video className="videoSource" controls>
                         <source
-                            // src="http://localhost:5000/movie/5d95c4a2562e78b6a52b8eb17777/tt0446750/720p/YTS"
+                            src={streamURL}
                             type="video/webm"
                         />
                         {moviePageState.subEn !== undefined ? (
@@ -142,6 +159,9 @@ const MoviePage = (props) => {
                         )}
                     </video>
                 </div>
+                ) : (
+                    <p>Select a source below to start streaming the movie</p>
+                )}
                 <div className="bottomStuff">
                     <div className="infoSection">
                         <div className="poster">
@@ -151,13 +171,13 @@ const MoviePage = (props) => {
                             {movieDetails.sources.length > 0 ? (
                                  <select className="browser-default"
                                  id="sourceSelect"
-                                 onChange={handleSourceSelection}
+                                 onChange={constructURL}
                                 >
-                                    {movieDetails.sources.map(genre => (
-                                        <option key={genre} 
-                                                value={genre} 
+                                    {movieDetails.sources.map(source => (
+                                        <option key={source} 
+                                                value={source} 
                                         >
-                                            {genre}
+                                            {source}
                                         </option>
                                     ))}
                                 </select>
@@ -186,6 +206,10 @@ const MoviePage = (props) => {
                             <div className="singleComment">
                                 <div className="top">
                                     <p className="moviePrimary" id="commenter"><strong>Maxime</strong></p>
+                                    {/* if comment.userId === userId */}
+                                    <a href="#" onClick={deleteComment} className="deleteButton">
+                                        <p className="moviePrimary" id="deleteButton"><strong>x</strong></p>
+                                    </a>
                                     <p className="movieSecondary" id="timestamp">01/12/2019 at 12:34</p>
                                 </div>
                                 <div className="bottom">
@@ -217,6 +241,9 @@ const MoviePage = (props) => {
                     </div>
                 </div>
             </div>
+            ) : (
+                <Loading></Loading>
+            )}
         </div>
     );
 };
