@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./pictures.scss";
 import ValidatePicture from "../../services/ValidatePicture";
 import ErrorToast from "../../services/toasts/ErrorToasts";
 import DefaultUserPic from "../../assets/default_user.png";
+import { GlobalContext } from "../../context/GlobalContext";
+import CustomLanguage from "../../services/DefineLocale";
 
 const UserPictureModify = props => {
   const [pictureValid, setPictureValid] = useState(false);
   const [picture, setPicture] = useState(DefaultUserPic);
+  const context = useContext(GlobalContext);
+  const locale = context.locale;
+  var lang = CustomLanguage.define(locale);  
 
   useEffect(() => {
     if (props.picture) {
@@ -23,12 +28,12 @@ const UserPictureModify = props => {
       return;
     }
     if (!ValidatePicture.picture.format(file)) {
-      ErrorToast.custom.error("Please upload a correct image format", 1400);
+      ErrorToast.custom.error(lang.picture_modify[0].incorrect_format, 1400);
       return;
     }
     if (!ValidatePicture.picture.size(file)) {
       ErrorToast.custom.error(
-        "Please upload a correct image (less than 2mb)",
+        lang.picture_modify[0].incorrect_size,
         1400
       );
       return;
@@ -37,7 +42,7 @@ const UserPictureModify = props => {
     let pic = new Image();
     pic.src = window.URL.createObjectURL(file);
     pic.onerror = () => {
-      ErrorToast.custom.error("Please upload a correct image", 1400);
+      ErrorToast.custom.error(lang.picture_modify[0].incorrect_picture, 1400);
       return;
     };
     pic.onload = () => {

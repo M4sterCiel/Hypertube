@@ -43,6 +43,50 @@ var customLanguage = {
       confirmation: "Correo de confirmación enviado"
     }
   ],
+  forgot_password: [
+    {
+      title: "Contraseña olvidada",
+      input_title: "Nombre de usuario o correo",
+      submit: "Recuperar",
+      invalid_username: "Nombre de usuario es incorrecto",
+      invalid_unknown_email: "Correo es incorrecto o desconocido",
+      invalid_email: "Correo es incorrecto",
+      receive_email: "Hemos enviado un correo!"
+    }
+  ],
+  reset_password: [
+    {
+      title: "Cambiar contraseña",
+      pwd: "Contraseña",
+      repeat_pwd: "Repetir contraseña",
+      submit: "Cambiar",
+      unequal_passwords: "Contraseñas no coinciden",
+      reset_password_failed: "El cambio de contraseña ha fallado...",
+      reset_password_success: "Contraseña cambiada"
+    }
+  ],
+  picture_modify: [
+    {
+      incorrect_format: "Por favor cargue un formato correcto",
+      incorrect_size: "Por favor cargue un tamaño correcto (menos de 2mb)",
+      incorrect_picture: "Por favor cargue una foto correcta"
+    }
+  ],
+  delete_account: [
+    {
+      cancel: "Cancelar",
+      delete: "Eliminar",
+      delete_account_failed: "La eliminacíon de la cuenta ha fallado",
+      delete_account_success: "Cuenta eliminada"
+    }
+  ],
+  activate_account: [
+    {
+      activation_success: "Su cuenta esta lista!",
+      activation_failed: "Error durante la activacíon de su cuente...",
+      already_active: "Cuenta ya activa!",
+    }
+  ],
   search: [
     {
       search: "Buscar",
@@ -56,19 +100,39 @@ var customLanguage = {
     {
       language: "Idioma favorito: ",
       edit: "CAMBIAR",
-      movies_seen: "Películas vistas"
+      movies_seen: "Películas vistas",
+      following: "Suscripciones",
+      no_movies: "No película vista",
+      edit_tooltip: "Cambiar datos",
+      follow: "seguir",
+      follow_tooltip: "Seguir usuario",
+      unfollow: "desabonarse",
+      unfollow_tooltip: "Parar de seguir el usuario",
+      following_user: "Siguiendo usuario",
+      follow_fail: "Imposible seguir usuario...",
+      unfollowing_user: "Desabonado",
+      unfollow_fail: "Imposible desabornarse...",
+      hold_on: "Por favor espera :)",
+      user_not_found: "Usuario extraviado",
+      follow_already: "Ya siguiendo",
+      unfollow_already: "Ya desabonado",
     }
   ],
   edit_profile: [
     {
+      title: "Cambiar perfíl",
       username: "Nombre de usuario",
       firstname: "Nombre",
       lastname: "Apellido",
-      language: "Idioma",
+      language: "Idioma:",
       save: "GUARDAR",
       cancel: "CANCELAR",
       password: "CONTRASEÑA",
-      delete: "ELIMINAR CUENTA"
+      delete: "ELIMINAR CUENTA",
+      saved: "Guardado",
+      nothing_changed: "Nada ha cambiado",
+      incorrect_fields: "Datos incorrectos",
+      empty_email: "Correo no puede estar vacío",
     }
   ],
   navbar: [
@@ -80,11 +144,72 @@ var customLanguage = {
       profile: "PERFÍL"
     }
   ],
+  country_picker: [
+    {
+      title: "Elige un país/idioma",
+      list_title: "Lista",
+    }
+  ],
   login_error: [
     {
+      login_failed: "Error al connectar...",
+      invalid_cred: "Usuario/Contraseña incorrecto",
+      login_inactive: "Esta cuenta no esta activada",
       invalid_login: "Nombre de usuario incorrecto",
       empty_login: "Nombre de usuario no puede estar vacío",
       length_login: "Nombre de usuario tiene que estar inferior a 30 caracteres"
+    }
+  ],
+  register_error: [
+    {
+      register_failed: "Error al registrar...",
+      invalid_lastname: "Apellido es invalid",
+      missing_lastname: "Apellido no puede estar vacío",
+      space_lastname: "El apellido no puede contener espacios",
+      length_lastname: "Apellido tiene que estar inferior a 30 caracteres",
+      invalid_firstname: "Nombre es invalid",
+      missing_firstname: "Nombre no puede estar vacío",
+      space_firstname: "El nombre no puede contener espacios",
+      length_firstname: "El nombre tiene que estar inferior a 30 caracteres",
+      invalid_username: "Nombre de usuario es invalid",
+      missing_username: "Nombre de usuario no puede estar vacío",
+      space_username: "El nombre de usuario no puede contener espacios",
+      length_username: "El nombre de usuario tiene que estar inferior a 30 caracteres",
+      already_registered_username: "Nombre de usuario ya existe",
+      invalid_email: "Correo incorrecto (example@email.com)",
+      missing_email: "Correo no puede estar vacío",
+      space_email: "El correo no puede contener espacios",
+      length_email: "Correo tiene que estar inferior a 30 caracteres",
+      already_registered_email: "Correo ya existe",
+      invalid_password: "Contraseña incorrecta",
+      missing_password: "Contraseña no puede estar vacío",
+      space_password: "Contraseña no puede contener espacios",
+      unequal_passwords: "Contraseñas no coinciden",
+    }
+  ],
+  update_user: [
+    {
+      register_failed: "Error al registrar...",
+      invalid_lastname: "Apellido es invalid",
+      missing_lastname: "Apellido no puede estar vacío",
+      space_lastname: "El apellido no puede contener espacios",
+      length_lastname: "Apellido tiene que estar inferior a 30 caracteres",
+      invalid_firstname: "Nombre es invalid",
+      missing_firstname: "Nombre no puede estar vacío",
+      space_firstname: "El nombre no puede contener espacios",
+      length_firstname: "El nombre tiene que estar inferior a 30 caracteres",
+      invalid_username: "Nombre de usuario es invalid",
+      missing_username: "Nombre de usuario no puede estar vacío",
+      space_username: "El nombre de usuario no puede contener espacios",
+      length_username: "El nombre de usuario tiene que estar inferior a 30 caracteres",
+      already_registered_username: "Nombre de usuario ya existe",
+      invalid_email: "Correo incorrecto (example@email.com)",
+      missing_email: "Correo no puede estar vacío",
+      space_email: "El correo no puede contener espacios",
+      length_email: "Correo tiene que estar inferior a 30 caracteres",
+      already_registered_email: "Correo ya existe",
+      update_failed: "Actualización fallida",
+      update_sucess: "Actualización exitosa"
     }
   ],
   passwordSimple_error: [

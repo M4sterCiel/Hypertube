@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 const LoginButton = props => {
   return (
     <NavLink to="/login">
-      <Button tooltip="Log on HyperFlix" className="btn-regular">
+      <Button className="btn-regular">
         <span className="btn-regular-text">{props.value}</span>
       </Button>
     </NavLink>
@@ -16,7 +16,6 @@ const LoginButton = props => {
 const LogoutButton = props => {
   return (
     <Button
-    tooltip="Log out from HyperFlix"
       className="btn-regular"
       onClick={props.func}
     >
@@ -28,7 +27,7 @@ const LogoutButton = props => {
 const RegisterButton = props => {
   return (
     <NavLink to="/register">
-      <Button tooltip="Register on HyperFlix" className="btn-regular">
+      <Button className="btn-regular">
         <span className="btn-regular-text">{props.value}</span>
       </Button>
     </NavLink>

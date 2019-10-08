@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./UsersList.scss";
 import DefaultUserPic from "../../assets/default_user.png";
 
@@ -20,12 +21,13 @@ const UsersList = ({ users }) => {
   const usersList = users =>
     users.map(
       user =>
-        user.id !== undefined && (
-          <UserItem
-            key={user.id}
-            username={user.username}
-            picture={user.picture}
-          />
+        user._id !== undefined && (
+          <Link to={`/user/${user.username}`} key={user._id}>
+            <UserItem
+              username={user.username}
+              picture={user.img}
+            />
+          </Link>
         )
     );
 

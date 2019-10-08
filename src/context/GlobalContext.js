@@ -21,7 +21,7 @@ class GlobalContextProvider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      locale: "",
+      locale: "en",
       username: "",
       firstname: "",
       lastname: "",

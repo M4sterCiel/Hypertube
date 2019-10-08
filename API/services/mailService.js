@@ -43,7 +43,7 @@ module.exports = {
     },
 
     sendNewPassword: (user, key) => {
-        if (user.email === "") return "error";
+        if (user.email === "" || user.email === undefined) return "error";
         let transporter = nodemailer.createTransport({
             sendmail: true,
             //newline: "unix",

@@ -43,6 +43,50 @@ var customLanguage = {
       confirmation: "Un email de confirmation vous a été envoyé"
     }
   ],
+  forgot_password: [
+    {
+      title: "Mot de passe oublé",
+      input_title: "Nom d'utilisateur ou email",
+      submit: "Récupérer",
+      invalid_username: "Nom d'utilisateur non valide",
+      invalid_unknown_email: "Email non valide ou inconnu",
+      invalid_email: "Email non valide",
+      receive_email: "Vous allez recevoir un email !"
+    }
+  ],
+  reset_password: [
+    {
+      title: "Changer mot de passe",
+      pwd: "Mot de passe",
+      repeat_pwd: "Répéter mot de passe",
+      submit: "Changer",
+      unequal_passwords: "Les mots de passe ne sont pas identiques",
+      reset_password_failed: "Le changement de mot de passe a échoué, merci de rééssayer...",
+      reset_password_success: "Le mot de passe a changé"
+    }
+  ],
+  picture_modify: [
+    {
+      incorrect_format: "Merci d'envoyer un format correct",
+      incorrect_size: "Merci d'envoyer une taille correcte (moins de 2mb)",
+      incorrect_picture: "Merci d'envoyer une photo correcte"
+    }
+  ],
+  delete_account: [
+    {
+      cancel: "Annuler",
+      delete: "Supprimer",
+      delete_account_failed: "La suppression du compte a échoué",
+      delete_account_success: "Compte supprimé"
+    }
+  ],
+  activate_account: [
+    {
+      activation_success: "Votre compte est prêt !",
+      activation_failed: "Erreur pendant l'activation de votre compte...",
+      already_active: "Compte déjà actif !",
+    }
+  ],
   search: [
     {
       search: "Rechercher",
@@ -56,19 +100,39 @@ var customLanguage = {
     {
       language: "Langue préférée : ",
       edit: "MODIFIER",
-      movies_seen: "Films vus"
+      movies_seen: "Films vus",
+      following: "Abonnements",
+      no_movies: "Aucun film vu",
+      edit_tooltip: "Modifier le profil",
+      follow: "S'abonner",
+      follow_tooltip: "Suivre l'utilisateur",
+      unfollow: "se désabonner",
+      unfollow_tooltip: "Ne plus suivre l'utilisateur",
+      following_user: "Abonné",
+      follow_fail: "Impossible de suivre l'utilateur...",
+      unfollowing_user: "Désabonné",
+      unfollow_fail: "Impossible de se désabonner....",
+      hold_on: "Patience :)",
+      user_not_found: "Utilisateur non trouvé",
+      follow_already: "Déjà abonné",
+      unfollow_already: "Déjà désabonné",
     }
   ],
   edit_profile: [
     {
+      title: "Modifier profil",
       username: "Identifiant",
       firstname: "Prénom",
       lastname: "Nom",
-      language: "Langue",
+      language: "Langue :",
       save: "SAUVEGARDER",
       cancel: "ANNULER",
       password: "MOT DE PASSE",
-      delete: "SUPPRIMER LE COMPTE"
+      delete: "SUPPRIMER LE COMPTE",
+      saved: "Sauvegardé",
+      nothing_changed: "Rien a changé",
+      incorrect_fields: "Champ(s) incorrect(s)",
+      empty_email: "L'email ne peut pas être vide"
     }
   ],
   navbar: [
@@ -80,11 +144,72 @@ var customLanguage = {
       profile: "PROFIL"
     }
   ],
+  country_picker: [
+    {
+      title: "Choisir un pays/language",
+      list_title: "Liste",
+    }
+  ],
   login_error: [
     {
+      login_failed: "Erreur durant la connexion...",
+      invalid_cred: "Identifiant/mot de passe incorrect",
+      login_inactive: "Le compte n'est pas activé",
       invalid_login: "Identifiant incorrect",
       empty_login: "L'identifiant ne peut être vide",
       length_login: "L'identifiant doit être inférieur ou égal à 30 caractères"
+    }
+  ],
+  register_error: [
+    {
+      register_failed: "Erreur lors de la connexion...",
+      invalid_lastname: "Nom incorrect",
+      missing_lastname: "Le nom ne peut être vide",
+      space_lastname: "Le nom ne peut contenir d'espaces",
+      length_lastname: "Le nom doit être inférieur ou égal à 30 caractères",
+      invalid_firstname: "Prénom incorrect",
+      missing_firstname: "Le prénom ne peut être vide",
+      space_firstname: "Le prénom ne peut contenir d'espaces",
+      length_firstname: "Le prénom doit être inférieur ou égal à 30 caractères",
+      invalid_username: "Identifiant incorrect",
+      missing_username: "L'identifiant ne peut être vide",
+      space_username: "L'identifiant ne peut contenir d'espaces",
+      length_username: "L'identifiant doit être inférieur ou égal à 30 caractères",
+      already_registered_username: "L'identifiant existe déjà",
+      invalid_email: "Email incorrect (example@email.com)",
+      missing_email: "L'email ne peut être vide",
+      space_email: "L'email ne peut contenir d'espaces",
+      length_email: "L'email doit être inférieur ou égal à 30 caractères",
+      already_registered_email: "L'email existe déjà",
+      invalid_password: "Mot de passe incorrect",
+      missing_password: "Le mot de passe ne peut être vide",
+      space_password: "Le mot de passe ne peut contenir d'espaces",
+      unequal_passwords: "Les mots de passe ne sont pas identiques",
+    }
+  ],
+  update_user: [
+    {
+      register_failed: "Erreur lors de la connexion...",
+      invalid_lastname: "Nom incorrect",
+      missing_lastname: "Le nom ne peut être vide",
+      space_lastname: "Le nom ne peut contenir d'espaces",
+      length_lastname: "Le nom doit être inférieur ou égal à 30 caractères",
+      invalid_firstname: "Prénom incorrect",
+      missing_firstname: "Le prénom ne peut être vide",
+      space_firstname: "Le prénom ne peut contenir d'espaces",
+      length_firstname: "Le prénom doit être inférieur ou égal à 30 caractères",
+      invalid_username: "Identifiant incorrect",
+      missing_username: "L'identifiant ne peut être vide",
+      space_username: "L'identifiant ne peut contenir d'espaces",
+      length_username: "L'identifiant doit être inférieur ou égal à 30 caractères",
+      already_registered_username: "L'identifiant existe déjà",
+      invalid_email: "Email incorrect (example@email.com)",
+      missing_email: "L'email ne peut être vide",
+      space_email: "L'email ne peut contenir d'espaces",
+      length_email: "L'email doit être inférieur ou égal à 30 caractères",
+      already_registered_email: "L'email existe déjà",
+      update_failed: "Mise à jour échouée",
+      update_sucess: "Mise à jour réussie"
     }
   ],
   passwordSimple_error: [
@@ -109,7 +234,7 @@ var customLanguage = {
   ],
   username_error: [
     {
-      no_space: "L'identifaint ne peut contenir d'espaces",
+      no_space: "L'identifiant ne peut contenir d'espaces",
       invalid_username:
         "Identifiant incorrect (lettres et chiffres uniquement)",
       empty_username: "L'identifiant' ne peut être vide",

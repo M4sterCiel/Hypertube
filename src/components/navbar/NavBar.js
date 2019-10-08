@@ -119,6 +119,9 @@ class NavBar extends Component {
           >
             {MobileMenuLoggedOut("left")}
           </SwipeableDrawer>
+          <div className="nav-btns-right-mobile">
+            <CountryPicker />
+          </div>
         </div>
       );
     };
