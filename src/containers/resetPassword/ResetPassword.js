@@ -61,7 +61,7 @@ class ResetPassword extends Component {
     e.preventDefault();
     var lang = await CustomLanguage.define(this.context.locale);
 
-    Axios.post("/users/reset-password", {
+    this._isMounted && Axios.post("/users/reset-password", {
       username: this.state.username,
       key: this.state.key,
       pwd1: this.state.pwd1,

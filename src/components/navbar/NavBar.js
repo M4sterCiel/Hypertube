@@ -23,6 +23,7 @@ class NavBar extends Component {
       logged: false
     };
     this.Auth = new AuthService();
+    this._isMounted = false;
   }
 
   async componentDidMount() {
