@@ -37,25 +37,26 @@
 }
 
 .bottomStuff {
-    display: flex;
-    width: 88vw;
-    max-width: 1100px;
+    display: inline-block;
+    width: 90vw;
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px;
 }
 
 // Comment section
+// --------------------------------------------------------------------
 .commentSection {
     padding: 15px 15px;
-    width: 44vw;
-    max-width: 550px;
-    height: 55vh;
+    width: 90vw;
+    max-width: 1070px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 400px;
     background-color: rgba(0, 0, 0, 0.466);
     border: 1px solid rgba(255, 255, 255, 0.274);
     border-radius: 10px;
-    margin-left: 0px;
-    float: left;
+    // float: left;
 }
 .comments {
     height: 85%;
@@ -90,33 +91,71 @@
     color: white;
 }
 
+.input-field {
+color: white;
+}
+
+.input-field::placeholder {
+color: rgba(255, 255, 255, 0.486);
+}
+
+.inputComment input:focus {
+border-bottom: 1px solid rgba(255, 255, 255, 0.781) !important;
+}
+
+#submitCommentButton {
+    margin-left: 20px;
+  }
+
 // Info section
+// --------------------------------------------------------------------
 .infoSection {
     padding: 15px 15px;
+    max-width: 1070px;
+    margin-left: auto;
+    margin-right: auto;
     text-align: left;
-    width: 44vw;
-    height: 55vh;
-    max-width: 550px;
-    margin-left: 20px;
+    width: 90vw;
+    height: 500px;
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.466);
     border: 1px solid rgba(255, 255, 255, 0.274);
+    margin-bottom: 20px;
+    display: inline-block;
 }
 
 .infoPoster {
-    width: 300px;
-    padding-bottom: 20px;
+    width: 30%;
+    float: right;
 }
 
-.topBox {
+.infos {
+    width: 65%;
+    float: left;
     display: flex;
+    flex-direction: column;
 }
 
-.rightSide {
-    padding-left: 20px;
+#sourceSelect {
+    height: 37px;
+    width: 92px;
+    background-color: rgba(102, 65, 65, 0);
+    border: 1px solid white;
+    border-radius: 1px;
+    margin-top: 3px;
+    color: white;
+    cursor: pointer;
+    float: left;
+    margin-bottom: 20px;
 }
 
 .movieSecondary {
     font-weight: 200;
     margin-bottom: 0;
 }
+
+@media only screen and (max-width: 700px) {
+    #synopsis {
+        font-size: 12px;
+    }
+  }

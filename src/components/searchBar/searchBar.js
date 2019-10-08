@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import "../buttons/Buttons.scss";
 import "./SearchBar.scss";
 import { GlobalContext } from "../../context/GlobalContext";
