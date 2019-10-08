@@ -186,14 +186,7 @@ module.exports = {
                     .status(404)
                     .json({ error: "No movie corresponding..." });
             User.findOne({ _id: req.params.uid }, (err, user) => {
-<<<<<<< HEAD
-                if (err)
-                    return; /* res
-                        .status(404)
-                        .json({ error: "No user corresponding..." }); */
-=======
                 if (err) console.log(err);
->>>>>>> mascagli
                 var exists = false;
                 user.movies_seen.forEach(e => {
                     if (e === req.params.movieId) exists = true;
