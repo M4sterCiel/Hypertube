@@ -30,7 +30,6 @@ const search = async (req, res) => {
 const searchSingle = async (req, res) => {
     try {
         const imdbId = req.body;
-        const fakeId = "xxx";
         movie = await MovieModel.find({imdbId: imdbId.id});
         res.status(200).json(movie);
     } catch (error) {

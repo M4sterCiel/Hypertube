@@ -60,6 +60,7 @@
 }
 .comments {
     height: 85%;
+    overflow: scroll;
 }
 .singleComment {
     width: 100%;
@@ -68,14 +69,17 @@
 }
 .top {
     width: 100%;
-    height: 22px;
+    height: 20px;
 }
 .bottom {
     width: 100%;
-    height: 40px;
-    margin-top: 0px;
+    height: 30px;
     display: flex;
 }
+.top .moviePrimary {
+    margin-bottom: 8px;
+}
+
 #timestamp {
     float: right;
 }
@@ -85,22 +89,29 @@
 #content {
     float: left;
 }
+.commentSeparator {
+    border: 1px solid rgba(255, 255, 255, 0.13);
+}
+
 .inputComment {
     height: 10%;
-    background-color: rgba(255, 255, 255, 0.062);
     color: white;
+    width: 100%;
+    margin-left: 10px;
+    float: left;
 }
+.comment-input-field {
+    color: white;
+    width: 60vw !important;
+    max-width: 924px;
+    background-color: rgba(255, 255, 255, 0.062);
 
-.input-field {
-color: white;
 }
-
 .input-field::placeholder {
-color: rgba(255, 255, 255, 0.486);
+    color: rgba(255, 255, 255, 0.486);
 }
-
 .inputComment input:focus {
-border-bottom: 1px solid rgba(255, 255, 255, 0.781) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.781) !important;
 }
 
 #submitCommentButton {
@@ -135,7 +146,9 @@ border-bottom: 1px solid rgba(255, 255, 255, 0.781) !important;
     display: flex;
     flex-direction: column;
 }
-
+.infos .moviePrimary {
+    margin-bottom: 18px;
+}
 #sourceSelect {
     height: 37px;
     width: 92px;
