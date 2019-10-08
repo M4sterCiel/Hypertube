@@ -150,7 +150,7 @@ module.exports = {
         mime.getType(path.name) !== "video/mp4" &&
         mime.getType(path.name) !== "video/ogg"
       ) {
-        module.exports.convertVideo(res, path);
+        module.exports.convertVideo(res, path, start, end, 0);
       } else {
         let stream = path.createReadStream({
           start: start,
@@ -162,7 +162,7 @@ module.exports = {
       mime.getType(path) !== "video/mp4" &&
       mime.getType(path) !== "video/ogg"
     ) {
-      module.exports.convertVideo(res, path);
+      module.exports.convertVideo(res, path, start, end, 1);
     } else {
       let stream = fs.createReadStream(path, {
         start: start,
