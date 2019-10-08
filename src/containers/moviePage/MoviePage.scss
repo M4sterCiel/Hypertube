@@ -80,11 +80,15 @@
     margin-bottom: 8px;
 }
 
+#commenter {
+    float: left;
+}
 #timestamp {
     float: right;
 }
-#commenter {
-    float: left;
+#deleteButton {
+    float: right;
+    margin-left: 10px;
 }
 #content {
     float: left;

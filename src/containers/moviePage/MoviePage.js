@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import withAuth from "../../services/withAuth";
 import "./MoviePage.scss";
 import Navbar from "../../components/navbar/NavBar";
+import Loading from "../../components/loadingAnim/LoadingFullScreen";
 import axios from "axios";
 import ErrorToast from "../../services/toasts/ErrorToasts";
 import { GlobalContext } from "../../context/GlobalContext";
@@ -56,32 +57,34 @@ const MoviePage = (props) => {
             props.history.push("/search");
             ErrorToast.custom.error("Movie not found", 4000);
         }
-        if (movieDetails.movie.length <= 0)
+        if (movieDetails.validId !== false && movieDetails.movie.length <= 0)
         {
             fetchMovies();
         }
     }, [movieDetails, props.history]);
 
     useEffect(() => {
-        movieId.id && !moviePageState.loaded &&
-        axios.get(`/movie/getSubtitles/${movieId.id}`).then(res => {
-            setMoviePageState({
-                subEn:
-                    res.data.subPathEn !== undefined
-                        ? require("../../" + res.data.subPathEn.substr(-26))
-                        : undefined,
-                subEs:
-                    res.data.subPathEs !== undefined
-                        ? require("../../" + res.data.subPathEs.substr(-26))
-                        : undefined,
-                subFr:
-                    res.data.subPathFr !== undefined
-                        ? require("../../" + res.data.subPathFr.substr(-26))
-                        : undefined,
-                loaded: true
+        if (movieId.id) {
+            !moviePageState.loaded &&
+            axios.get(`/movie/getSubtitles/${movieId.id}`).then(res => {
+                setMoviePageState({
+                    subEn:
+                        res.data.subPathEn !== undefined
+                            ? require("../../" + res.data.subPathEn.substr(-26))
+                            : undefined,
+                    subEs:
+                        res.data.subPathEs !== undefined
+                            ? require("../../" + res.data.subPathEs.substr(-26))
+                            : undefined,
+                    subFr:
+                        res.data.subPathFr !== undefined
+                            ? require("../../" + res.data.subPathFr.substr(-26))
+                            : undefined,
+                    loaded: true
+                });
             });
-        });
-    }, [movieId]);
+        }
+    }, [movieId, moviePageState.loaded]);
 
     const constructURL = e => {
         let userId = context.uid;
@@ -114,7 +117,8 @@ const MoviePage = (props) => {
     return (
         <div className="MoviePage">
             <Navbar />
-            <div className="layer">
+            {movieDetails.validId === true ? (
+                <div className="layer">
                 <p className="movieTitle"><strong>{movieDetails.movie.title}</strong></p>
                 {streamURL ? (
                     <div className="player">
@@ -202,6 +206,10 @@ const MoviePage = (props) => {
                             <div className="singleComment">
                                 <div className="top">
                                     <p className="moviePrimary" id="commenter"><strong>Maxime</strong></p>
+                                    {/* if comment.userId === userId */}
+                                    <a href="#" onClick={deleteComment} className="deleteButton">
+                                        <p className="moviePrimary" id="deleteButton"><strong>x</strong></p>
+                                    </a>
                                     <p className="movieSecondary" id="timestamp">01/12/2019 at 12:34</p>
                                 </div>
                                 <div className="bottom">
@@ -233,6 +241,9 @@ const MoviePage = (props) => {
                     </div>
                 </div>
             </div>
+            ) : (
+                <Loading></Loading>
+            )}
         </div>
     );
 };
