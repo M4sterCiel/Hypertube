@@ -87,7 +87,7 @@ class Login extends Component {
     e.preventDefault();
     var lang = await CustomLanguage.define(this.context.locale);
     
-    await axios
+    this._isMounted && await axios
       .post("/users/login", {
         username: this.state.login,
         password: this.state.password

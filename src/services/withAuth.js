@@ -7,22 +7,29 @@ export default function withAuth(AuthComponent) {
   const Auth = new AuthService();
 
   return class AuthWrapped extends Component {
+    constructor(props) {
+      super(props);
+      this._isMounted = false;
+    }
     state = {
       loaded: false
     };
 
     async componentDidMount() {
+      this._isMounted = true;
       if (!(await Auth.loggedIn())) {
         Auth.logout();
         this.props.history.replace("/login");
       } else {
-        this.setState({
+        this._isMounted && this.setState({
           loaded: true
         });
       }
     }
 
-    componentWillUnmount() {}
+    componentWillUnmount() {
+      this._isMounted = false;
+    }
 
     render() {
       if (this.state.loaded === true) {

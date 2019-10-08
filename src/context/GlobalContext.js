@@ -62,9 +62,11 @@ class GlobalContextProvider extends Component {
         })
     };
     this.Auth = new AuthService();
+    this._isMounted = false;
   }
 
     async componentDidMount() {
+        this._isMounted = true;
         var token = await this.Auth.getToken();
         if (token && this.state.username === "") {
             await axios
