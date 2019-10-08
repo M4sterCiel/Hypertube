@@ -17,6 +17,7 @@ const MoviePage = (props) => {
     });
 
     const [movieDetails, setMovieDetails] = useState({ movie: [], sources: []});
+    const [commentValue, setCommentValue] = useState("");
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -58,6 +59,18 @@ const MoviePage = (props) => {
 
     const handleSourceSelection = () => {
         
+    }
+
+    const handleNewComment = () => {
+
+    }
+
+    const saveComment = () => {
+
+    }
+
+    const deleteComment = () => {
+
     }
 
     !moviePageState.loaded &&
@@ -174,10 +187,23 @@ const MoviePage = (props) => {
                             </div>
                         </div>
                         <form className="inputComment">
-                            <div className="comment-input-field col s12">
-                                <textarea id="textarea1" className="materialize-textarea"></textarea>
-                                {/* <label for="textarea1">Enter your comment</label> */}
-                            </div>
+                            <input
+                                value={commentValue}
+                                onChange={handleNewComment}
+                                type="text"
+                                className="comment-input-field s1"
+                                placeholder="Enter your comment"
+                            />
+                            <button
+                                disabled={commentValue.length < 4}
+                                onClick={saveComment}
+                                type="submit"
+                                id="submitCommentButton"
+                                className="btn btn-secondary btn-medium waves-effect"
+                                value="submit"
+                            >
+                                SEND
+                            </button>
                         </form>
                     </div>
                 </div>
