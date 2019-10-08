@@ -223,14 +223,14 @@ module.exports = {
                             "Content-Length": chunksize,
                             "Content-Type": mime.getType(pathFile)
                         };
-                       // res.writeHead(206, head);
+                        res.writeHead(206, head);
                         module.exports.streamMovie(res, pathFile, start, end);
                     } else {
                         const head = {
                             "Content-Length": fileSize,
                             "Content-Type": mime.getType(pathFile)
                         };
-                        //res.writeHead(200, head);
+                        res.writeHead(200, head);
                         module.exports.streamMovie(
                             res,
                             pathFile,
@@ -354,7 +354,7 @@ module.exports = {
                                                 1
                                             );
                                         } else {
-                                            /* const head = {
+                                            const head = {
                                                 "Content-Length": fileSize,
                                                 "Content-Type":
                                                     mime.getType(file.name) ===
@@ -366,7 +366,7 @@ module.exports = {
                                                           )
                                                         : "video/webm"
                                             };
-                                            res.writeHead(200, head); */
+                                            res.writeHead(200, head);
                                             module.exports.streamMovie(
                                                 res,
                                                 file,

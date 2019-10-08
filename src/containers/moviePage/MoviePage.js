@@ -14,7 +14,7 @@ const MoviePage = () => {
   });
 
   !moviePageState.loaded &&
-    axios.get("/movie/getSubtitles/tt0112442").then(res => {
+    axios.get("/movie/getSubtitles/tt1104354").then(res => {
       setMoviePageState({
         subEn:
           res.data.subPathEn !== undefined
@@ -42,7 +42,7 @@ const MoviePage = () => {
         <div className="player">
           <video className="videoSource" controls width="800px">
             <source
-              src="http://localhost:5000/movie/5d97526305879de15bbbd9ec/tt0112442/720p/YTS"
+              src="http://localhost:5000/movie/5d97526305879de15bbbd9ec/tt1104354/720p/YTS"
               type="video/webm"
             />
             {moviePageState.subEn !== undefined ? (
@@ -96,14 +96,14 @@ const MoviePage = () => {
                 </div>
               </div>
             </div>
-            <form class="inputComment">
-              <div class="row">
-                <div class="input-field col s12">
+            <form className="inputComment">
+              <div className="row">
+                <div className="input-field col s12">
                   <textarea
                     id="textarea1"
-                    class="materialize-textarea"
+                    className="materialize-textarea"
                   ></textarea>
-                  <label for="textarea1">Enter your comment</label>
+                  <label htmlFor="textarea1">Enter your comment</label>
                 </div>
               </div>
             </form>
@@ -113,6 +113,7 @@ const MoviePage = () => {
               <img
                 className="infoPoster"
                 src="https://img.yts.lt/assets/images/movies/7_days_to_vegas_2019/large-cover.jpg"
+                alt=""
               ></img>
               <div className="rightSide">
                 <p className="movieSecondary">Theater release:</p>
