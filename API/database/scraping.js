@@ -139,10 +139,6 @@ const Scrap = async () => {
                 }
             }
         }
-
-        // console.log("*** Removing duplicates ***");
-        // var ids = new Set(ytsRes.map(d => d.imdbId));
-        // var movieList = [...ytsRes, ...popcornRes.filter(d => !ids.has(d.imdbId))];
         
         console.log("*** Removing movies without poster ***");
 

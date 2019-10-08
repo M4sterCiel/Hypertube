@@ -12,6 +12,7 @@ import InfoToast from "../../services/toasts/InfoToasts";
 import ErrorToast from "../../services/toasts/ErrorToasts";
 import CheckObjectsEquivalence from "../../services/CheckObjectsEquivalence";
 import { GlobalContext } from "../../context/GlobalContext";
+import CustomLanguage from "../../services/DefineLocale";
 import AuthService from "../../services/AuthService";
 import ChangePassword from "../../components/account/password/ChangePassword";
 import DeleteAccount from "../../components/account/delete/DeleteAccount";
@@ -68,6 +69,8 @@ const EditProfileModal = props => {
     const [error, setError] = useState(initialValidation);
     const event = new KeyboardEvent("keydown", { keyCode: 27 });
     const Auth = new AuthService();
+    const locale = context.locale;
+    var lang = CustomLanguage.define(locale);  
 
     const handleChange = e => {
         const { name, value } = e.target;
@@ -116,14 +119,18 @@ const EditProfileModal = props => {
             type: "USER_UPDATE_REQUEST"
         });
 
-        if (
+        if (user.email === undefined) {
+            ErrorToast.custom.error(lang.edit_profile[0].empty_email, 4000);
+        } else if (
             error.firstnameValid &&
             error.lastnameValid &&
             error.usernameValid &&
             error.emailValid &&
             error.pictureValid
         ) {
-            if (!CheckObjectsEquivalence(user, props.user)) {
+            if (!CheckObjectsEquivalence(
+                {username: user.username, firstname: user.firstname, lastname: user.lastname, email: user.email, picture: user.picture, locale: user.locale},
+                {username: props.user.username, firstname: props.user.firstname, lastname: props.user.lastname, email: props.user.email, picture: props.user.picture, locale: props.user.locale})) {
                 var token = await Auth.getToken();
                 var data = {
                     ...(user.username.toLowerCase() !==
@@ -138,7 +145,9 @@ const EditProfileModal = props => {
                         props.user.lastname.toLowerCase() && {
                         lastname: user.lastname.toLowerCase()
                     }),
-                    ...(user.email.toLowerCase() !==
+                    ...(props.user.email === undefined ? {
+                        email: user.email.toLowerCase()
+                    } : user.email.toLowerCase() !==
                         props.user.email.toLowerCase() && {
                         email: user.email.toLowerCase()
                     }),
@@ -157,7 +166,7 @@ const EditProfileModal = props => {
                         { headers: { Authorization: token } }
                     )
                     .then(res => {
-                        props.update();
+                        props.update(true);
                         context.updateContext({
                             locale: user.locale,
                             username: user.username.toLowerCase(),
@@ -166,31 +175,40 @@ const EditProfileModal = props => {
                             email: user.email.toLowerCase(),
                             picture: user.picture
                         });
-                        console.log(user.username, props.user.username);
+                        if (props.user.following) {
+                            context.updateFollowing(props.user.following);
+                        }
+                        if (props.user.movies_seen) {
+                            context.updateMoviesSeen(props.user.movies_seen);
+                        }
                         if (
                             user.username.toLowerCase() !==
                             props.user.username.toLowerCase()
                         ) {
                             props.history.push(user.username.toLowerCase());
                         }
-                        InfoToast.custom.info("Saved", 4000);
+                        InfoToast.custom.info(lang.edit_profile[0].saved, 4000);
                         document.dispatchEvent(event);
+                        props.update(false);
                     })
                     .catch(err =>
-                        ErrorToast.custom.error(err.response.data.error, 4000)
+                        {
+                            ErrorToast.custom.error(lang.update_user[0][err.response.data.error], 4000);
+                        }
                     );
             } else {
-                InfoToast.custom.info("Nothing changed", 4000);
+                InfoToast.custom.info(lang.edit_profile[0].nothing_changed, 4000);
             }
         } else {
-            ErrorToast.custom.error("Incorrect field(s), cannot save", 4000);
+            console.log(state);
+            ErrorToast.custom.error(lang.edit_profile[0].incorrect_fields, 4000);
         }
     };
 
     return (
         <Modal id="edit-profile-modal" className="modal-black-background">
             <div className="modal-black-container">
-                <p className="modal-black-title">Edit profile</p>
+                <p className="modal-black-title">{lang.edit_profile[0].title}</p>
                 <div className="modal-black-content">
                     <div className="profile-picture-modify col l2 m4 s12 col-padding-zero">
                         <UserPictureModify
@@ -209,7 +227,7 @@ const EditProfileModal = props => {
                                         ? ""
                                         : "edit-profile-invalid-input"
                                 }`}
-                                value={user.username}
+                                value={user.username === undefined ? "" : user.username}
                                 onChange={handleChange}
                             ></input>
                             <input
@@ -221,7 +239,7 @@ const EditProfileModal = props => {
                                         ? ""
                                         : "edit-profile-invalid-input"
                                 }`}
-                                value={user.firstname}
+                                value={user.firstname === undefined ? "" : user.firstname}
                                 onChange={handleChange}
                             ></input>
                             <input
@@ -233,7 +251,7 @@ const EditProfileModal = props => {
                                         ? ""
                                         : "edit-profile-invalid-input"
                                 }`}
-                                value={user.lastname}
+                                value={user.username === undefined ? "" : user.lastname}
                                 onChange={handleChange}
                             ></input>
                             <input
@@ -245,12 +263,12 @@ const EditProfileModal = props => {
                                         ? ""
                                         : "edit-profile-invalid-input"
                                 }`}
-                                value={user.email}
+                                value={user.email === undefined ? "" : user.email}
                                 onChange={handleChange}
                             ></input>
                             <div className="profile-select-language">
                                 <p className="profile-select-language-text">
-                                    Language:{" "}
+                                    {lang.edit_profile[0].language}{" "}
                                 </p>
                                 <Select
                                     value={user.locale}
@@ -268,25 +286,25 @@ const EditProfileModal = props => {
                 <div className="profile-edit-actions">
                     <span className="profile-edit-actions-buttons">
                         <FunctionButtonRegular
-                            text="save"
+                            text={lang.edit_profile[0].save}
                             func={handleSubmit}
                         />
                     </span>
                     <span className="profile-edit-actions-buttons">
                         <FunctionButtonSecondary
-                            text="cancel"
+                            text={lang.edit_profile[0].cancel}
                             func={handleCancel}
                         />
                     </span>
                     <span className="profile-edit-actions-buttons">
                         <FunctionButtonSecondary
-                            text="delete account"
+                            text={lang.edit_profile[0].delete}
                             func={handleDelAccountSwitch}
                         />
                     </span>
                     <span className="profile-edit-actions-buttons">
                         <FunctionButtonSecondary
-                            text="password"
+                            text={lang.edit_profile[0].password}
                             func={handlePasswordSwitch}
                         />
                     </span>

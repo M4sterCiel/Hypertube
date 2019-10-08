@@ -43,6 +43,50 @@ var customLanguage = {
       confirmation: "An email has been sent!"
     }
   ],
+  forgot_password: [
+    {
+      title: "Forgot password",
+      input_title: "Username or email",
+      submit: "Retrieve",
+      invalid_username: "Invalid username",
+      invalid_unknown_email: "Invalid/unknown email",
+      invalid_email: "Invalid email",
+      receive_email: "You will receive an email!"
+    }
+  ],
+  reset_password: [
+    {
+      title: "Reset password",
+      pwd: "Password",
+      repeat_pwd: "Repeat password",
+      submit: "reset",
+      unequal_passwords: "Passwords need to match",
+      reset_password_failed: "Couln't reset password, please try again later...",
+      reset_password_success: "Password has been changed"
+    }
+  ],
+  picture_modify: [
+    {
+      incorrect_format: "Please upload a correct image format",
+      incorrect_size: "Please upload a correct image (less than 2mb)",
+      incorrect_picture: "Please upload a correct image"
+    }
+  ],
+  delete_account: [
+    {
+      cancel: "Cancel",
+      delete: "Delete",
+      delete_account_failed: "Account deletion failed",
+      delete_account_success: "Account deleted"
+    }
+  ],
+  activate_account: [
+    {
+      activation_success: "Your account is now ready!",
+      activation_failed: "Error activating your account...",
+      already_active: "Account already activated!",
+    }
+  ],
   search: [
     {
       search: "Search",
@@ -61,30 +105,111 @@ var customLanguage = {
       profile: "PROFILE"
     }
   ],
+  country_picker: [
+    {
+      title: "Pick country/language",
+      list_title: "List here",
+    }
+  ],
   profile: [
     {
       language: "Preferred language: ",
       edit: "EDIT",
-      movies_seen: "Movies seen"
+      movies_seen: "Movies seen",
+      edit_tooltip: "Edit profile",
+      following: "Following",
+      no_movies: "No movies seen yet",
+      follow: "follow",
+      follow_tooltip: "Follow user",
+      unfollow: "unfollow",
+      unfollow_tooltip: "Unfollow user",
+      following_user: "Following",
+      follow_fail: "Impossible to follow user...",
+      unfollowing_user: "Unfollowing",
+      unfollow_fail: "Impossible to unfollow user....",
+      hold_on: "Please wait :)",
+      user_not_found: "User not found",
+      follow_already: "Already following user",
+      unfollow_already: "Already unfollowing user"
     }
   ],
   edit_profile: [
     {
+      title: "Edit profile",
       username: "Username",
       firstname: "Firstname",
       lastname: "Lastname",
-      language: "Language",
+      language: "Language:",
       save: "SAVE",
       cancel: "CANCEL",
       password: "PASSWORD",
-      delete: "DELETE ACCOUNT"
+      delete: "DELETE ACCOUNT",
+      saved: "Saved",
+      nothing_changed: "Nothing changed",
+      incorrect_fields: "Incorrect field(s), cannot save",
+      empty_email: "Mail cannot be empty"
     }
   ],
   login_error: [
     {
-      invalid_login: "Please enter a valid username",
+      login_failed: "Error while logging in...",
+      invalid_cred: "Invalid username/password",
+      login_inactive: "This account is not activated",
+      invalid_login: "Please enter a valid login",
       empty_login: "Username cannot be empty",
       length_login: "Username must be less or equal to 30 chars"
+    }
+  ],
+  register_error: [
+    {
+      register_failed: "Error while registering...",
+      invalid_lastname: "Invalid lastname",
+      missing_lastname: "Missing lastname",
+      space_lastname: "Lastname cannot contain spaces",
+      length_lastname: "Lastname must be less or equal to 30 chars",
+      invalid_firstname: "Invalid firstname",
+      missing_firstname: "Missing firstname",
+      space_firstname: "Firstname cannot contain spaces",
+      length_firstname: "Firstname must be less or equal to 30 chars",
+      invalid_username: "Invalid username",
+      missing_username: "Missing username",
+      space_username: "Username cannot contain spaces",
+      length_username: "Username must be less or equal to 30 chars",
+      already_registered_username: "Username already exists",
+      invalid_email: "Invalid email",
+      missing_email: "Missing email",
+      space_email: "Email cannot contain spaces",
+      length_email: "Email must be less or equal to 30 chars",
+      already_registered_email: "Email already exists",
+      invalid_password: "Invalid password",
+      missing_password: "Missing password",
+      space_password: "Password cannot contain spaces",
+      unequal_passwords: "Passwords need to match",
+    }
+  ],
+  update_user: [
+    {
+      register_failed: "Error while registering...",
+      invalid_lastname: "Invalid lastname",
+      missing_lastname: "Missing lastname",
+      space_lastname: "Lastname cannot contain spaces",
+      length_lastname: "Lastname must be less or equal to 30 chars",
+      invalid_firstname: "Invalid firstname",
+      missing_firstname: "Missing firstname",
+      space_firstname: "Firstname cannot contain spaces",
+      length_firstname: "Firstname must be less or equal to 30 chars",
+      invalid_username: "Invalid username",
+      missing_username: "Missing username",
+      space_username: "Username cannot contain spaces",
+      length_username: "Username must be less or equal to 30 chars",
+      already_registered_username: "Username already exists",
+      invalid_email: "Invalid email",
+      missing_email: "Missing email",
+      space_email: "Email cannot contain spaces",
+      length_email: "Email must be less or equal to 30 chars",
+      already_registered_email: "Email already exists",
+      update_failed: "User update failed",
+      update_sucess: "User update succeeded"
     }
   ],
   passwordSimple_error: [
@@ -97,14 +222,16 @@ var customLanguage = {
     {
       no_space: "Firstname cannot contain spaces",
       invalid_firstname: "Firstname is invalid",
-      empty_firstname: "Firstname cannot be empty"
+      empty_firstname: "Firstname cannot be empty",
+      length_firstname: "Firstname must be less or equal to 30 chars"
     }
   ],
   lastname_error: [
     {
       no_space: "Lastname cannot contain spaces",
       invalid_lastname: "Lastname is invalid",
-      empty_lastname: "Lastname cannot be empty"
+      empty_lastname: "Lastname cannot be empty",
+      length_lastname: "Lastname must be less or equal to 30 chars"
     }
   ],
   username_error: [

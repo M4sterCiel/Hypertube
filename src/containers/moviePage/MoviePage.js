@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { withRouter } from "react-router-dom";
 import withAuth from "../../services/withAuth";
 import "./MoviePage.scss";
 import Navbar from "../../components/navbar/NavBar";
 import axios from "axios";
+import ErrorToast from "../../services/toasts/ErrorToasts";
+import { GlobalContext } from "../../context/GlobalContext";
 
-const MoviePage = () => {
+const MoviePage = props => {
   const [moviePageState, setMoviePageState] = useState({
     isPlayer: false,
     loaded: false,
@@ -13,8 +16,74 @@ const MoviePage = () => {
     subFr: undefined
   });
 
+  const context = useContext(GlobalContext);
+  const [movieDetails, setMovieDetails] = useState({ movie: [], sources: [] });
+  const [commentValue, setCommentValue] = useState("");
+
+  useEffect(() => {
+    const fetchMovies = async () => {
+      let url = document.location.href;
+      let split = url.split("/");
+      let imdbId = { id: split[4] };
+      try {
+        const res = await axios.post("/search/singleMovie", imdbId);
+        if (res.data.length !== 0) {
+          let sourcesList = res.data[0].torrents;
+          if (sourcesList.length > 0) {
+            let i = 0;
+            let tmp = [];
+            while (i < sourcesList.length) {
+              tmp[i] = sourcesList[i].quality.concat(
+                " ",
+                sourcesList[i].source
+              );
+              i++;
+            }
+            tmp.unshift("Source");
+            setMovieDetails({
+              movie: res.data[0],
+              sources: tmp,
+              validId: true
+            });
+          }
+        } else {
+          setMovieDetails({ validId: false });
+        }
+      } catch (err) {
+        if (err.response && err.response.status === 401)
+          console.log(err.response);
+      }
+    };
+    if (movieDetails.validId === false) {
+      props.history.push("/search");
+      ErrorToast.custom.error("Movie not found", 4000);
+    }
+    if (movieDetails.movie.length <= 0) {
+      fetchMovies();
+    }
+  }, [movieDetails, props.history]);
+
+  const handleSourceSelection = () => {
+    console.log(context.id);
+  };
+
+  const handleNewComment = e => {
+    setCommentValue(e.target.value);
+  };
+
+  const saveComment = e => {
+    e.preventDefault();
+    resetInputField();
+  };
+
+  const deleteComment = () => {};
+
+  const resetInputField = () => {
+    setCommentValue("");
+  };
+
   !moviePageState.loaded &&
-    axios.get("/movie/getSubtitles/tt1104354").then(res => {
+    axios.get("/movie/getSubtitles/tt0446750").then(res => {
       setMoviePageState({
         subEn:
           res.data.subPathEn !== undefined
@@ -37,12 +106,12 @@ const MoviePage = () => {
       <Navbar />
       <div className="layer">
         <p className="movieTitle">
-          <strong>7 Days To Vegas</strong>
+          <strong>{movieDetails.movie.title}</strong>
         </p>
         <div className="player">
-          <video className="videoSource" controls width="800px">
+          <video className="videoSource" controls>
             <source
-              src="http://localhost:5000/movie/5d97526305879de15bbbd9ec/tt1104354/720p/YTS"
+              // src="http://localhost:5000/movie/5d95c4a2562e78b6a52b8eb17777/tt0446750/720p/YTS"
               type="video/webm"
             />
             {moviePageState.subEn !== undefined ? (
@@ -78,6 +147,52 @@ const MoviePage = () => {
           </video>
         </div>
         <div className="bottomStuff">
+          <div className="infoSection">
+            <div className="poster">
+              <img
+                className="infoPoster"
+                alt="movie poster"
+                src={movieDetails.movie.poster}
+              ></img>
+            </div>
+            <div className="infos">
+              {movieDetails.sources.length > 0 ? (
+                <select
+                  className="browser-default"
+                  id="sourceSelect"
+                  onChange={handleSourceSelection}
+                >
+                  {movieDetails.sources.map(genre => (
+                    <option key={genre} value={genre}>
+                      {genre}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <p>No source available for this file</p>
+              )}
+
+              <p className="movieSecondary">Theater release:</p>
+              <p className="moviePrimary">{movieDetails.movie.year}</p>
+              <p className="movieSecondary">Running time:</p>
+              <p className="moviePrimary">{movieDetails.movie.runtime}</p>
+              <p className="movieSecondary">Director:</p>
+              <p className="moviePrimary">Deedee Megadoodoo</p>
+              <p className="movieSecondary">Starring:</p>
+              <p className="moviePrimary">Joe Fyn, Sarah Beltion, Ed Fill</p>
+              <p className="movieSecondary">Synopsis:</p>
+              {movieDetails.movie.plot &&
+              movieDetails.movie.plot.length > 330 ? (
+                <p id="synopsis" className="moviePrimary">
+                  {movieDetails.movie.plot.substring(0, 330) + "..."}
+                </p>
+              ) : (
+                <p id="synopsis" className="moviePrimary">
+                  {movieDetails.movie.plot}
+                </p>
+              )}
+            </div>
+          </div>
           <div className="commentSection">
             <div className="comments">
               <div className="singleComment">
@@ -94,45 +209,29 @@ const MoviePage = () => {
                     Amazing movie
                   </p>
                 </div>
+                <hr className="commentSeparator"></hr>
               </div>
             </div>
             <form className="inputComment">
-              <div className="row">
-                <div className="input-field col s12">
-                  <textarea
-                    id="textarea1"
-                    className="materialize-textarea"
-                  ></textarea>
-                  <label htmlFor="textarea1">Enter your comment</label>
-                </div>
-              </div>
+              <input
+                value={commentValue}
+                onChange={handleNewComment}
+                type="text"
+                maxLength="100"
+                className="comment-input-field s1"
+                placeholder="Enter your comment"
+              />
+              <button
+                disabled={commentValue.length < 4}
+                onClick={saveComment}
+                type="submit"
+                id="submitCommentButton"
+                className="btn btn-secondary btn-medium waves-effect"
+                value="submit"
+              >
+                SEND
+              </button>
             </form>
-          </div>
-          <div className="infoSection">
-            <div className="topBox">
-              <img
-                className="infoPoster"
-                src="https://img.yts.lt/assets/images/movies/7_days_to_vegas_2019/large-cover.jpg"
-                alt=""
-              ></img>
-              <div className="rightSide">
-                <p className="movieSecondary">Theater release:</p>
-                <p className="moviePrimary">1989</p>
-                <p className="movieSecondary">Running time:</p>
-                <p className="moviePrimary">98min</p>
-                <p className="movieSecondary">Director:</p>
-                <p className="moviePrimary">Samuel Kraftman</p>
-              </div>
-            </div>
-            <p className="movieSecondary">Synopsis:</p>
-            <p>
-              After a mobster agrees to cooperate with an FBI investigation in
-              order to stay out of prison, he's relocated by the authorities to
-              a life of suburban anonymity as part of a witness protection
-              program. It's not long before a couple of his new neighbours
-              figure out his true identity and come knocking to see if he'd be
-              up for one more hit—suburban style.
-            </p>
           </div>
         </div>
       </div>
@@ -140,4 +239,4 @@ const MoviePage = () => {
   );
 };
 
-export default withAuth(MoviePage);
+export default withAuth(withRouter(MoviePage));

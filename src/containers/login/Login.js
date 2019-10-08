@@ -85,6 +85,8 @@ class Login extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
+    var lang = await CustomLanguage.define(this.context.locale);
+    
     await axios
       .post("/users/login", {
         username: this.state.login,
@@ -93,14 +95,16 @@ class Login extends Component {
       .then(async res => {
         if (res.data.status === "success") {
           await this.context.updateContext({locale: res.data.user.language, username: res.data.user.username, firstname: res.data.user.firstname, lastname: res.data.user.lastname, email: res.data.user.email, picture: res.data.user.picture});
+          await this.context.updateMoviesSeen(res.data.user.movies_seen);
+          await this.context.updateFollowing(res.data.user.following);
           await this.Auth.setToken(res.data.token);
           await this.props.history.replace("/search");
         } else {
-          ErrorToast.custom.error(res.data.msg, 4000);
+          ErrorToast.custom.error(lang.login_error[0][res.data.msg], 4000);
         }
       })
       .catch(err => {
-        ErrorToast.custom.error(err.response.data.error, 4000);
+        ErrorToast.custom.error(lang.login_error[0].login_failed, 4000);
       });
   };
 
@@ -127,7 +131,7 @@ class Login extends Component {
                           onChange={this.handleChange}
                         ></input>
                         <div className="login-error">
-                          {lang.login_error[0][this.state.loginError]}
+                          {lang.username_error[0][this.state.loginError]}
                         </div>
                         <label className="label-form" htmlFor="user-login">
                           {lang.login[0].username}

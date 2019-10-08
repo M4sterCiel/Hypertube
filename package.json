@@ -11,6 +11,7 @@
         "connect-mongodb-session": "^2.2.0",
         "cookie-parser": "^1.4.4",
         "download": "^7.1.0",
+        "eslint": "^6.5.1",
         "express": "^4.17.1",
         "express-router": "0.0.1",
         "express-session": "^1.16.2",

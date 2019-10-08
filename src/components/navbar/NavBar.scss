@@ -41,6 +41,12 @@
 
 /* Mobile menu */
 
+.nav-btns-right-mobile {
+  display: inline-block;
+  position: absolute;
+  right: 10px;
+}
+
 .nav-mobile-menu {
   display: none;
 }

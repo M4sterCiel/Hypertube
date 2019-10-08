@@ -30,7 +30,7 @@ h2 {
 }
 
 .movie:hover > .movieInfosDiv {
-  visibility:visible;
+  visibility: visible;
 }
 .movie:hover > img {
   opacity: 0.18;
@@ -43,7 +43,10 @@ h2 {
 /* Responsive */
 
 @media only screen and (max-width: 1730px) {
-  .movie, .movieInfos, .movieInfosDiv, .movie img {
+  .movie,
+  .movieInfos,
+  .movieInfosDiv,
+  .movie img {
     width: 20vw;
   }
 }
@@ -55,7 +58,10 @@ h2 {
 }
 
 @media only screen and (max-width: 700px) {
-  .movie, .movieInfos, .movieInfosDiv, .movie img {
+  .movie,
+  .movieInfos,
+  .movieInfosDiv,
+  .movie img {
     width: 50vw;
   }
 }

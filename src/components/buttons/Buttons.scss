@@ -91,6 +91,48 @@
   display: inline-block;
 }
 
+.MuiButton-label {
+  color: red !important;
+}
+
+.MuiDialogTitle-root {
+  color: white;
+  background-color: black;
+}
+
+.MuiDialogContent-root {
+  background-color: black;
+}
+
+.MuiDialogActions-spacing {
+  color: white;
+  background-color: black;
+}
+
+.MuiFormLabel-root {
+  color: white !important;
+}
+
+.MuiInputBase-input {
+  color: white !important;
+}
+
+.MuiFormLabel-root.Mui-focused {
+  color: red !important;
+}
+
+.MuiSelect-icon {
+  color: red !important;
+}
+
+.MuiInput-underline:before {
+  border-color: red !important;
+}
+
+.MuiInput-underline:after {
+  border-bottom-color: rgba(255, 0, 0, 0.5) !important;
+}
+
 /* Responsive */
 
 @media only screen and (max-width: 600px) {

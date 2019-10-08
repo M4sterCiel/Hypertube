@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import "./Filter.scss";
 import Slider from "rc-slider";
 import { GlobalContext } from "../../context/GlobalContext";
@@ -41,7 +41,7 @@ const Filter = ({ ratings, years, genre }) => {
   };
 
   const handleGenreChanges = e => {
-    if (e.target.value != "All")
+    if (e.target.value !== "All")
     {
       genre(e.target.value.toLowerCase());
     } else {
@@ -97,12 +97,12 @@ const Filter = ({ ratings, years, genre }) => {
                     onChange={handleGenreChanges}
             >
               {genreList.map(genre => (
-              <option key={genre} 
-                      value={genre} 
-              >
-                {genre}
-              </option>
-            ))}
+                <option key={genre} 
+                        value={genre} 
+                >
+                  {genre}
+                </option>
+              ))}
             </select>
           </div>
         );
