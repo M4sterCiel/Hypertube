@@ -168,7 +168,7 @@ const MoviePage = (props) => {
 
     const saveComment = e => {
         e.preventDefault();
-        let date = Date();
+        let date = new Date();
         setCommentValue({userId: context.uid, firstname: context.firstname, movieImdbId: movieDetails.movie.imdbId, content: commentInputValue, timestamp: date});
         commentsList.comments.unshift({userId: context.uid, firstname: context.firstname, content: commentInputValue, timestamp: date});
         resetInputField();
