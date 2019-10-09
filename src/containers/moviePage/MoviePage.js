@@ -243,10 +243,7 @@ const MoviePage = (props) => {
                         ) : (
                             ""
                         )}
-                        <p className="alert">
-                          {/* to translate */}
-                            Votre navigateur ne supporte pas la balise vidéo ! Mettez-vous à jour ! 
-                        </p>
+                        <p className="alert">{lang.movie[0].browser_support_error}</p>
                     </video>
                 </div>
                 ) : (
@@ -268,7 +265,6 @@ const MoviePage = (props) => {
                                                 value={source} 
                                         >
                                             {source}
-                                            {/* to translate */}
                                         </option>
                                     ))}
                                 </select>
@@ -315,7 +311,7 @@ const MoviePage = (props) => {
                                     ))}
                                 </div>
                                 ) : (
-                                <p>No comment yet</p> // to translate
+                                  <p>{lang.comments[0].no_comment}</p>
                             )}
                         </div>
                         <form className="inputComment">
