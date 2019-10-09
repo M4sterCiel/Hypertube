@@ -112,20 +112,21 @@ const MoviePage = props => {
             setMoviePageState({
               subEn:
                 res.data.subPathEn !== undefined
-                  ? require("../../" + res.data.subPathEn.substr(-26))
+                  ? `../../src/${res.data.subPathEn.substr(-26)}`
                   : undefined,
               subEs:
                 res.data.subPathEs !== undefined
-                  ? require("../../" + res.data.subPathEs.substr(-26))
+                  ? `../../src/${res.data.subPathEs.substr(-26)}`
                   : undefined,
               subFr:
                 res.data.subPathFr !== undefined
-                  ? require("../../" + res.data.subPathFr.substr(-26))
+                  ? `../../src/${res.data.subPathFr.substr(-26)}`
                   : undefined,
               loaded: true
             });
         });
     }
+    console.log(moviePageState.subFr);
     return () => (isMounted = false);
   }, [movieId, moviePageState.loaded]);
 
