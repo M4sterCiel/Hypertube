@@ -3,18 +3,19 @@ import axios from "axios";
 import AuthService from "../services/AuthService";
 
 export const GlobalContext = createContext({
-    locale: "en",
-    username: "",
-    firstname: "",
-    lastname: "",
-    email: "",
-    uid: "",
-    picture: "",
-    following: [],
-    loaded: false,
-    setLocale: () => {},
-    updateContext: () => {},
-    resetContext: () => {}
+  locale: "en",
+  username: "",
+  firstname: "",
+  lastname: "",
+  email: "",
+  uid: "",
+  picture: "",
+  following: [],
+  loaded: false,
+  setLocale: () => {},
+  updateContext: () => {},
+  resetContext: () => {},
+  updateMoviesSeen: () => {}
 });
 
 class GlobalContextProvider extends Component {
@@ -40,14 +41,17 @@ class GlobalContextProvider extends Component {
           lastname: data.lastname,
           email: data.email,
           picture: data.picture,
+          uid: data.uid,
           loaded: true
-      }),
-      updateFollowing: data => this.setState({
-        following: data
-      }),
-      updateMoviesSeen: data => this.setState({
-        movies_seen: data
-      }),
+        }),
+      updateFollowing: data =>
+        this.setState({
+          following: data
+        }),
+      updateMoviesSeen: data =>
+        this.setState({
+          movies_seen: data
+        }),
       resetContext: () =>
         this.setState({
           locale: this.state.locale,
@@ -96,6 +100,7 @@ class GlobalContextProvider extends Component {
             });
         }
     }
+  
 
     componentWillUnmount() {
       this._isMounted = false;
@@ -108,5 +113,6 @@ class GlobalContextProvider extends Component {
             </GlobalContext.Provider>
         );
     }
-}
+  }
+
 export default GlobalContextProvider;

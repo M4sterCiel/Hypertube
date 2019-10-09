@@ -100,6 +100,7 @@ const MoviePage = (props) => {
     }, [movieId, moviePageState.loaded]);
 
     const constructURL = e => {
+      console.log(context)
         let userId = context.uid;
         let movieId = movieDetails.movie.imdbId;
         let params = e.target.value.split(' ');
@@ -135,7 +136,10 @@ const MoviePage = (props) => {
                 <p className="movieTitle"><strong>{movieDetails.movie.title}</strong></p>
                 {streamURL ? (
                     <div className="player">
-                    <video className="videoSource" controls>
+                    <video className="videoSource" 
+                    controls
+                    preload="auto"
+                    >
                         <source
                             src={streamURL}
                             type="video/webm"
@@ -171,6 +175,9 @@ const MoviePage = (props) => {
                         ) : (
                             ""
                         )}
+                        <p className="alert">
+                            Votre navigateur ne supporte pas la balise vidéo ! Mettez-vous à jour !
+                        </p>
                     </video>
                 </div>
                 ) : (
@@ -263,4 +270,3 @@ const MoviePage = (props) => {
 };
 
 export default withAuth(withRouter(MoviePage));
-
