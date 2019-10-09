@@ -61,7 +61,8 @@ var customLanguage = {
       repeat_pwd: "Repeat password",
       submit: "reset",
       unequal_passwords: "Passwords need to match",
-      reset_password_failed: "Couln't reset password, please try again later...",
+      reset_password_failed:
+        "Couln't reset password, please try again later...",
       reset_password_success: "Password has been changed"
     }
   ],
@@ -84,7 +85,7 @@ var customLanguage = {
     {
       activation_success: "Your account is now ready!",
       activation_failed: "Error activating your account...",
-      already_active: "Account already activated!",
+      already_active: "Account already activated!"
     }
   ],
   search: [
@@ -99,7 +100,8 @@ var customLanguage = {
   movie: [
     {
       select_source: "Select a source below to start streaming the movie",
-      source: "Source",
+      browser_support_error:
+        "Your browser doesn't support video tag, please update it!",
       no_source: "No source available for this file",
       theater_release: "Theater release:",
       duration: "Running time:",
@@ -111,6 +113,7 @@ var customLanguage = {
   comments: [
     {
       placeholder: "Enter your comment...",
+      no_comment: "No comment yet...",
       button: "SEND"
     }
   ],
@@ -126,7 +129,7 @@ var customLanguage = {
   country_picker: [
     {
       title: "Pick country/language",
-      list_title: "List here",
+      list_title: "List here"
     }
   ],
   profile: [
@@ -202,7 +205,7 @@ var customLanguage = {
       invalid_password: "Invalid password",
       missing_password: "Missing password",
       space_password: "Password cannot contain spaces",
-      unequal_passwords: "Passwords need to match",
+      unequal_passwords: "Passwords need to match"
     }
   ],
   update_user: [

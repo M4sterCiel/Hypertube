@@ -61,7 +61,8 @@ var customLanguage = {
       repeat_pwd: "Répéter mot de passe",
       submit: "Changer",
       unequal_passwords: "Les mots de passe ne sont pas identiques",
-      reset_password_failed: "Le changement de mot de passe a échoué, merci de rééssayer...",
+      reset_password_failed:
+        "Le changement de mot de passe a échoué, merci de rééssayer...",
       reset_password_success: "Le mot de passe a changé"
     }
   ],
@@ -84,7 +85,7 @@ var customLanguage = {
     {
       activation_success: "Votre compte est prêt !",
       activation_failed: "Erreur pendant l'activation de votre compte...",
-      already_active: "Compte déjà actif !",
+      already_active: "Compte déjà actif !"
     }
   ],
   search: [
@@ -98,8 +99,10 @@ var customLanguage = {
   ],
   movie: [
     {
-      select_source: "Sélectionnez une source pour commencer à visionner le film",
-      source: "Source",
+      select_source:
+        "Sélectionnez une source pour commencer à visionner le film",
+      browser_support_error:
+        "Votre navigateur ne supporte pas la balise vidéo ! Mettez-vous à jour !",
       no_source: "Aucune source disponible pour ce fichier",
       theater_release: "Sortie en salle :",
       duration: "Durée :",
@@ -111,6 +114,7 @@ var customLanguage = {
   comments: [
     {
       placeholder: "Entrez votre commentaire...",
+      no_comment: "Actuellement aucun commentaire...",
       button: "ENVOYER"
     }
   ],
@@ -133,7 +137,7 @@ var customLanguage = {
       hold_on: "Patience :)",
       user_not_found: "Utilisateur non trouvé",
       follow_already: "Déjà abonné",
-      unfollow_already: "Déjà désabonné",
+      unfollow_already: "Déjà désabonné"
     }
   ],
   edit_profile: [
@@ -165,7 +169,7 @@ var customLanguage = {
   country_picker: [
     {
       title: "Choisir un pays/language",
-      list_title: "Liste",
+      list_title: "Liste"
     }
   ],
   login_error: [
@@ -192,7 +196,8 @@ var customLanguage = {
       invalid_username: "Identifiant incorrect",
       missing_username: "L'identifiant ne peut être vide",
       space_username: "L'identifiant ne peut contenir d'espaces",
-      length_username: "L'identifiant doit être inférieur ou égal à 30 caractères",
+      length_username:
+        "L'identifiant doit être inférieur ou égal à 30 caractères",
       already_registered_username: "L'identifiant existe déjà",
       invalid_email: "Email incorrect (example@email.com)",
       missing_email: "L'email ne peut être vide",
@@ -202,7 +207,7 @@ var customLanguage = {
       invalid_password: "Mot de passe incorrect",
       missing_password: "Le mot de passe ne peut être vide",
       space_password: "Le mot de passe ne peut contenir d'espaces",
-      unequal_passwords: "Les mots de passe ne sont pas identiques",
+      unequal_passwords: "Les mots de passe ne sont pas identiques"
     }
   ],
   update_user: [
@@ -219,7 +224,8 @@ var customLanguage = {
       invalid_username: "Identifiant incorrect",
       missing_username: "L'identifiant ne peut être vide",
       space_username: "L'identifiant ne peut contenir d'espaces",
-      length_username: "L'identifiant doit être inférieur ou égal à 30 caractères",
+      length_username:
+        "L'identifiant doit être inférieur ou égal à 30 caractères",
       already_registered_username: "L'identifiant existe déjà",
       invalid_email: "Email incorrect (example@email.com)",
       missing_email: "L'email ne peut être vide",

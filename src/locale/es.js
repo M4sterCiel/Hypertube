@@ -84,7 +84,7 @@ var customLanguage = {
     {
       activation_success: "Su cuenta esta lista!",
       activation_failed: "Error durante la activacíon de su cuente...",
-      already_active: "Cuenta ya activa!",
+      already_active: "Cuenta ya activa!"
     }
   ],
   search: [
@@ -98,8 +98,10 @@ var customLanguage = {
   ],
   movie: [
     {
-      select_source: "Selecciona una fuente para comenzar a transmitir la película",
-      source: "Fuente",
+      select_source:
+        "Selecciona una fuente para comenzar a transmitir la película",
+      browser_support_error:
+        "Tu navegador no suporta la función vídeo, por favor actualizalo",
       no_source: "No fuente disponible para este fichero",
       theater_release: "Estreno de la película:",
       duration: "Duracíon:",
@@ -111,6 +113,7 @@ var customLanguage = {
   comments: [
     {
       placeholder: "Deja un comentario...",
+      no_comment: "Todavía no comentario...",
       button: "ENVIAR"
     }
   ],
@@ -133,7 +136,7 @@ var customLanguage = {
       hold_on: "Por favor espera :)",
       user_not_found: "Usuario extraviado",
       follow_already: "Ya siguiendo",
-      unfollow_already: "Ya desabonado",
+      unfollow_already: "Ya desabonado"
     }
   ],
   edit_profile: [
@@ -150,7 +153,7 @@ var customLanguage = {
       saved: "Guardado",
       nothing_changed: "Nada ha cambiado",
       incorrect_fields: "Datos incorrectos",
-      empty_email: "Correo no puede estar vacío",
+      empty_email: "Correo no puede estar vacío"
     }
   ],
   navbar: [
@@ -165,7 +168,7 @@ var customLanguage = {
   country_picker: [
     {
       title: "Elige un país/idioma",
-      list_title: "Lista",
+      list_title: "Lista"
     }
   ],
   login_error: [
@@ -192,7 +195,8 @@ var customLanguage = {
       invalid_username: "Nombre de usuario es invalid",
       missing_username: "Nombre de usuario no puede estar vacío",
       space_username: "El nombre de usuario no puede contener espacios",
-      length_username: "El nombre de usuario tiene que estar inferior a 30 caracteres",
+      length_username:
+        "El nombre de usuario tiene que estar inferior a 30 caracteres",
       already_registered_username: "Nombre de usuario ya existe",
       invalid_email: "Correo incorrecto (example@email.com)",
       missing_email: "Correo no puede estar vacío",
@@ -202,7 +206,7 @@ var customLanguage = {
       invalid_password: "Contraseña incorrecta",
       missing_password: "Contraseña no puede estar vacío",
       space_password: "Contraseña no puede contener espacios",
-      unequal_passwords: "Contraseñas no coinciden",
+      unequal_passwords: "Contraseñas no coinciden"
     }
   ],
   update_user: [
@@ -219,7 +223,8 @@ var customLanguage = {
       invalid_username: "Nombre de usuario es invalid",
       missing_username: "Nombre de usuario no puede estar vacío",
       space_username: "El nombre de usuario no puede contener espacios",
-      length_username: "El nombre de usuario tiene que estar inferior a 30 caracteres",
+      length_username:
+        "El nombre de usuario tiene que estar inferior a 30 caracteres",
       already_registered_username: "Nombre de usuario ya existe",
       invalid_email: "Correo incorrecto (example@email.com)",
       missing_email: "Correo no puede estar vacío",
