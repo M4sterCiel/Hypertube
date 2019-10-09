@@ -1,12 +1,15 @@
+body {
+  background: url("../../assets/landing.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
 .SearchView {
   position: absolute;
   height: 100%;
   width: 100%;
-  background: url("../../assets/landing.jpg");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-color: rgb(0, 0, 0);
-  background-size: cover;
   color: white;
 }
 

@@ -200,8 +200,8 @@ const MoviePage = (props) => {
             <Navbar />
             {movieDetails.validId === true ? (
                 <div className="layer">
-                <p className="movieTitle"><strong>{movieDetails.movie.title}</strong></p>
-                {streamURL ? (
+                  <p className="movieTitle"><strong>{movieDetails.movie.title}</strong></p>
+                  {streamURL ? (
                     <div className="player">
                     <video className="videoSource" 
                     controls
