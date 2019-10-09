@@ -108,7 +108,7 @@ const MoviePage = (props) => {
         let isMounted = true;
         const saveComment = async () => {
             try {
-                const res = isMounted && await axios.post("/comment/addComment", commentValue);
+                isMounted && await axios.post("/comment/addComment", commentValue);
             } catch (err) {
                 if (err.response && err.response.status === 401)
                     console.log(err.response);
@@ -129,7 +129,7 @@ const MoviePage = (props) => {
             let imdbId = {id: split[4]};
             try {
                 const res = isMounted && await axios.post("/comment/loadComments", imdbId);
-                setCommentsList({ comments: res.data });
+                isMounted && setCommentsList({ comments: res.data });
                 if (res.data.comments.length > 0)
                     console.log("successfully fetched comments :)");
             } catch (err) {
@@ -267,7 +267,7 @@ const MoviePage = (props) => {
                                 {commentsList.comments.length > 0 ? (
                                 <div className="ohyeah">
                                     {commentsList.comments.map((comment, index) => (
-                                        <div className="singleComment">
+                                        <div className="singleComment" key={index}>
                                             <div className="top">
                                                 <p className="moviePrimary" id="commenter"><strong>{comment.firstname}</strong></p>
                                                 {comment.userId === context.uid ? (

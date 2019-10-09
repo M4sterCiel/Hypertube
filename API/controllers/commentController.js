@@ -4,7 +4,7 @@ const sanitize = require('mongo-sanitize');
 const loadComments = async (req, res) => {
     try {
         const sorting = {};
-        sorting['timestamp'] = 1;
+        sorting['timestamp'] = -1;
         const queryTerms = [
             { $match: { movieImdbId: req.body.id } },
             { $sort: sorting },
