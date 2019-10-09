@@ -53,11 +53,12 @@ const MoviePage = (props) => {
                             i++;
                         }
                         tmp.unshift("📡");
+                        let uniq = [...new Set(tmp)];
                         if (omdbComplementaryDataRes.data) {
                             if (omdbComplementaryDataRes.data.Director && omdbComplementaryDataRes.data.Actors)
-                                isMounted && setMovieDetails({ movie: movieRes.data[0], sources: tmp, director: omdbComplementaryDataRes.data.Director, casting: omdbComplementaryDataRes.data.Actors, validId: true });
+                                isMounted && setMovieDetails({ movie: movieRes.data[0], sources: uniq, director: omdbComplementaryDataRes.data.Director, casting: omdbComplementaryDataRes.data.Actors, validId: true });
                         } else {
-                            isMounted && setMovieDetails({ movie: movieRes.data[0], sources: tmp, director: "Deedee Megadoodoo", casting: "Hugh Mungus, Bette Davis, Sarah Connor", validId: true });
+                            isMounted && setMovieDetails({ movie: movieRes.data[0], sources: uniq, director: "Deedee Megadoodoo", casting: "Hugh Mungus, Bette Davis, Sarah Connor", validId: true });
                         }
                     }
                 } else {
