@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import withAuth from "../../services/withAuth";
 import "./Search.scss";
@@ -9,6 +9,7 @@ import Filter from "../../components/filter/Filter";
 import { SearchProvider } from "../../context/SearchContext";
 import { Link } from "react-router-dom";
 import Loading from "../../components/loadingAnim/LoadingFullScreen";
+import { GlobalContext } from "../../context/GlobalContext";
 
 const SearchView = () => {
   const [searchTerms, setSearchTerms] = useState({
@@ -19,7 +20,7 @@ const SearchView = () => {
     keywords: "",
     limit: 40
   });
-
+  const context = useContext(GlobalContext);
   const [searchResult, setSearchResult] = useState();
 
   useEffect(() => {
@@ -123,7 +124,7 @@ const SearchView = () => {
                 style={{ textDecoration: "none" }}
                 key={index}
               >
-                <Movie key={`${index}-${movie.title}`} movie={movie} />
+                <Movie key={`${index}-${movie.title}`} movie={movie} seen={context.movies_seen.length ? context.movies_seen.includes(movie.imdbId) : false} />
               </Link>
             ))}
           </div>

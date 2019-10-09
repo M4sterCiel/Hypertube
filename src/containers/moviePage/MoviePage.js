@@ -105,7 +105,7 @@ const MoviePage = (props) => {
         let movieId = movieDetails.movie.imdbId;
         let params = e.target.value.split(' ');
         let quality = params[0];
-        let source = params[1];
+        let source = params[1].concat(' ', params[2]);
         let route = "http://localhost:5000/movie";
         let url = route.concat('/', userId).concat('/', movieId).concat('/', quality).concat('/', source);
         setStreamURL(url);
@@ -144,6 +144,7 @@ const MoviePage = (props) => {
                         <source
                             src={streamURL}
                             type="video/webm"
+                            onPlay={() => context.updateMoviesSeen([...context.movies_seen, movieId])}
                         />
                         {moviePageState.subEn !== undefined ? (
                             <track
