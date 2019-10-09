@@ -135,8 +135,8 @@ const MoviePage = (props) => {
             try {
                 const res = isMounted && await axios.post("/comment/loadComments", imdbId);
                 isMounted && setCommentsList({ comments: res.data });
-                if (res.data.comments.length > 0)
-                    console.log("successfully fetched comments :)");
+                // if (res.data.comments.length > 0)
+                //     console.log("successfully fetched comments :)");
             } catch (err) {
                 if (err.response && err.response.status === 401)
                     console.log(err.response);
@@ -190,7 +190,7 @@ const MoviePage = (props) => {
     // }
 
     const updateContextForMovies = () => {
-      console.log(!context.movies_seen.includes(movieId.id));
+    //   console.log(!context.movies_seen.includes(movieId.id));
       if (!context.movies_seen.includes(movieId.id)) {
           context.updateMoviesSeen([...context.movies_seen, movieId.id]);
       }
