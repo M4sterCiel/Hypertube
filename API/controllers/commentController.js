@@ -37,9 +37,8 @@ const addComment = async (req, res) => {
 }
 
 const deleteComment = async (req, res) => {
-    console.log("REQ = ", req);
     try {
-        await Comment.collection.remove(req.id);
+        await Comment.collection.deleteOne({ "_id" : req.body.id } );
     } catch (error) {
         console.log(error.message);
     }
