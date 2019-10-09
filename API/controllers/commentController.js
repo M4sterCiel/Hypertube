@@ -28,7 +28,7 @@ const addComment = async (req, res) => {
         });
     
         try {
-            commentRes = await Comment.collection.insertOne(comment);
+            await Comment.collection.insertOne(comment);
             return res.status(200).json({ status: 'success' });
         } catch (error) {
             console.log(error.message);
@@ -37,8 +37,9 @@ const addComment = async (req, res) => {
 }
 
 const deleteComment = async (req, res) => {
+    console.log("REQ = ", req);
     try {
-        
+        await Comment.collection.remove(req.id);
     } catch (error) {
         console.log(error.message);
     }
