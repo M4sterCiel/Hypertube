@@ -147,6 +147,7 @@ const MoviePage = (props) => {
     // STREAMING URL CONSTRUCTOR
     // ----------------------------------------------------------------------------------------------------------
     const constructURL = e => {
+      if (e.target.value[0] === "7" || e.target.value[0] === "1") {
         let userId = context.uid;
         let movieId = movieDetails.movie.imdbId;
         let params = e.target.value.split(' ');
@@ -155,6 +156,7 @@ const MoviePage = (props) => {
         let route = "http://localhost:5000/movie";
         let url = route.concat('/', userId).concat('/', movieId).concat('/', quality).concat('/', source);
         setStreamURL(url);
+      }
     }
 
     // COMMENT HANDLERS
