@@ -322,4 +322,3 @@ const MoviePage = (props) => {
 };
 
 export default withAuth(withRouter(MoviePage));
-
