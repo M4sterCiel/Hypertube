@@ -8,6 +8,7 @@ import axios from "axios";
 import ErrorToast from "../../services/toasts/ErrorToasts";
 import { GlobalContext } from "../../context/GlobalContext";
 import CustomLanguage from "../../services/DefineLocale";
+import { NavLink } from "react-router-dom";
 import * as moment from "moment";
 
 const MoviePage = props => {
@@ -346,11 +347,11 @@ const MoviePage = props => {
                     {commentsList.comments.map((comment, index) => (
                       <div className="singleComment" key={index}>
                         <div className="top">
-                          <a href={"/user/" + comment.username}>
+                          <NavLink to={"/user/" + comment.username}>
                             <p className="moviePrimary" id="commenter">
                               <strong>{comment.username}</strong>
                             </p>
-                          </a>
+                          </NavLink>
                           {/* {comment.userId === context.uid && comment._id && 
                                                     <button className="waves-effect waves-white btn-flat" id="deleteButton" onClick={() => deleteComment(comment._id)}>x</button>
                                                 } */}
