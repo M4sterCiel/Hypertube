@@ -9,6 +9,7 @@ import ErrorToast from "../../services/toasts/ErrorToasts";
 import { GlobalContext } from "../../context/GlobalContext";
 import CustomLanguage from "../../services/DefineLocale";
 import Moment from 'react-moment';
+import * as moment from 'moment'
 // import 'moment-timezone';
 
 const MoviePage = (props) => {
@@ -179,15 +180,15 @@ const MoviePage = (props) => {
         setCommentInputValue("");
     };
 
-    const deleteComment = async id => {
-      let param = {id: id}
-        try {
-            await axios.post("/comment/deleteComment", param);
-        } catch (err) {
-            if (err.response && err.response.status === 401)
-                console.log(err.response);
-        }
-    }
+    // const deleteComment = async id => {
+    //   let param = {id: id}
+    //     try {
+    //         await axios.post("/comment/deleteComment", param);
+    //     } catch (err) {
+    //         if (err.response && err.response.status === 401)
+    //             console.log(err.response);
+    //     }
+    // }
 
     const updateContextForMovies = () => {
       console.log(!context.movies_seen.includes(movieId.id));
@@ -300,10 +301,10 @@ const MoviePage = (props) => {
                                         <div className="singleComment" key={index}>
                                             <div className="top">
                                                 <p className="moviePrimary" id="commenter"><strong>{comment.firstname}</strong></p>
-                                                {comment.userId === context.uid && comment._id && 
+                                                {/* {comment.userId === context.uid && comment._id && 
                                                     <button className="waves-effect waves-white btn-flat" id="deleteButton" onClick={() => deleteComment(comment._id)}>x</button>
-                                                }
-                                                <p className="movieSecondary" id="timestamp"><Moment parse="YYYY-MM-DD HH:mm">{comment.timestamp}</Moment></p>
+                                                } */}
+                                                <p className="movieSecondary" id="timestamp">{moment(comment.timestamp).format('HH:mm - DD/MM/YYYY')}</p>
                                             </div>
                                             <div className="bottom">
                                                 <p className="movieSecondary" id="content">{comment.content}</p>

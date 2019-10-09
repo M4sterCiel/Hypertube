@@ -41,18 +41,17 @@ export default class AuthService {
 
   // Checking if session is valid
   isSessionValid = async () => {
-    // const token = await this.getToken();
-    // var valid = false;
-    // await axios
-    //   .get("/users/session", { headers: { Authorization: token } })
-    //   .then(res => {
-    //     if (res.data._id) valid = true;
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
-    //   return valid;
-    return true;
+    const token = await this.getToken();
+    var valid = false;
+    await axios
+      .get("/users/session", { headers: { Authorization: token } })
+      .then(res => {
+        if (res.data._id) valid = true;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+      return valid;
   }
 
   // Checking if token is still valid
