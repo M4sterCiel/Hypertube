@@ -101,7 +101,6 @@ const MoviePage = (props) => {
     useEffect(() => {
         let isMounted = true;
         const saveComment = async () => {
-            console.log("SAVE COMMENT");
             try {
                 const res = isMounted && await axios.post("/comment/addComment", commentValue);
             } catch (err) {
@@ -109,7 +108,8 @@ const MoviePage = (props) => {
                     console.log(err.response);
             }
         };
-        saveComment();
+        if (commentValue)
+            saveComment();
         return () => isMounted = false;
     }, [commentValue]);
 
@@ -274,7 +274,7 @@ const MoviePage = (props) => {
                                 placeholder="Enter your comment"
                             />
                             <button
-                                disabled={commentInputValue.length < 4}
+                                disabled={commentInputValue.length < 3}
                                 onClick={saveComment}
                                 type="submit"
                                 id="submitCommentButton"

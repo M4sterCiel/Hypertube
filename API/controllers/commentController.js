@@ -13,7 +13,7 @@ const loadComments = async (req, res) => {
 
 const addComment = async (req, res) => {
 
-    if (req.body.userId) {
+    if (req.body.userId && req.body.movieImdbId && req.body.content && req.body.timestamp) {
         var comment = new Comment({
             userId: sanitize(req.body.userId),
             movieImdbId: sanitize(req.body.movieImdbId),
