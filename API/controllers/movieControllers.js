@@ -1,7 +1,9 @@
 const fs = require("fs");
 const mime = require("mime");
 const pump = require("pump");
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require("fluent-ffmpeg");
+ffmpeg.setFfmpegPath(ffmpegPath);
 const Movie = require("../schemas/Movie");
 const User = require("../schemas/User");
 const download = require("download");
@@ -108,6 +110,7 @@ module.exports = {
 
   convertVideo: async (res, path, start, end, mode) => {
     let stream;
+    console.log('ljafvhdsfvbn');
     if (mode === 0) {
       stream = path.createReadStream();
     } else {
