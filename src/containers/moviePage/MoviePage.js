@@ -51,7 +51,7 @@ const MoviePage = (props) => {
                             tmp[i] = sourcesList[i].quality.concat(' ', sourcesList[i].source);
                             i++;
                         }
-                        tmp.unshift("Source");
+                        tmp.unshift("📡");
                         if (omdbComplementaryDataRes.data) {
                             if (omdbComplementaryDataRes.data.Director && omdbComplementaryDataRes.data.Actors)
                                 isMounted && setMovieDetails({ movie: movieRes.data[0], sources: tmp, director: omdbComplementaryDataRes.data.Director, casting: omdbComplementaryDataRes.data.Actors, validId: true });
@@ -169,6 +169,7 @@ const MoviePage = (props) => {
         e.preventDefault();
         let date = Date();
         setCommentValue({userId: context.uid, firstname: context.firstname, movieImdbId: movieDetails.movie.imdbId, content: commentInputValue, timestamp: date});
+        commentsList.comments.unshift({userId: context.uid, firstname: context.firstname, content: commentInputValue, timestamp: date});
         resetInputField();
     }
 
@@ -177,6 +178,7 @@ const MoviePage = (props) => {
     };
 
     const deleteComment = async id => {
+      console.log("delete id = ", id);
         try {
             // await axios.post("/comment/deleteComment", id);
         } catch (err) {
@@ -296,9 +298,9 @@ const MoviePage = (props) => {
                                         <div className="singleComment" key={index}>
                                             <div className="top">
                                                 <p className="moviePrimary" id="commenter"><strong>{comment.firstname}</strong></p>
-                                                {comment.userId === context.uid && 
+                                                {/* {comment.userId === context.uid && 
                                                     <button className="waves-effect waves-white btn-flat" id="deleteButton" onClick={() => deleteComment(comment._id)}>x</button>
-                                                }
+                                                } */}
                                                 <p className="movieSecondary" id="timestamp">{comment.timestamp}</p>
                                             </div>
                                             <div className="bottom">
