@@ -275,7 +275,7 @@ var customLanguage = {
     }
   ],
   pwd_match_error: "Les mots de passe ne sont pas identiques",
-  already_logged: "Vous êtes déjà connecté!"
+  already_logged: "Vous êtes déjà connecté !"
 };
 
 module.exports = customLanguage;
