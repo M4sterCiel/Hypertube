@@ -135,7 +135,10 @@ const MoviePage = (props) => {
                 <p className="movieTitle"><strong>{movieDetails.movie.title}</strong></p>
                 {streamURL ? (
                     <div className="player">
-                    <video className="videoSource" controls>
+                    <video className="videoSource" 
+                    controls
+                    preload="auto"
+                    >
                         <source
                             src={streamURL}
                             type="video/webm"
@@ -170,6 +173,9 @@ const MoviePage = (props) => {
                         ) : (
                             ""
                         )}
+                        <p class="alert">
+        Votre navigateur ne supporte pas la balise vidéo ! Mettez-vous à jour !
+    </p>
                     </video>
                 </div>
                 ) : (
