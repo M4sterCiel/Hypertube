@@ -21,7 +21,13 @@ const MoviePage = (props) => {
     const context = useContext(GlobalContext);
     const [movieId, setMovieId] = useState("");
     const [movieDetails, setMovieDetails] = useState({ movie: [], sources: []});
-    const [commentValue, setCommentValue] = useState("");
+    const [commentInputValue, setCommentInputValue] = useState("");
+    const [commentValue, setCommentValue] = useState({
+        userId: 0,
+        movieImdbId: 0,
+        content: "",
+        timestamp: Date,
+    });
     const [streamURL, setStreamURL] = useState("");
 
     useEffect(() => {
@@ -96,33 +102,52 @@ const MoviePage = (props) => {
         return () => isMounted = false;
     }, [movieId, moviePageState.loaded]);
 
+    useEffect(() => {
+        let isMounted = true;
+        const saveComment = async () => {
+            try {
+                console.log("commentValue = ", commentValue)
+                const res = isMounted && await axios.post("/comment/addComment", commentValue);
+                if (res.data.status === 'success')
+                    console.log("successfully saved comment :)");
+            } catch (err) {
+                if (err.response && err.response.status === 401)
+                console.log(err.response);
+            }
+        };
+        saveComment();
+        return () => isMounted = false;
+    }, [commentValue]);
+
     const constructURL = e => {
         let userId = context.uid;
         let movieId = movieDetails.movie.imdbId;
         let params = e.target.value.split(' ');
         let quality = params[0];
-        let source = params[1].concat(' ', params[2]);
+        let source = params[1] === 'Popcorn' ? params[1].concat(' ', params[2]) : params[1];
         let route = "http://localhost:5000/movie";
         let url = route.concat('/', userId).concat('/', movieId).concat('/', quality).concat('/', source);
         setStreamURL(url);
     }
 
     const handleNewComment = e => {
-        setCommentValue(e.target.value);
+        setCommentInputValue(e.target.value)
     }
 
     const saveComment = e => {
         e.preventDefault();
+        let date = Date();
+        setCommentValue({userId: context.uid, movieImdbId: movieDetails.movie.imdbId, content: commentInputValue, timestamp: date});
         resetInputField();
     }
+
+    const resetInputField = () => {
+        setCommentInputValue("");
+    };
 
     const deleteComment = () => {
 
     }
-
-    const resetInputField = () => {
-        setCommentValue("");
-    };
 
     return (
         <div className="MoviePage">
@@ -230,7 +255,7 @@ const MoviePage = (props) => {
                         </div>
                         <form className="inputComment">
                             <input
-                                value={commentValue}
+                                value={commentInputValue}
                                 onChange={handleNewComment}
                                 type="text"
                                 maxLength="100"

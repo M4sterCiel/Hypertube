@@ -1,10 +1,9 @@
 const mongoose = require("mongoose");
 
 const CommentSchema = mongoose.Schema({
-    id: Number,
-    userId: Number,
+    userId: String,
     movieImdbId: String,
-    content: Array,
+    content: String,
     timestamp: Date,
 });
 
