@@ -107,26 +107,30 @@ const MoviePage = props => {
     if (isMounted && movieId.id) {
       !moviePageState.loaded &&
         isMounted &&
-        axios.get(`/movie/getSubtitles/${movieId.id}`).then(res => {
-          isMounted &&
-            setMoviePageState({
-              subEn:
-                res.data.subPathEn !== undefined
-                  ? `../../src/${res.data.subPathEn.substr(-26)}`
-                  : undefined,
-              subEs:
-                res.data.subPathEs !== undefined
-                  ? `../../src/${res.data.subPathEs.substr(-26)}`
-                  : undefined,
-              subFr:
-                res.data.subPathFr !== undefined
-                  ? `../../src/${res.data.subPathFr.substr(-26)}`
-                  : undefined,
-              loaded: true
-            });
-        });
+        axios
+          .get(`/movie/getSubtitles/${movieId.id}`)
+          .then(res => {
+            isMounted &&
+              setMoviePageState({
+                subEn:
+                  res.data.subPathEn !== undefined
+                    ? require("../../" + res.data.subPathEn.substr(-26))
+                    : undefined,
+                subEs:
+                  res.data.subPathEs !== undefined
+                    ? require("../../" + res.data.subPathEs.substr(-26))
+                    : undefined,
+                subFr:
+                  res.data.subPathFr !== undefined
+                    ? require("../../" + res.data.subPathFr.substr(-26))
+                    : undefined,
+                loaded: true
+              });
+          })
+          .catch(err => {
+            window.location.reload();
+          });
     }
-    console.log(moviePageState.subFr);
     return () => (isMounted = false);
   }, [movieId, moviePageState.loaded]);
 

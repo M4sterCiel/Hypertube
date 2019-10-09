@@ -33,10 +33,10 @@ mongoose.set("useUnifiedTopology", true);
     useNewUrlParser: true
   }
 ); */
- mongoose.connect("mongodb://localhost:27017/hypertube_db", {
-   useUnifiedTopology: true,
-   useNewUrlParser: true
- });
+mongoose.connect("mongodb://localhost:27017/hypertube_db", {
+  useUnifiedTopology: true,
+  useNewUrlParser: true
+});
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -44,9 +44,9 @@ db.once("open", () => {
 });
 
 /*  creating store */
- var store = new MongoDBStore({
-   uri: "mongodb://localhost:27017/hypertube_db",
-   collection: "MySessions"
+var store = new MongoDBStore({
+  uri: "mongodb://localhost:27017/hypertube_db",
+  collection: "MySessions"
 });
 /* var store = new MongoDBStore({
   uri:
@@ -88,23 +88,25 @@ app.use("/auth", require("../controllers/auth"));
 app.use("/movie", movieRoutes.router);
 app.use("/comment", commentRoutes.router);
 
-
 /* Removing movies not seen for at least 1 month */
-schedule.scheduleJob('00 59 23 * * *', () => {
-  console.log('Removing movies from server...');
-  Movie.find({lastViewed: { $lte: Date.now() - 2629800000 }}, (err, result) => {
-    result.map((movie) => {
-      if (movie.path) {
-        for (let key in movie.path){
-          fs.unlinkSync(movie.path[key]);
-          movie.path[key] = null;
+schedule.scheduleJob("00 59 23 * * *", () => {
+  console.log("Removing movies from server...");
+  Movie.find(
+    { lastViewed: { $lte: Date.now() - 2629800000 } },
+    (err, result) => {
+      result.map(movie => {
+        if (movie.path) {
+          for (let key in movie.path) {
+            fs.unlinkSync(movie.path[key]);
+            movie.path[key] = null;
+          }
+          movie.lastViewed = null;
+          movie.save().catch(err => {
+            console.log(err);
+          });
         }
-        movie.lastViewed = null;
-        movie.save().catch(err => {
-          console.log(err);
-        })
-      }
-    });
-    console.log("Removing from server is done!")
-  }) 
+      });
+      console.log("Removing from server is done!");
+    }
+  );
 });

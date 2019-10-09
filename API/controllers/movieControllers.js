@@ -1,7 +1,7 @@
 const fs = require("fs");
 const mime = require("mime");
 const pump = require("pump");
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 const ffmpeg = require("fluent-ffmpeg");
 ffmpeg.setFfmpegPath(ffmpegPath);
 const Movie = require("../schemas/Movie");
@@ -68,7 +68,9 @@ module.exports = {
           .catch(err => {
             console.log("No english subtitles");
           });
-          subPathEn = fs.existsSync(subPath + movieId + "_" + "en.vtt") ? subPath + movieId + "_" + "en.vtt": undefined; 
+        subPathEn = fs.existsSync(subPath + movieId + "_" + "en.vtt")
+          ? subPath + movieId + "_" + "en.vtt"
+          : undefined;
       } else if (fs.existsSync(subPath + movieId + "_" + "en.vtt")) {
         subPathEn = subPath + movieId + "_" + "en.vtt";
       }
@@ -84,7 +86,9 @@ module.exports = {
           .catch(err => {
             console.log("No spanish subtitles");
           });
-          subPathEs = fs.existsSync(subPath + movieId + "_" + "es.vtt") ? subPath + movieId + "_" + "es.vtt": undefined; 
+        subPathEs = fs.existsSync(subPath + movieId + "_" + "es.vtt")
+          ? subPath + movieId + "_" + "es.vtt"
+          : undefined;
       } else if (fs.existsSync(subPath + movieId + "_" + "es.vtt")) {
         subPathEs = subPath + movieId + "_" + "es.vtt";
       }
@@ -100,18 +104,20 @@ module.exports = {
           .catch(err => {
             console.log("No french subtitles");
           });
-          subPathFr = fs.existsSync(subPath + movieId + "_" + "fr.vtt") ? subPath + movieId + "_" + "fr.vtt": undefined; 
+        subPathFr = fs.existsSync(subPath + movieId + "_" + "fr.vtt")
+          ? subPath + movieId + "_" + "fr.vtt"
+          : undefined;
       } else if (fs.existsSync(subPath + movieId + "_" + "fr.vtt")) {
         subPathFr = subPath + movieId + "_" + "fr.vtt";
       }
-      console.log(subPathEn, subPathEs, subPathFr);
+      //console.log(subPathEn, subPathEs, subPathFr);
       return res.status(200).json({ subPathEn, subPathEs, subPathFr });
     });
   },
 
   convertVideo: async (res, path, start, end, mode) => {
     let stream;
-    console.log('ljafvhdsfvbn');
+    console.log("ljafvhdsfvbn");
     if (mode === 0) {
       stream = path.createReadStream();
     } else {
@@ -178,12 +184,12 @@ module.exports = {
 
   getMovieStream: async (req, res) => {
     var customPath = req.params.quality + "_" + req.params.source;
-    if (req.params.uid === 'undefined')
+    if (req.params.uid === "undefined")
       return res.status(404).json({ error: "No user corresponding..." });
     Movie.findOne({ imdbId: req.params.movieId }, (err, result) => {
       if (err || result === null)
         return res.status(404).json({ error: "No movie corresponding..." });
-        User.findOne({ _id: req.params.uid }, (err, user) => {
+      User.findOne({ _id: req.params.uid }, (err, user) => {
         if (err) console.log(err);
         var exists = false;
         user.movies_seen.forEach(e => {
