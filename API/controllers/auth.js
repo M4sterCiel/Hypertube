@@ -61,9 +61,11 @@ passport.use(
 
               user = new User({
                 username: await userService.usernameExists(
-                  profile.displayName.replace(" ", "_")
+                  profile.displayName.replace(" ", "-")
                 ),
-                email: profile.emails[0] ? profile.emails[0].value : "",
+                email: profile.emails[0]
+                  ? profile.emails[0].value.toLowerCase()
+                  : "",
                 language: profile._json.locale,
                 firstname: profile.name.givenName ? profile.name.givenName : "",
                 lastname: profile.name.familyName
@@ -154,7 +156,7 @@ passport.use(
                 username: await userService.usernameExists(
                   profile._json.screen_name
                 ),
-                email: profile._json.email ? profile._json.email : "",
+                email: "",
                 firstname: profile._json.name
                   ? profile._json.name.split(" ")[0]
                   : "",
@@ -241,7 +243,9 @@ passport.use(
 
               user = new User({
                 username: await userService.usernameExists(profile._json.login),
-                email: profile.emails[0] ? profile.emails[0].value : "",
+                email: profile.emails[0]
+                  ? profile.emails[0].value.toLowerCase()
+                  : "",
                 firstname: profile._json.name
                   ? profile._json.name.split(" ")[0]
                   : "",
@@ -342,7 +346,7 @@ passport.use(
 
                   user = new User({
                     username: await userService.usernameExists(profile.login),
-                    email: profile.email ? profile.email : "",
+                    email: profile.email ? profile.email.toLowerCase() : "",
                     firstname: profile.first_name ? profile.first_name : "",
                     lastname: profile.last_name ? profile.last_name : "",
                     img: profile.image_url ? profile.image_url : "",

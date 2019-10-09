@@ -14,11 +14,15 @@ const UserPictureModify = props => {
   var lang = CustomLanguage.define(locale);  
 
   useEffect(() => {
+    let isMounted = true;
+
     if (props.picture) {
-      setPicture(props.picture);
-      setPictureValid(true);
+      isMounted && setPicture(props.picture);
+      isMounted && setPictureValid(true);
       return;
     }
+
+    return () => isMounted = false;
   }, [props.picture]);
 
   const handlePictureUpload = e => {

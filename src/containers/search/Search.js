@@ -8,6 +8,7 @@ import Navbar from "../../components/navbar/NavBar";
 import Filter from "../../components/filter/Filter";
 import { SearchProvider } from "../../context/SearchContext";
 import { Link } from "react-router-dom";
+import Loading from "../../components/loadingAnim/LoadingFullScreen";
 
 const SearchView = () => {
   const [searchTerms, setSearchTerms] = useState({
@@ -19,17 +20,18 @@ const SearchView = () => {
     limit: 40
   });
 
-  const [searchResult, setSearchResult] = useState({ movies: [] });
+  const [searchResult, setSearchResult] = useState();
 
   useEffect(() => {
+    let isMounted = true;
     const fetchMovies = async () => {
       try {
-        const res = await axios.post("/search/movies", searchTerms);
+        const res = isMounted && await axios.post("/search/movies", searchTerms);
         if (res.data.length !== 0) {
           if (searchTerms.page === 1)
-            setSearchResult({ movies: [...res.data] });
+          isMounted && setSearchResult({ movies: [...res.data] });
           else
-            setSearchResult(prev => ({
+          isMounted && setSearchResult(prev => ({
               movies: prev.movies.concat(res.data)
             }));
         }
@@ -39,6 +41,7 @@ const SearchView = () => {
       }
     };
     fetchMovies();
+    return () => isMounted = false;
   }, [searchTerms]);
 
   const search = searchValue => {
@@ -75,14 +78,18 @@ const SearchView = () => {
   };
 
   useEffect(() => {
-    window.document
+    let isMounted = true;
+    if (isMounted && searchResult) {
+      window.document
       .getElementById("infiniteScroll")
       .addEventListener("scroll", handleScroll);
     return () =>
       window.document
         .getElementById("infiniteScroll")
         .removeEventListener("scroll", handleScroll);
-  }, []);
+    }
+    return () => isMounted = false;
+  }, [searchResult]);
 
   const handleScroll = () => {
     if (
@@ -105,7 +112,8 @@ const SearchView = () => {
     <SearchProvider value={searchTerms}>
       <div className="SearchView" id="SearchView">
         <Navbar />
-        <div className="layer">
+        {searchResult ? (
+          <div className="layer">
           <Search search={search} />
           <Filter ratings={ratings} years={years} genre={genre} />
           <div className="infiniteScroll" id="infiniteScroll">
@@ -120,6 +128,9 @@ const SearchView = () => {
             ))}
           </div>
         </div>
+        ) : (
+          <Loading></Loading>
+        )}
       </div>
     </SearchProvider>
   );

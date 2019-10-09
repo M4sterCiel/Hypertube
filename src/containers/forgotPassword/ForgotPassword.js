@@ -42,7 +42,7 @@ class ForgotPassword extends Component {
     e.preventDefault();
     var lang = await CustomLanguage.define(this.context.locale);
 
-    await axios
+    this._isMounted && await axios
       .post("/users/forgot-password", {
         login: this.state.login
       })

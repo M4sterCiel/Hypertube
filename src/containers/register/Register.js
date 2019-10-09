@@ -99,7 +99,7 @@ class Register extends Component {
     e.preventDefault();
 
     var lang = await CustomLanguage.define(this.context.locale);
-    await axios
+    this._isMounted && await axios
       .post("/users/register", {
         username: this.state.username,
         firstname: this.state.firstname,

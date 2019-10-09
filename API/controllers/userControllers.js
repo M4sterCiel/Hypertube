@@ -1,10 +1,10 @@
-const User = require('../schemas/User');
-const inputService = require('../services/inputServices');
-const jwtService = require('../services/jwtService');
-const mailService = require('../services/mailService');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const sanitize = require('mongo-sanitize');
+const User = require("../schemas/User");
+const inputService = require("../services/inputServices");
+const jwtService = require("../services/jwtService");
+const mailService = require("../services/mailService");
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const sanitize = require("mongo-sanitize");
 
 const mailPattern = /^([a-zA-Z0-9]+(?:[\.\-\_]?[a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[\.\-\_]?[a-zA-Z0-9]+)*)\.([a-zA-Z]{2,})+$/;
 
@@ -15,10 +15,10 @@ passport.use(
         return done(err);
       }
       if (!user) {
-        return done(null, false, { message: 'Incorrect username.' });
+        return done(null, false, { message: "Incorrect username." });
       }
       if (!user.validPassword(password)) {
-        return done(null, false, { message: 'Incorrect password.' });
+        return done(null, false, { message: "Incorrect password." });
       }
       return done(null, user);
     });
@@ -27,17 +27,17 @@ passport.use(
 
 module.exports = {
   login: async (req, res, next) => {
-    passport.authenticate('local', (err, user, info) => {
+    passport.authenticate("local", (err, user, info) => {
       if (err) {
-        return res.json({ status: 'error', msg: 'login_failed' });
+        return res.json({ status: "error", msg: "login_failed" });
       }
       if (!user) {
-        return res.json({ status: 'error', msg: 'invalid_cred' });
+        return res.json({ status: "error", msg: "invalid_cred" });
       }
       req.logIn(user, err => {
         if (err) {
           console.error(err);
-          return res.json({ status: 'error', msg: 'login_failed' });
+          return res.json({ status: "error", msg: "login_failed" });
         }
 
         if (user.active === true) {
@@ -45,8 +45,8 @@ module.exports = {
           User.findOneAndUpdate({ _id: user._id }, { token: token }, err => {
             if (err)
               return res.json({
-                status: 'error',
-                msg: 'login_failed'
+                status: "error",
+                msg: "login_failed"
               });
           });
 
@@ -65,12 +65,12 @@ module.exports = {
 
           req.session.save(err => {
             if (err) throw err;
-            return res.json({ status: 'success', user: payload, token: token });
+            return res.json({ status: "success", user: payload, token: token });
           });
         } else {
           return res.json({
-            status: 'error',
-            msg: 'login_inactive'
+            status: "error",
+            msg: "login_inactive"
           });
         }
       });
@@ -83,19 +83,18 @@ module.exports = {
     console.log(lang);
     var err;
     if ((err = inputService.lastname(req.body.lastname).error))
-      return res.status(400).json({ error: err});
+      return res.status(400).json({ error: err });
     if ((err = inputService.firstname(req.body.firstname).error))
-      return res.status(400).json({ error: err});
+      return res.status(400).json({ error: err });
     if ((err = inputService.password(req.body.pwd1).error))
       return res.status(400).json({ error: err });
     if ((err = inputService.password(req.body.pwd2).error))
       return res.status(400).json({ error: err });
     if (req.body.pwd1 !== req.body.pwd2)
-      return res.status(400).json({ error: 'unequal_passwords' });
+      return res.status(400).json({ error: "unequal_passwords" });
 
     err = await inputService.username(req.body.username);
-    if (err.error)
-      return res.status(400).json({ error: err.error });
+    if (err.error) return res.status(400).json({ error: err.error });
     err = await inputService.mail(req.body.email);
     if (err.error) return res.status(400).json({ error: err.error });
 
@@ -115,24 +114,30 @@ module.exports = {
     User.register(user, req.body.pwd1, (err, result) => {
       if (err) return res.status(400).json({ error: err.message });
       mailService.sendActivation(user);
-      return res.status(200).json({ status: 'success' });
+      return res.status(200).json({ status: "success" });
     });
   },
 
-  updateUser:  async (req, res, next) => {
+  updateUser: async (req, res, next) => {
     var token = jwtService.parseAuthorization(req.headers.authorization);
     if (jwtService.verifyToken(token)) {
       var err;
-      if (req.body.firstname !== undefined && (err = inputService.firstname(req.body.firstname).error)) {
-        return res.status(400).json({ error: err});
+      if (
+        req.body.firstname !== undefined &&
+        (err = inputService.firstname(req.body.firstname).error)
+      ) {
+        return res.status(400).json({ error: err });
       }
-      if (req.body.lastname !== undefined && (err = inputService.lastname(req.body.lastname).error)) {
-        return res.status(400).json({ error: err});
+      if (
+        req.body.lastname !== undefined &&
+        (err = inputService.lastname(req.body.lastname).error)
+      ) {
+        return res.status(400).json({ error: err });
       }
       if (req.body.username !== undefined) {
         err = await inputService.username(req.body.username);
         if (err.error) {
-          return res.status(400).json({ error: err.error});
+          return res.status(400).json({ error: err.error });
         }
       }
       if (req.body.email !== undefined) {
@@ -142,23 +147,23 @@ module.exports = {
         }
       }
       User.findOneAndUpdate({ token: token }, req.body, err => {
-        if (err) return res.status(400).json({error: "update_failed"});
+        if (err) return res.status(400).json({ error: "update_failed" });
       });
-      return res.status(200).json({ message: 'update_success' });
+      return res.status(200).json({ message: "update_success" });
     }
-    return res.status(400).json({error: "update_failed"});
+    return res.status(400).json({ error: "update_failed" });
   },
 
-  getUserByUsername:  async (req, res, next) => {
+  getUserByUsername: async (req, res, next) => {
     await User.findOne({ username: req.params.username }, function(err, user) {
       if (err) {
-        return res.status(401).json({ error: 'User not found' });
+        return res.status(401).json({ error: "User not found" });
       }
       if (!user) {
-        return res.status(401).json({ error: 'User not found' });
+        return res.status(401).json({ error: "User not found" });
       }
       return res.status(200).json(user);
-    })
+    });
   },
 
   logout: async (req, res, next) => {
@@ -169,15 +174,15 @@ module.exports = {
       });
       req.logout();
       req.session = null;
-      return res.status(200).json({ message: 'Logged out!' });
+      return res.status(200).json({ message: "Logged out!" });
     }
   },
 
   getProfile: async (req, res, next) => {
     console.log(req.headers.authorization);
     if (!req.session.user)
-      return res.status(401).json({ error: 'You are not logged in!' });
-    return res.status(200).json({ message: 'success' });
+      return res.status(401).json({ error: "You are not logged in!" });
+    return res.status(200).json({ message: "success" });
   },
 
   getSession: async (req, res, next) => {
@@ -186,13 +191,13 @@ module.exports = {
     await User.findOne({ token: token }, (err, user) => {
       if (user) {
         if (jwtService.verifyToken(token)) {
-          if (typeof req.session.user !== 'undefined') {
+          if (typeof req.session.user !== "undefined") {
             User.findOne({ _id: req.session.user._id }, (err, user) => {
               if (user) req.session.user.language = user.language;
               return res.status(200).json(user);
             });
-          } else return res.status(401).json({ error: 'No session for user' });
-        } else return res.status(401).json({ error: 'Invalid token' });
+          } else return res.status(401).json({ error: "No session for user" });
+        } else return res.status(401).json({ error: "Invalid token" });
       }
     });
   },
@@ -202,10 +207,8 @@ module.exports = {
       { username: sanitize(req.body.username) },
       (err, response) => {
         if (response && response.active)
-          return res
-            .status(200)
-            .json({ message: 'already_active' });
-        if (err) return res.json({ status: 'error' });
+          return res.status(200).json({ message: "already_active" });
+        if (err) return res.json({ status: "error" });
         if (response === null || response.activationKey !== req.body.key)
           return res.status(400).json({ status: false });
         User.findOneAndUpdate(
@@ -233,7 +236,7 @@ module.exports = {
     if (!mailPattern.test(data)) {
       var result = await User.find({ username: sanitize(data) });
       if (result.length < 1)
-        return res.status(400).json({ error: 'invalid_username' });
+        return res.status(400).json({ error: "invalid_username" });
       else {
         var uniqid =
           new Date().getTime() +
@@ -249,14 +252,14 @@ module.exports = {
           }
         );
         var statusMail = mailService.sendNewPassword(result[0], uniqid);
-        if (statusMail === 'error')
-          return res.status(400).json({ error: 'invalid_unknown_email' });
-        return res.status(200).json({ message: 'receive_email' });
+        if (statusMail === "error")
+          return res.status(400).json({ error: "invalid_unknown_email" });
+        return res.status(200).json({ message: "receive_email" });
       }
     } else {
       var result = await User.find({ email: sanitize(data) });
       if (result.length < 1)
-        return res.status(400).json({ error: 'invalid_email' });
+        return res.status(400).json({ error: "invalid_email" });
       else {
         var uniqid =
           new Date().getTime() +
@@ -271,7 +274,7 @@ module.exports = {
           }
         );
         mailService.sendNewPassword(result[0], uniqid);
-        return res.status(200).json({ message: 'receive_email' });
+        return res.status(200).json({ message: "receive_email" });
       }
     }
   },
@@ -283,14 +286,14 @@ module.exports = {
     if ((err = inputService.password(req.body.pwd2).error))
       return res.status(400).json({ error: err });
     if (req.body.pwd1 !== req.body.pwd2)
-      return res.status(400).json({ error: 'unequal_passwords' });
+      return res.status(400).json({ error: "unequal_passwords" });
 
     var result = await User.find({
       username: sanitize(req.body.username),
       activationKey: sanitize(req.body.key)
     });
     if (result.length < 1)
-      return res.status(400).json({ error: 'reset_password_failed' });
+      return res.status(400).json({ error: "reset_password_failed" });
     else {
       User.findOneAndUpdate(
         { username: sanitize(req.body.username) },
@@ -303,7 +306,7 @@ module.exports = {
             user.save().catch(err => {
               console.error(err);
             });
-            return res.status(200).json({ status: 'success' });
+            return res.status(200).json({ status: "success" });
           });
         }
       );
@@ -317,13 +320,13 @@ module.exports = {
     if ((err = inputService.password(req.body.pwd2).error))
       return res.status(400).json({ error: err });
     if (req.body.pwd1 !== req.body.pwd2)
-      return res.status(400).json({ error: 'unequal_passwords' });
+      return res.status(400).json({ error: "unequal_passwords" });
 
     var result = await User.find({
       username: sanitize(req.body.username)
     });
     if (result.length < 1)
-      return res.status(400).json({ error: 'reset_password_failed' });
+      return res.status(400).json({ error: "reset_password_failed" });
     else {
       User.findOneAndUpdate(
         { username: sanitize(req.body.username) },
@@ -336,7 +339,7 @@ module.exports = {
             user.save().catch(err => {
               console.error(err);
             });
-            return res.status(200).json({ status: 'success' });
+            return res.status(200).json({ status: "success" });
           });
         }
       );
@@ -348,22 +351,28 @@ module.exports = {
     if (jwtService.verifyToken(token)) {
       await User.findOne({ token: token }, function(err, user) {
         if (err) {
-          return res.status(400).json({ error: 'Impossible to delete account...' });
+          return res
+            .status(400)
+            .json({ error: "Impossible to delete account..." });
         }
         if (!user) {
-          return res.status(400).json({ error: 'Impossible to delete account...' });
+          return res
+            .status(400)
+            .json({ error: "Impossible to delete account..." });
         } else {
-          User.findOneAndRemove({ token: token }, (err) => {
+          User.findOneAndRemove({ token: token }, err => {
             if (err) {
-              return res.status(400).json({ error: 'Impossible to delete account...' });
+              return res
+                .status(400)
+                .json({ error: "Impossible to delete account..." });
             } else {
-              return res.status(200).json({ status: 'success' });
-          }
+              return res.status(200).json({ status: "success" });
+            }
           });
         }
-      })
+      });
     } else {
-      return res.status(400).json({ error: 'Impossible to delete account...' });
+      return res.status(400).json({ error: "Impossible to delete account..." });
     }
   },
 
@@ -372,37 +381,47 @@ module.exports = {
     if (jwtService.verifyToken(token)) {
       await User.findOne({ token: token }, async function(err, user) {
         if (err) {
-          return res.status(400).json({ error: 'follow_fail' });
+          return res.status(400).json({ error: "follow_fail" });
         }
         if (!user) {
-          return res.status(400).json({ error: 'follow_fail' });
+          return res.status(400).json({ error: "follow_fail" });
         } else {
-          await User.findOne({ username: req.body.username }, async function(err, result) {
+          await User.findOne({ username: req.body.username }, async function(
+            err,
+            result
+          ) {
             if (err) {
-              return res.status(400).json({ error: 'follow_fail' });
+              return res.status(400).json({ error: "follow_fail" });
             }
             if (!result) {
-              return res.status(400).json({ error: 'follow_fail' });
+              return res.status(400).json({ error: "follow_fail" });
             }
             if (user._id === result._id) {
-              return res.status(400).json({ error: 'follow_fail' });
+              return res.status(400).json({ error: "follow_fail" });
             } else {
-              await User.find({ _id: user._id, following: {$in: result._id} }, function(err, check) {
-                if (err) {
-                  return res.status(400).json({ error: 'follow_fail' });
+              await User.find(
+                { _id: user._id, following: { $in: result._id } },
+                function(err, check) {
+                  if (err) {
+                    return res.status(400).json({ error: "follow_fail" });
+                  }
+                  if (check.length) {
+                    return res.status(400).json({ error: "follow_already" });
+                  } else {
+                    user.following.push(result._id);
+                    user.save();
+                    return res.status(200).json({
+                      message: "following_user",
+                      userFollowed: result,
+                      followingList: user.following
+                    });
+                  }
                 }
-                if (check.length) {
-                  return res.status(400).json({ error: 'follow_already' });
-                } else {
-                  user.following.push(result._id);
-                  user.save();
-                  return res.status(200).json({ message: 'following_user', userFollowed: result, followingList: user.following });
-                }
-              })
+              );
             }
-          })
+          });
         }
-      })
+      });
     }
   },
 
@@ -411,50 +430,67 @@ module.exports = {
     if (jwtService.verifyToken(token)) {
       await User.findOne({ token: token }, async function(err, user) {
         if (err) {
-          return res.status(400).json({ error: 'unfollow_fail' });
+          return res.status(400).json({ error: "unfollow_fail" });
         }
         if (!user) {
-          return res.status(400).json({ error: 'unfollow_fail' });
+          return res.status(400).json({ error: "unfollow_fail" });
         } else {
-          await User.findOne({ username: req.body.username }, async function(err, result) {
+          await User.findOne({ username: req.body.username }, async function(
+            err,
+            result
+          ) {
             if (err) {
-              return res.status(400).json({ error: 'unfollow_fail' });
+              return res.status(400).json({ error: "unfollow_fail" });
             }
             if (!result) {
-              return res.status(400).json({ error: 'unfollow_fail' });
+              return res.status(400).json({ error: "unfollow_fail" });
             }
             if (user._id === result._id) {
-              return res.status(400).json({ error: 'unfollow_fail' });
+              return res.status(400).json({ error: "unfollow_fail" });
             } else {
-              await User.find({ _id: user._id, following: {$in: result._id} }, function(err, check) {
-                if (err) {
-                  return res.status(400).json({ error: 'unfollow_fail' });
+              await User.find(
+                { _id: user._id, following: { $in: result._id } },
+                function(err, check) {
+                  if (err) {
+                    return res.status(400).json({ error: "unfollow_fail" });
+                  }
+                  if (!check.length) {
+                    return res.status(400).json({ error: "unfollow_already" });
+                  } else {
+                    user.following.remove(result._id);
+                    user.save();
+                    return res.status(200).json({
+                      message: "unfollowing_user",
+                      userFollowed: result,
+                      followingList: user.following
+                    });
+                  }
                 }
-                if (!check.length) {
-                  return res.status(400).json({ error: 'unfollow_already' });
-                } else {
-                  user.following.remove(result._id);
-                  user.save();
-                  return res.status(200).json({ message: 'unfollowing_user', userFollowed: result, followingList: user.following });
-                }
-              })
+              );
             }
-          })
+          });
         }
-      })
+      });
     }
   },
 
   getUsersFromIdArray: async (req, res, next) => {
-    await User.find({ _id: { $in: req.body.IdArray} }, async function(err, users) {
-        if (err) {
-            return res.status(400).json({ error: 'Impossible to retrieve users...' });
-        }
-        if (!users) {
-            return res.status(400).json({ error: 'Impossible to retrieve users...' });
-        } else {
-            return res.status(200).json({ usersList: users})
-        }
-    })
-}
+    await User.find({ _id: { $in: req.body.IdArray } }, async function(
+      err,
+      users
+    ) {
+      if (err) {
+        return res
+          .status(400)
+          .json({ error: "Impossible to retrieve users..." });
+      }
+      if (!users) {
+        return res
+          .status(400)
+          .json({ error: "Impossible to retrieve users..." });
+      } else {
+        return res.status(200).json({ usersList: users });
+      }
+    });
+  }
 };
