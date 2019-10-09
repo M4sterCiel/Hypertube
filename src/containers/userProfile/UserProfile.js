@@ -154,7 +154,7 @@ const UserProfile = props => {
         if (
           user.movies_seen !== undefined &&
           user.movies_seen.length &&
-          !updating
+          !updating && typeof user.movies_seen[0] !== 'object'
         ) {
           isMounted &&
             axios
@@ -173,7 +173,7 @@ const UserProfile = props => {
         if (
           user.following !== undefined &&
           user.following.length &&
-          !updating
+          !updating && typeof user.following[0] !== 'object'
         ) {
           isMounted &&
             axios

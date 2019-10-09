@@ -354,6 +354,7 @@ module.exports = {
   },
 
   getMoviesFromImdbIdArray: async (req, res, next) => {
+    console.log("RECEIVING:", req.body.imdbIdArray);
     await Movie.find({ imdbId: { $in: req.body.imdbIdArray } }, async function(
       err,
       movies
@@ -368,6 +369,7 @@ module.exports = {
           .status(400)
           .json({ error: "Impossible to retrieve movies..." });
       } else {
+        console.log("DB Movies:", movies);
         return res.status(200).json({ moviesList: movies });
       }
     });
