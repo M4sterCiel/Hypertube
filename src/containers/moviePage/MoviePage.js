@@ -227,7 +227,7 @@ const MoviePage = (props) => {
                                 <div className="top">
                                     <p className="moviePrimary" id="commenter"><strong>Maxime</strong></p>
                                     {/* if comment.userId === userId */}
-                                    <a href="#" onClick={deleteComment} className="deleteButton">
+                                    <a href="#1" onClick={deleteComment} className="deleteButton">
                                         <p className="moviePrimary" id="deleteButton"><strong>x</strong></p>
                                     </a>
                                     <p className="movieSecondary" id="timestamp">01/12/2019 at 12:34</p>
