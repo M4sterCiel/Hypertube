@@ -171,8 +171,13 @@ const MoviePage = (props) => {
         setCommentInputValue("");
     };
 
-    const deleteComment = e => {
-
+    const deleteComment = async id => {
+        try {
+            await axios.post("/comment/deleteComment", id);
+        } catch (err) {
+            if (err.response && err.response.status === 401)
+                console.log(err.response);
+        }
     }
 
     return (
@@ -271,7 +276,7 @@ const MoviePage = (props) => {
                                             <div className="top">
                                                 <p className="moviePrimary" id="commenter"><strong>{comment.firstname}</strong></p>
                                                 {comment.userId === context.uid ? (
-                                                    <a href="#" onClick={deleteComment} className="deleteButton">
+                                                    <a href="#" onClick={deleteComment(comment._id)} className="deleteButton">
                                                         <p className="moviePrimary" id="deleteButton"><strong>x</strong></p>
                                                     </a>
                                                 ) : (
