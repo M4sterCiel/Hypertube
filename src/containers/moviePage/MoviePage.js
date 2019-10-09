@@ -276,7 +276,7 @@ const MoviePage = (props) => {
                                             <div className="top">
                                                 <p className="moviePrimary" id="commenter"><strong>{comment.firstname}</strong></p>
                                                 {comment.userId === context.uid && 
-                                                    <a class="waves-effect waves-white btn-flat" id="deleteButton" onClick={deleteComment(comment._id)}>x</a>
+                                                    <a className="waves-effect waves-white btn-flat" id="deleteButton" onClick={deleteComment(comment._id)}>x</a>
                                                 }
                                                 <p className="movieSecondary" id="timestamp">{comment.timestamp}</p>
                                             </div>
