@@ -109,6 +109,7 @@ const MoviePage = (props) => {
         let route = "http://localhost:5000/movie";
         let url = route.concat('/', userId).concat('/', movieId).concat('/', quality).concat('/', source);
         setStreamURL(url);
+        console.log(url);
     }
 
     const handleNewComment = e => {
