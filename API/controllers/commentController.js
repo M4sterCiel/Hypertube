@@ -21,6 +21,7 @@ const addComment = async (req, res) => {
     if (req.body.userId && req.body.firstname && req.body.movieImdbId && req.body.content && req.body.timestamp) {
         var comment = new Comment({
             userId: sanitize(req.body.userId),
+            username: sanitize(req.body.username),
             firstname: sanitize(req.body.firstname),
             movieImdbId: sanitize(req.body.movieImdbId),
             content: sanitize(req.body.content),
