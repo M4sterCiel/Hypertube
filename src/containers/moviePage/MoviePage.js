@@ -170,8 +170,8 @@ const MoviePage = (props) => {
     const saveComment = e => {
         e.preventDefault();
         let date = new Date();
-        setCommentValue({userId: context.uid, firstname: context.firstname, movieImdbId: movieDetails.movie.imdbId, content: commentInputValue, timestamp: date});
-        commentsList.comments.unshift({userId: context.uid, firstname: context.firstname, content: commentInputValue, timestamp: date});
+        setCommentValue({userId: context.uid, username: context.username, firstname: context.firstname, movieImdbId: movieDetails.movie.imdbId, content: commentInputValue, timestamp: date});
+        commentsList.comments.unshift({userId: context.uid, username: context.username, firstname: context.firstname, content: commentInputValue, timestamp: date});
         resetInputField();
     }
 
@@ -243,10 +243,7 @@ const MoviePage = (props) => {
                         ) : (
                             ""
                         )}
-                        <p className="alert">
-                          {/* to translate */}
-                            Votre navigateur ne supporte pas la balise vidéo ! Mettez-vous à jour ! 
-                        </p>
+                        <p className="alert">{lang.movie[0].browser_support_error}</p>
                     </video>
                 </div>
                 ) : (
@@ -268,7 +265,6 @@ const MoviePage = (props) => {
                                                 value={source} 
                                         >
                                             {source}
-                                            {/* to translate */}
                                         </option>
                                     ))}
                                 </select>
@@ -299,7 +295,9 @@ const MoviePage = (props) => {
                                     {commentsList.comments.map((comment, index) => (
                                         <div className="singleComment" key={index}>
                                             <div className="top">
-                                                <p className="moviePrimary" id="commenter"><strong>{comment.firstname}</strong></p>
+                                              <a href={'/user/'+ comment.username}>
+                                                <p className="moviePrimary" id="commenter"><strong>{comment.username}</strong></p>
+                                              </a>
                                                 {/* {comment.userId === context.uid && comment._id && 
                                                     <button className="waves-effect waves-white btn-flat" id="deleteButton" onClick={() => deleteComment(comment._id)}>x</button>
                                                 } */}
@@ -313,7 +311,7 @@ const MoviePage = (props) => {
                                     ))}
                                 </div>
                                 ) : (
-                                <p>No comment yet</p> // to translate
+                                  <p>{lang.comments[0].no_comment}</p>
                             )}
                         </div>
                         <form className="inputComment">
