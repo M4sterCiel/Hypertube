@@ -128,6 +128,13 @@ const MoviePage = (props) => {
         setCommentValue("");
     };
 
+    const updateContextForMovies = () => {
+        console.log(!context.movies_seen.includes(movieId.id));
+        if (!context.movies_seen.includes(movieId.id)) {
+            context.updateMoviesSeen([...context.movies_seen, movieId.id]);
+        }
+    }
+
     return (
         <div className="MoviePage">
             <Navbar />
@@ -139,11 +146,11 @@ const MoviePage = (props) => {
                     <video className="videoSource" 
                     controls
                     preload="auto"
+                    onPlay={updateContextForMovies}
                     >
                         <source
                             src={streamURL}
                             type="video/webm"
-                            onPlay={() => context.updateMoviesSeen([...context.movies_seen, movieId])}
                         />
                         {moviePageState.subEn !== undefined ? (
                             <track
