@@ -22,12 +22,8 @@ const MoviePage = (props) => {
     const [movieId, setMovieId] = useState("");
     const [movieDetails, setMovieDetails] = useState({ movie: [], sources: []});
     const [commentInputValue, setCommentInputValue] = useState("");
-    const [commentValue, setCommentValue] = useState({
-        userId: 0,
-        movieImdbId: 0,
-        content: "",
-        timestamp: Date,
-    });
+    const [commentValue, setCommentValue] = useState("");
+    const [commentsList, setCommentsList] = useState({ comments: []})
     const [streamURL, setStreamURL] = useState("");
 
     useEffect(() => {
@@ -105,19 +101,34 @@ const MoviePage = (props) => {
     useEffect(() => {
         let isMounted = true;
         const saveComment = async () => {
+            console.log("SAVE COMMENT");
             try {
-                console.log("commentValue = ", commentValue)
                 const res = isMounted && await axios.post("/comment/addComment", commentValue);
-                if (res.data.status === 'success')
-                    console.log("successfully saved comment :)");
             } catch (err) {
                 if (err.response && err.response.status === 401)
-                console.log(err.response);
+                    console.log(err.response);
             }
         };
         saveComment();
         return () => isMounted = false;
     }, [commentValue]);
+
+    useEffect(() => {
+        let isMounted = true;
+        const getComments = async () => {
+            try {
+                const res = isMounted && await axios.post("/comment/loadComments", movieDetails.movie.imdbId);
+                setCommentsList({ commentsList: res.data[0] });
+                if (res.data.comments.length > 0)
+                    console.log("successfully fetched comments :)");
+            } catch (err) {
+                if (err.response && err.response.status === 401)
+                    console.log(err.response);
+            }
+        };
+        getComments();
+        return () => isMounted = false;
+    }, [commentsList]);
 
     const constructURL = e => {
         let userId = context.uid;
@@ -145,7 +156,7 @@ const MoviePage = (props) => {
         setCommentInputValue("");
     };
 
-    const deleteComment = () => {
+    const deleteComment = e => {
 
     }
 
@@ -263,7 +274,7 @@ const MoviePage = (props) => {
                                 placeholder="Enter your comment"
                             />
                             <button
-                                disabled={commentValue.length < 4}
+                                disabled={commentInputValue.length < 4}
                                 onClick={saveComment}
                                 type="submit"
                                 id="submitCommentButton"
