@@ -41,6 +41,7 @@ class GlobalContextProvider extends Component {
           lastname: data.lastname,
           email: data.email,
           picture: data.picture,
+          uid: data.uid,
           loaded: true
         }),
       updateFollowing: data =>

@@ -173,7 +173,8 @@ const EditProfileModal = props => {
                             firstname: user.firstname.toLowerCase(),
                             lastname: user.lastname.toLowerCase(),
                             email: user.email.toLowerCase(),
-                            picture: user.picture
+                            picture: user.picture,
+                            uid: user.uid
                         });
                         if (props.user.following) {
                             context.updateFollowing(props.user.following);
