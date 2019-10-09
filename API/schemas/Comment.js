@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const CommentSchema = mongoose.Schema({
     userId: String,
+    firstname: String,
     movieImdbId: String,
     content: String,
     timestamp: Date,

@@ -3,9 +3,14 @@ const sanitize = require('mongo-sanitize');
 
 const loadComments = async (req, res) => {
     try {
-        console.log("REQ = ", req);
-        const comments = await Comment.find(req);
-        res.status(200).json({ comments });
+        const sorting = {};
+        sorting['timestamp'] = 1;
+        const queryTerms = [
+            { $match: { movieImdbId: req.body.id } },
+            { $sort: sorting },
+        ]
+        commentsList = await Comment.aggregate(queryTerms);
+        res.status(200).json(commentsList);
     } catch (error) {
         console.log(error.message);
     }
@@ -13,9 +18,10 @@ const loadComments = async (req, res) => {
 
 const addComment = async (req, res) => {
 
-    if (req.body.userId && req.body.movieImdbId && req.body.content && req.body.timestamp) {
+    if (req.body.userId && req.body.firstname && req.body.movieImdbId && req.body.content && req.body.timestamp) {
         var comment = new Comment({
             userId: sanitize(req.body.userId),
+            firstname: sanitize(req.body.firstname),
             movieImdbId: sanitize(req.body.movieImdbId),
             content: sanitize(req.body.content),
             timestamp: sanitize(req.body.timestamp),

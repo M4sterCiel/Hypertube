@@ -26,6 +26,8 @@ const MoviePage = (props) => {
     const [commentsList, setCommentsList] = useState({ comments: []})
     const [streamURL, setStreamURL] = useState("");
 
+    // GET MOVIE INFOS
+    // ----------------------------------------------------------------------------------------------------------
     useEffect(() => {
         let isMounted = true;
         const fetchMovies = async () => {
@@ -73,6 +75,8 @@ const MoviePage = (props) => {
         return () => isMounted = false;
     }, [movieDetails, props.history]);
 
+    // GET SUBTITLES
+    // ----------------------------------------------------------------------------------------------------------
     useEffect(() => {
         let isMounted = true;
         if (isMounted && movieId.id) {
@@ -98,6 +102,8 @@ const MoviePage = (props) => {
         return () => isMounted = false;
     }, [movieId, moviePageState.loaded]);
 
+    // ADD COMMENT
+    // ----------------------------------------------------------------------------------------------------------
     useEffect(() => {
         let isMounted = true;
         const saveComment = async () => {
@@ -113,12 +119,17 @@ const MoviePage = (props) => {
         return () => isMounted = false;
     }, [commentValue]);
 
+    // GET COMMENTS
+    // ----------------------------------------------------------------------------------------------------------
     useEffect(() => {
         let isMounted = true;
         const getComments = async () => {
+            let url = document.location.href;
+            let split = url.split("/");
+            let imdbId = {id: split[4]};
             try {
-                const res = isMounted && await axios.post("/comment/loadComments", movieDetails.movie.imdbId);
-                setCommentsList({ commentsList: res.data[0] });
+                const res = isMounted && await axios.post("/comment/loadComments", imdbId);
+                setCommentsList({ comments: res.data });
                 if (res.data.comments.length > 0)
                     console.log("successfully fetched comments :)");
             } catch (err) {
@@ -128,8 +139,10 @@ const MoviePage = (props) => {
         };
         getComments();
         return () => isMounted = false;
-    }, [commentsList]);
+    }, []);
 
+    // STREAMING URL CONSTRUCTOR
+    // ----------------------------------------------------------------------------------------------------------
     const constructURL = e => {
         let userId = context.uid;
         let movieId = movieDetails.movie.imdbId;
@@ -141,6 +154,8 @@ const MoviePage = (props) => {
         setStreamURL(url);
     }
 
+    // COMMENT HANDLERS
+    // ----------------------------------------------------------------------------------------------------------
     const handleNewComment = e => {
         setCommentInputValue(e.target.value)
     }
@@ -148,7 +163,7 @@ const MoviePage = (props) => {
     const saveComment = e => {
         e.preventDefault();
         let date = Date();
-        setCommentValue({userId: context.uid, movieImdbId: movieDetails.movie.imdbId, content: commentInputValue, timestamp: date});
+        setCommentValue({userId: context.uid, firstname: context.firstname, movieImdbId: movieDetails.movie.imdbId, content: commentInputValue, timestamp: date});
         resetInputField();
     }
 
@@ -248,21 +263,32 @@ const MoviePage = (props) => {
                         </div>
                     </div>
                     <div className="commentSection">
-                        <div className="comments">
-                            <div className="singleComment">
-                                <div className="top">
-                                    <p className="moviePrimary" id="commenter"><strong>Maxime</strong></p>
-                                    {/* if comment.userId === userId */}
-                                    <a href="#" onClick={deleteComment} className="deleteButton">
-                                        <p className="moviePrimary" id="deleteButton"><strong>x</strong></p>
-                                    </a>
-                                    <p className="movieSecondary" id="timestamp">01/12/2019 at 12:34</p>
+                            <div className="comments">
+                                {commentsList.comments.length > 0 ? (
+                                <div className="ohyeah">
+                                    {commentsList.comments.map((comment, index) => (
+                                        <div className="singleComment">
+                                            <div className="top">
+                                                <p className="moviePrimary" id="commenter"><strong>{comment.firstname}</strong></p>
+                                                {comment.userId === context.uid ? (
+                                                    <a href="#" onClick={deleteComment} className="deleteButton">
+                                                        <p className="moviePrimary" id="deleteButton"><strong>x</strong></p>
+                                                    </a>
+                                                ) : (
+                                                    <p></p>
+                                                )}
+                                                <p className="movieSecondary" id="timestamp">{comment.timestamp}</p>
+                                            </div>
+                                            <div className="bottom">
+                                                <p className="movieSecondary" id="content">{comment.content}</p>
+                                            </div>
+                                            <hr className="commentSeparator"></hr>
+                                        </div>
+                                    ))}
                                 </div>
-                                <div className="bottom">
-                                    <p className="movieSecondary" id="content">Amazing movie</p>
-                                </div>
-                                <hr className="commentSeparator"></hr>
-                            </div>
+                                ) : (
+                                <p>No comment yet</p>
+                            )}
                         </div>
                         <form className="inputComment">
                             <input
