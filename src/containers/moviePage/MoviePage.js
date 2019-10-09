@@ -8,9 +8,7 @@ import axios from "axios";
 import ErrorToast from "../../services/toasts/ErrorToasts";
 import { GlobalContext } from "../../context/GlobalContext";
 import CustomLanguage from "../../services/DefineLocale";
-import Moment from 'react-moment';
 import * as moment from 'moment'
-// import 'moment-timezone';
 
 const MoviePage = (props) => {
 
