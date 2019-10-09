@@ -27,14 +27,16 @@ const SearchView = () => {
     let isMounted = true;
     const fetchMovies = async () => {
       try {
-        const res = isMounted && await axios.post("/search/movies", searchTerms);
+        const res =
+          isMounted && (await axios.post("/search/movies", searchTerms));
         if (res.data.length !== 0) {
           if (searchTerms.page === 1)
-          isMounted && setSearchResult({ movies: [...res.data] });
+            isMounted && setSearchResult({ movies: [...res.data] });
           else
-          isMounted && setSearchResult(prev => ({
-              movies: prev.movies.concat(res.data)
-            }));
+            isMounted &&
+              setSearchResult(prev => ({
+                movies: prev.movies.concat(res.data)
+              }));
         }
       } catch (err) {
         if (err.response && err.response.status === 401)
@@ -42,7 +44,7 @@ const SearchView = () => {
       }
     };
     fetchMovies();
-    return () => isMounted = false;
+    return () => (isMounted = false);
   }, [searchTerms]);
 
   const search = searchValue => {
@@ -82,14 +84,14 @@ const SearchView = () => {
     let isMounted = true;
     if (isMounted && searchResult) {
       window.document
-      .getElementById("infiniteScroll")
-      .addEventListener("scroll", handleScroll);
-    return () =>
-      window.document
         .getElementById("infiniteScroll")
-        .removeEventListener("scroll", handleScroll);
+        .addEventListener("scroll", handleScroll);
+      return () =>
+        window.document
+          .getElementById("infiniteScroll")
+          .removeEventListener("scroll", handleScroll);
     }
-    return () => isMounted = false;
+    return () => (isMounted = false);
   }, [searchResult]);
 
   const handleScroll = () => {
@@ -115,20 +117,28 @@ const SearchView = () => {
         <Navbar />
         {searchResult ? (
           <div className="layer">
-          <Search search={search} />
-          <Filter ratings={ratings} years={years} genre={genre} />
-          <div className="infiniteScroll" id="infiniteScroll">
-            {searchResult.movies.map((movie, index) => (
-              <Link
-                to={`/movie/${movie.imdbId}`}
-                style={{ textDecoration: "none" }}
-                key={index}
-              >
-                <Movie key={`${index}-${movie.title}`} movie={movie} seen={context.movies_seen.length ? context.movies_seen.includes(movie.imdbId) : false} />
-              </Link>
-            ))}
+            <Search search={search} />
+            <Filter ratings={ratings} years={years} genre={genre} />
+            <div className="infiniteScroll" id="infiniteScroll">
+              {searchResult.movies.map((movie, index) => (
+                <Link
+                  to={`/movie/${movie.imdbId}`}
+                  style={{ textDecoration: "none" }}
+                  key={index}
+                >
+                  <Movie
+                    key={`${index}-${movie.title}`}
+                    movie={movie}
+                    seen={
+                      context.movies_seen.length
+                        ? context.movies_seen.includes(movie.imdbId)
+                        : false
+                    }
+                  />
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
         ) : (
           <Loading></Loading>
         )}
