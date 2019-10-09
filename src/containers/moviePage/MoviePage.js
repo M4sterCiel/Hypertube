@@ -100,7 +100,7 @@ const MoviePage = (props) => {
     }, [movieId, moviePageState.loaded]);
 
     const constructURL = e => {
-      console.log(context)
+      console.log(context.uid)
         let userId = context.uid;
         let movieId = movieDetails.movie.imdbId;
         let params = e.target.value.split(' ');

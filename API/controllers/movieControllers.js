@@ -65,7 +65,7 @@ module.exports = {
             subPathEn = subPath + movieId + "_" + "en.vtt";
           })
           .catch(err => {
-            console.log(err);
+            console.log("No english subtitles");
           });
       } else if (fs.existsSync(subPath + movieId + "_" + "en.vtt")) {
         subPathEn = subPath + movieId + "_" + "en.vtt";
@@ -81,7 +81,7 @@ module.exports = {
             subPathEs = subPath + movieId + "_" + "es.vtt";
           })
           .catch(err => {
-            console.log(err);
+            console.log("No spanish subtitles");
           });
       } else if (fs.existsSync(subPath + movieId + "_" + "es.vtt")) {
         subPathEs = subPath + movieId + "_" + "es.vtt";
@@ -97,7 +97,7 @@ module.exports = {
             subPathFr = subPath + movieId + "_" + "fr.vtt";
           })
           .catch(err => {
-            console.log(err);
+            console.log("No french subtitles");
           });
       } else if (fs.existsSync(subPath + movieId + "_" + "fr.vtt")) {
         subPathFr = subPath + movieId + "_" + "fr.vtt";
@@ -174,10 +174,12 @@ module.exports = {
 
   getMovieStream: async (req, res) => {
     var customPath = req.params.quality + "_" + req.params.source;
+    if (req.params.uid === 'undefined')
+      return res.status(404).json({ error: "No user corresponding..." });
     Movie.findOne({ imdbId: req.params.movieId }, (err, result) => {
       if (err || result === null)
         return res.status(404).json({ error: "No movie corresponding..." });
-      User.findOne({ _id: req.params.uid }, (err, user) => {
+        User.findOne({ _id: req.params.uid }, (err, user) => {
         if (err) console.log(err);
         var exists = false;
         user.movies_seen.forEach(e => {
