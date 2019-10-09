@@ -1,7 +1,6 @@
 // Ignore npm packages
 node_modules/
 API/torrents
-src/subtitles
 *.mp4
 *.ogg
 *.webm
