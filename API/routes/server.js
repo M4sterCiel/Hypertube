@@ -25,17 +25,17 @@ mongoose.set("useNewUrlParser", true);
 mongoose.set("useFindAndModify", false);
 mongoose.set("useCreateIndex", true);
 mongoose.set("useUnifiedTopology", true);
-/* mongoose.connect(
+mongoose.connect(
   "mongodb+srv://Team:Apkm5VCrxWTRPYxK@cluster0-shqxc.mongodb.net/hypertube_db?retryWrites=true&w=majority",
   {
     useUnifiedTopology: true,
     useNewUrlParser: true
   }
-); */
- mongoose.connect("mongodb://localhost:27017/hypertube_db", {
-   useUnifiedTopology: true,
-   useNewUrlParser: true
- });
+);
+// mongoose.connect("mongodb://localhost:27017/hypertube_db", {
+//   useUnifiedTopology: true,
+//   useNewUrlParser: true
+// });
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -43,15 +43,15 @@ db.once("open", () => {
 });
 
 /*  creating store */
- var store = new MongoDBStore({
-   uri: "mongodb://localhost:27017/hypertube_db",
-   collection: "MySessions"
-});
-/* var store = new MongoDBStore({
+// var store = new MongoDBStore({
+//   uri: "mongodb://localhost:27017/hypertube_db",
+//   collection: "MySessions"
+// });
+var store = new MongoDBStore({
   uri:
     "mongodb+srv://Team:Apkm5VCrxWTRPYxK@cluster0-shqxc.mongodb.net/hypertube_db?retryWrites=true&w=majority",
   collection: "MySessions"
-}); */
+});
 
 /* Middleware */
 //app.use(passport.initialize());
