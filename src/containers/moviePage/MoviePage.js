@@ -9,6 +9,8 @@ import ErrorToast from "../../services/toasts/ErrorToasts";
 import { GlobalContext } from "../../context/GlobalContext";
 import CustomLanguage from "../../services/DefineLocale";
 import Player from "../../components/player/Player";
+import { NavLink } from "react-router-dom";
+import * as moment from "moment";
 
 const MoviePage = props => {
 
@@ -51,7 +53,8 @@ const MoviePage = props => {
               );
               i++;
             }
-            tmp.unshift("Source");
+            tmp.unshift("📡");
+            let uniq = [...new Set(tmp)];
             if (omdbComplementaryDataRes.data) {
               if (
                 omdbComplementaryDataRes.data.Director &&
@@ -60,7 +63,7 @@ const MoviePage = props => {
                 isMounted &&
                   setMovieDetails({
                     movie: movieRes.data[0],
-                    sources: tmp,
+                    sources: uniq,
                     director: omdbComplementaryDataRes.data.Director,
                     casting: omdbComplementaryDataRes.data.Actors,
                     validId: true
@@ -69,7 +72,7 @@ const MoviePage = props => {
               isMounted &&
                 setMovieDetails({
                   movie: movieRes.data[0],
-                  sources: tmp,
+                  sources: uniq,
                   director: "Deedee Megadoodoo",
                   casting: "Hugh Mungus, Bette Davis, Sarah Connor",
                   validId: true
@@ -136,19 +139,21 @@ const MoviePage = props => {
   // STREAMING URL CONSTRUCTOR
   // ----------------------------------------------------------------------------------------------------------
   const constructURL = e => {
-    let userId = context.uid;
-    let movieId = movieDetails.movie.imdbId;
-    let params = e.target.value.split(" ");
-    let quality = params[0];
-    let source =
-      params[1] === "Popcorn" ? params[1].concat(" ", params[2]) : params[1];
-    let route = "http://localhost:5000/movie";
-    let url = route
-      .concat("/", userId)
-      .concat("/", movieId)
-      .concat("/", quality)
-      .concat("/", source);
-    setStreamURL(url);
+    if (e.target.value[0] === "7" || e.target.value[0] === "1") {
+      let userId = context.uid;
+      let movieId = movieDetails.movie.imdbId;
+      let params = e.target.value.split(" ");
+      let quality = params[0];
+      let source =
+        params[1] === "Popcorn" ? params[1].concat(" ", params[2]) : params[1];
+      let route = "http://localhost:5000/movie";
+      let url = route
+        .concat("/", userId)
+        .concat("/", movieId)
+        .concat("/", quality)
+        .concat("/", source);
+      setStreamURL(url);
+    }
   };
 
   // COMMENT HANDLERS
@@ -159,11 +164,19 @@ const MoviePage = props => {
 
   const saveComment = e => {
     e.preventDefault();
-    let date = Date();
+    let date = new Date();
     setCommentValue({
       userId: context.uid,
+      username: context.username,
       firstname: context.firstname,
       movieImdbId: movieDetails.movie.imdbId,
+      content: commentInputValue,
+      timestamp: date
+    });
+    commentsList.comments.unshift({
+      userId: context.uid,
+      username: context.username,
+      firstname: context.firstname,
       content: commentInputValue,
       timestamp: date
     });
@@ -174,14 +187,15 @@ const MoviePage = props => {
     setCommentInputValue("");
   };
 
-  const deleteComment = async id => {
-    try {
-      // await axios.post("/comment/deleteComment", id);
-    } catch (err) {
-      if (err.response && err.response.status === 401)
-        console.log(err.response);
-    }
-  };
+  // const deleteComment = async id => {
+  //   let param = {id: id}
+  //     try {
+  //         await axios.post("/comment/deleteComment", param);
+  //     } catch (err) {
+  //         if (err.response && err.response.status === 401)
+  //             console.log(err.response);
+  //     }
+  // }
 
   const updateContextForMovies = () => {
     if (!context.movies_seen.includes(movieId.id)) {
@@ -260,20 +274,18 @@ const MoviePage = props => {
                     {commentsList.comments.map((comment, index) => (
                       <div className="singleComment" key={index}>
                         <div className="top">
-                          <p className="moviePrimary" id="commenter">
-                            <strong>{comment.firstname}</strong>
-                          </p>
-                          {comment.userId === context.uid && (
-                            <button
-                              className="waves-effect waves-white btn-flat"
-                              id="deleteButton"
-                              onClick={() => deleteComment(comment._id)}
-                            >
-                              x
-                            </button>
-                          )}
+                          <NavLink to={"/user/" + comment.username}>
+                            <p className="moviePrimary" id="commenter">
+                              <strong>{comment.username}</strong>
+                            </p>
+                          </NavLink>
+                          {/* {comment.userId === context.uid && comment._id && 
+                                                    <button className="waves-effect waves-white btn-flat" id="deleteButton" onClick={() => deleteComment(comment._id)}>x</button>
+                                                } */}
                           <p className="movieSecondary" id="timestamp">
-                            {comment.timestamp}
+                            {moment(comment.timestamp).format(
+                              "HH:mm - DD/MM/YYYY"
+                            )}
                           </p>
                         </div>
                         <div className="bottom">

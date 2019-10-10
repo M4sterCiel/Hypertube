@@ -69,10 +69,10 @@ module.exports = {
             console.log("No english subtitles");
           });
         subPathEn = fs.existsSync(subPath + movieId + "_" + "en.vtt")
-          ?   movieId + "_" + "en.vtt"
+          ? movieId + "_" + "en.vtt"
           : undefined;
       } else if (fs.existsSync(subPath + movieId + "_" + "en.vtt")) {
-        subPathEn =   movieId + "_" + "en.vtt";
+        subPathEn = movieId + "_" + "en.vtt";
       }
       if (
         subtitles.es &&
@@ -87,10 +87,10 @@ module.exports = {
             console.log("No spanish subtitles");
           });
         subPathEs = fs.existsSync(subPath + movieId + "_" + "es.vtt")
-          ?  movieId + "_" + "es.vtt"
+          ? movieId + "_" + "es.vtt"
           : undefined;
       } else if (fs.existsSync(subPath + movieId + "_" + "es.vtt")) {
-        subPathEs =  movieId + "_" + "es.vtt";
+        subPathEs = movieId + "_" + "es.vtt";
       }
       if (
         subtitles.fr &&
@@ -105,10 +105,10 @@ module.exports = {
             console.log("No french subtitles");
           });
         subPathFr = fs.existsSync(subPath + movieId + "_" + "fr.vtt")
-          ?  movieId + "_" + "fr.vtt"
+          ? movieId + "_" + "fr.vtt"
           : undefined;
       } else if (fs.existsSync(subPath + movieId + "_" + "fr.vtt")) {
-        subPathFr =  movieId + "_" + "fr.vtt";
+        subPathFr = movieId + "_" + "fr.vtt";
       }
       //console.log(subPathEn, subPathEs, subPathFr);
       return res.status(200).json({ subPathEn, subPathEs, subPathFr });
@@ -117,7 +117,6 @@ module.exports = {
 
   convertVideo: async (res, path, start, end, mode) => {
     let stream;
-    console.log("ljafvhdsfvbn");
     if (mode === 0) {
       stream = path.createReadStream();
     } else {
@@ -311,7 +310,7 @@ module.exports = {
                         "Content-Length": chunksize,
                         "Content-Type":
                           mime.getType(file.name) === "video/mp4" ||
-                          mime.getType(file.name) === "video/ogg"
+                            mime.getType(file.name) === "video/ogg"
                             ? mime.getType(file.name)
                             : "video/webm",
                         Connection: "keep-alive"
@@ -327,7 +326,7 @@ module.exports = {
                         "Content-Length": fileSize,
                         "Content-Type":
                           mime.getType(file.name) === "video/mp4" ||
-                          mime.getType(file.name) === "video/ogg"
+                            mime.getType(file.name) === "video/ogg"
                             ? mime.getType(file.name)
                             : "video/webm"
                       };
@@ -360,11 +359,11 @@ module.exports = {
         } else
           return res.status(404).json({ error: "No movie corresponding..." });
       });
-    } catch (err) {}
+    } catch (err) { }
   },
 
   getMoviesFromImdbIdArray: async (req, res, next) => {
-    await Movie.find({ imdbId: { $in: req.body.imdbIdArray } }, async function(
+    await Movie.find({ imdbId: { $in: req.body.imdbIdArray } }, async function (
       err,
       movies
     ) {
