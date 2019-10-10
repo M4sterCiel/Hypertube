@@ -69,10 +69,10 @@ module.exports = {
             console.log("No english subtitles");
           });
         subPathEn = fs.existsSync(subPath + movieId + "_" + "en.vtt")
-          ? subPath + movieId + "_" + "en.vtt"
+          ?   movieId + "_" + "en.vtt"
           : undefined;
       } else if (fs.existsSync(subPath + movieId + "_" + "en.vtt")) {
-        subPathEn = subPath + movieId + "_" + "en.vtt";
+        subPathEn =   movieId + "_" + "en.vtt";
       }
       if (
         subtitles.es &&
@@ -87,10 +87,10 @@ module.exports = {
             console.log("No spanish subtitles");
           });
         subPathEs = fs.existsSync(subPath + movieId + "_" + "es.vtt")
-          ? subPath + movieId + "_" + "es.vtt"
+          ?  movieId + "_" + "es.vtt"
           : undefined;
       } else if (fs.existsSync(subPath + movieId + "_" + "es.vtt")) {
-        subPathEs = subPath + movieId + "_" + "es.vtt";
+        subPathEs =  movieId + "_" + "es.vtt";
       }
       if (
         subtitles.fr &&
@@ -105,10 +105,10 @@ module.exports = {
             console.log("No french subtitles");
           });
         subPathFr = fs.existsSync(subPath + movieId + "_" + "fr.vtt")
-          ? subPath + movieId + "_" + "fr.vtt"
+          ?  movieId + "_" + "fr.vtt"
           : undefined;
       } else if (fs.existsSync(subPath + movieId + "_" + "fr.vtt")) {
-        subPathFr = subPath + movieId + "_" + "fr.vtt";
+        subPathFr =  movieId + "_" + "fr.vtt";
       }
       //console.log(subPathEn, subPathEs, subPathFr);
       return res.status(200).json({ subPathEn, subPathEs, subPathFr });

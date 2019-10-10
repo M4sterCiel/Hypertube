@@ -1,4 +1,5 @@
-const app = require("express")();
+const express = require('express');
+const app = express();
 const http = require("http").Server(app);
 var session = require("express-session");
 var MongoDBStore = require("connect-mongodb-session")(session);
@@ -56,6 +57,7 @@ var store = new MongoDBStore({
 
 /* Middleware */
 //app.use(passport.initialize());
+app.use('/static', express.static('src/subtitles'));
 app.use(bodyParser.json({ limit: "10mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 app.use(bodyParser.json());

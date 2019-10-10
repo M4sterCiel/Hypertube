@@ -8,15 +8,9 @@ import axios from "axios";
 import ErrorToast from "../../services/toasts/ErrorToasts";
 import { GlobalContext } from "../../context/GlobalContext";
 import CustomLanguage from "../../services/DefineLocale";
+import Player from "./player";
 
 const MoviePage = props => {
-  const [moviePageState, setMoviePageState] = useState({
-    isPlayer: false,
-    loaded: false,
-    subEn: undefined,
-    subEs: undefined,
-    subFr: undefined
-  });
 
   const context = useContext(GlobalContext);
   const [movieId, setMovieId] = useState("");
@@ -99,40 +93,6 @@ const MoviePage = props => {
     }
     return () => (isMounted = false);
   }, [movieDetails, props.history]);
-
-  // GET SUBTITLES
-  // ----------------------------------------------------------------------------------------------------------
-  useEffect(() => {
-    let isMounted = true;
-    if (isMounted && movieId.id) {
-      !moviePageState.loaded &&
-        isMounted &&
-        axios
-          .get(`/movie/getSubtitles/${movieId.id}`)
-          .then(res => {
-            isMounted &&
-              setMoviePageState({
-                subEn:
-                  res.data.subPathEn !== undefined
-                    ? require("../../" + res.data.subPathEn.substr(-26))
-                    : undefined,
-                subEs:
-                  res.data.subPathEs !== undefined
-                    ? require("../../" + res.data.subPathEs.substr(-26))
-                    : undefined,
-                subFr:
-                  res.data.subPathFr !== undefined
-                    ? require("../../" + res.data.subPathFr.substr(-26))
-                    : undefined,
-                loaded: true
-              });
-          })
-          .catch(err => {
-            window.location.reload();
-          });
-    }
-    return () => (isMounted = false);
-  }, [movieId, moviePageState.loaded]);
 
   // ADD COMMENT
   // ----------------------------------------------------------------------------------------------------------
@@ -239,45 +199,7 @@ const MoviePage = props => {
           </p>
           {streamURL ? (
             <div className="player">
-              <video
-                className="videoSource"
-                controls
-                preload="auto"
-                onPlay={updateContextForMovies}
-              >
-                <source src={streamURL} type="video/webm" />
-                {moviePageState.subEn !== undefined ? (
-                  <track
-                    label="English"
-                    kind="subtitles"
-                    srcLang="en"
-                    src={moviePageState.subEn}
-                  />
-                ) : (
-                  ""
-                )}
-                {moviePageState.subFr !== undefined ? (
-                  <track
-                    label="Français"
-                    kind="subtitles"
-                    srcLang="fr"
-                    src={moviePageState.subFr}
-                  />
-                ) : (
-                  ""
-                )}
-                {moviePageState.subEs !== undefined ? (
-                  <track
-                    label="Español"
-                    kind="subtitles"
-                    srcLang="es"
-                    src={moviePageState.subEs}
-                  />
-                ) : (
-                  ""
-                )}
-                <p className="alert">{lang.movie[0].browser_support_error}</p>
-              </video>
+              <Player movieId={movieId.id} streamURL={streamURL} updateContextForMovies={updateContextForMovies} />
             </div>
           ) : (
             <p>{lang.movie[0].select_source}</p>
