@@ -110,7 +110,6 @@ module.exports = {
       } else if (fs.existsSync(subPath + movieId + "_" + "fr.vtt")) {
         subPathFr = movieId + "_" + "fr.vtt";
       }
-      //console.log(subPathEn, subPathEs, subPathFr);
       return res.status(200).json({ subPathEn, subPathEs, subPathFr });
     });
   },
@@ -294,7 +293,6 @@ module.exports = {
                     if (ext !== ".mp4" && ".ogg") ext = ".webm";
                     fileSize = file.length;
                     newFilePath = process.cwd() + "/API/torrents/" + file.path;
-
                     const range = req.headers.range;
                     if (range) {
                       const parts = range.replace(/bytes=/, "").split("-");
@@ -303,6 +301,7 @@ module.exports = {
                         ? parseInt(parts[1], 10)
                         : fileSize - 1;
                       const chunksize = end - start + 1;
+                      console.log(start, end);
 
                       const head = {
                         "Content-Range": `bytes ${start}-${end}/${fileSize}`,
