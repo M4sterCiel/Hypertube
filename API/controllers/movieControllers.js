@@ -1,7 +1,7 @@
 const fs = require("fs");
 const mime = require("mime");
 const pump = require("pump");
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 const ffmpeg = require("fluent-ffmpeg");
 ffmpeg.setFfmpegPath(ffmpegPath);
 const Movie = require("../schemas/Movie");
@@ -45,13 +45,13 @@ const options = {
 };
 
 module.exports = {
-  getSubtitles: (req, res, next) => {
+  getSubtitles: async (req, res, next) => {
     var movieId = req.params.movieId;
-    OpenSubtitles.search({
+    await OpenSubtitles.search({
       sublanguageid: ["fre", "eng", "spa"].join(),
       extensions: "srt",
       imdbid: movieId
-    }).then(subtitles => {
+    }).then(async subtitles => {
       var subPath = process.cwd() + "/src/subtitles/";
       var subPathEn = undefined;
       var subPathEs = undefined;
@@ -61,56 +61,62 @@ module.exports = {
         subtitles.en.vtt &&
         !fs.existsSync(subPath + movieId + "_" + "en.vtt")
       ) {
-        download(subtitles.en.vtt)
+        await download(subtitles.en.vtt)
           .then(data => {
             fs.writeFileSync(subPath + movieId + "_" + "en.vtt", data);
-            subPathEn = subPath + movieId + "_" + "en.vtt";
           })
           .catch(err => {
             console.log("No english subtitles");
           });
+        subPathEn = fs.existsSync(subPath + movieId + "_" + "en.vtt")
+          ? movieId + "_" + "en.vtt"
+          : undefined;
       } else if (fs.existsSync(subPath + movieId + "_" + "en.vtt")) {
-        subPathEn = subPath + movieId + "_" + "en.vtt";
+        subPathEn = movieId + "_" + "en.vtt";
       }
       if (
         subtitles.es &&
         subtitles.es.vtt &&
         !fs.existsSync(subPath + movieId + "_" + "es.vtt")
       ) {
-        download(subtitles.es.vtt)
+        await download(subtitles.es.vtt)
           .then(data => {
             fs.writeFileSync(subPath + movieId + "_" + "es.vtt", data);
-            subPathEs = subPath + movieId + "_" + "es.vtt";
           })
           .catch(err => {
             console.log("No spanish subtitles");
           });
+        subPathEs = fs.existsSync(subPath + movieId + "_" + "es.vtt")
+          ? movieId + "_" + "es.vtt"
+          : undefined;
       } else if (fs.existsSync(subPath + movieId + "_" + "es.vtt")) {
-        subPathEs = subPath + movieId + "_" + "es.vtt";
+        subPathEs = movieId + "_" + "es.vtt";
       }
       if (
         subtitles.fr &&
         subtitles.fr.vtt &&
         !fs.existsSync(subPath + movieId + "_" + "fr.vtt")
       ) {
-        download(subtitles.fr.vtt)
+        await download(subtitles.fr.vtt)
           .then(data => {
             fs.writeFileSync(subPath + movieId + "_" + "fr.vtt", data);
-            subPathFr = subPath + movieId + "_" + "fr.vtt";
           })
           .catch(err => {
             console.log("No french subtitles");
           });
+        subPathFr = fs.existsSync(subPath + movieId + "_" + "fr.vtt")
+          ? movieId + "_" + "fr.vtt"
+          : undefined;
       } else if (fs.existsSync(subPath + movieId + "_" + "fr.vtt")) {
-        subPathFr = subPath + movieId + "_" + "fr.vtt";
+        subPathFr = movieId + "_" + "fr.vtt";
       }
+      //console.log(subPathEn, subPathEs, subPathFr);
       return res.status(200).json({ subPathEn, subPathEs, subPathFr });
     });
   },
 
   convertVideo: async (res, path, start, end, mode) => {
     let stream;
-    console.log('ljafvhdsfvbn');
     if (mode === 0) {
       stream = path.createReadStream();
     } else {
@@ -177,12 +183,12 @@ module.exports = {
 
   getMovieStream: async (req, res) => {
     var customPath = req.params.quality + "_" + req.params.source;
-    if (req.params.uid === 'undefined')
+    if (req.params.uid === "undefined")
       return res.status(404).json({ error: "No user corresponding..." });
     Movie.findOne({ imdbId: req.params.movieId }, (err, result) => {
       if (err || result === null)
         return res.status(404).json({ error: "No movie corresponding..." });
-        User.findOne({ _id: req.params.uid }, (err, user) => {
+      User.findOne({ _id: req.params.uid }, (err, user) => {
         if (err) console.log(err);
         var exists = false;
         user.movies_seen.forEach(e => {
@@ -304,7 +310,7 @@ module.exports = {
                         "Content-Length": chunksize,
                         "Content-Type":
                           mime.getType(file.name) === "video/mp4" ||
-                          mime.getType(file.name) === "video/ogg"
+                            mime.getType(file.name) === "video/ogg"
                             ? mime.getType(file.name)
                             : "video/webm",
                         Connection: "keep-alive"
@@ -320,7 +326,7 @@ module.exports = {
                         "Content-Length": fileSize,
                         "Content-Type":
                           mime.getType(file.name) === "video/mp4" ||
-                          mime.getType(file.name) === "video/ogg"
+                            mime.getType(file.name) === "video/ogg"
                             ? mime.getType(file.name)
                             : "video/webm"
                       };
@@ -353,11 +359,11 @@ module.exports = {
         } else
           return res.status(404).json({ error: "No movie corresponding..." });
       });
-    } catch (err) {}
+    } catch (err) { }
   },
 
   getMoviesFromImdbIdArray: async (req, res, next) => {
-    await Movie.find({ imdbId: { $in: req.body.imdbIdArray } }, async function(
+    await Movie.find({ imdbId: { $in: req.body.imdbIdArray } }, async function (
       err,
       movies
     ) {

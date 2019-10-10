@@ -1,4 +1,5 @@
-const app = require("express")();
+const express = require('express');
+const app = express();
 const http = require("http").Server(app);
 var session = require("express-session");
 var MongoDBStore = require("connect-mongodb-session")(session);
@@ -10,6 +11,7 @@ const passport = require("passport");
 const bodyParser = require("body-parser");
 const User = require("../schemas/User");
 const flash = require("connect-flash");
+const schedule = require("node-schedule");
 
 const mongoose = require("mongoose");
 
@@ -25,17 +27,17 @@ mongoose.set("useNewUrlParser", true);
 mongoose.set("useFindAndModify", false);
 mongoose.set("useCreateIndex", true);
 mongoose.set("useUnifiedTopology", true);
-mongoose.connect(
+/* mongoose.connect(
   "mongodb+srv://Team:Apkm5VCrxWTRPYxK@cluster0-shqxc.mongodb.net/hypertube_db?retryWrites=true&w=majority",
   {
     useUnifiedTopology: true,
     useNewUrlParser: true
   }
-);
-// mongoose.connect("mongodb://localhost:27017/hypertube_db", {
-//   useUnifiedTopology: true,
-//   useNewUrlParser: true
-// });
+);  */
+mongoose.connect("mongodb://localhost:27017/hypertube_db", {
+  useUnifiedTopology: true,
+  useNewUrlParser: true
+});
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -43,11 +45,11 @@ db.once("open", () => {
 });
 
 /*  creating store */
-// var store = new MongoDBStore({
-//   uri: "mongodb://localhost:27017/hypertube_db",
-//   collection: "MySessions"
-// });
 var store = new MongoDBStore({
+  uri: "mongodb://localhost:27017/hypertube_db",
+  collection: "MySessions"
+});
+/* var store = new MongoDBStore({
   uri:
     "mongodb+srv://Team:Apkm5VCrxWTRPYxK@cluster0-shqxc.mongodb.net/hypertube_db?retryWrites=true&w=majority",
   collection: "MySessions"
@@ -55,6 +57,7 @@ var store = new MongoDBStore({
 
 /* Middleware */
 //app.use(passport.initialize());
+app.use('/static', express.static('src/subtitles'));
 app.use(bodyParser.json({ limit: "10mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 app.use(bodyParser.json());
@@ -86,3 +89,26 @@ app.use("/search", searchRoutes.router);
 app.use("/auth", require("../controllers/auth"));
 app.use("/movie", movieRoutes.router);
 app.use("/comment", commentRoutes.router);
+
+/* Removing movies not seen for at least 1 month */
+schedule.scheduleJob("00 59 23 * * *", () => {
+  console.log("Removing movies from server...");
+  Movie.find(
+    { lastViewed: { $lte: Date.now() - 2629800000 } },
+    (err, result) => {
+      result.map(movie => {
+        if (movie.path) {
+          for (let key in movie.path) {
+            fs.unlinkSync(movie.path[key]);
+            movie.path[key] = null;
+          }
+          movie.lastViewed = null;
+          movie.save().catch(err => {
+            console.log(err);
+          });
+        }
+      });
+      console.log("Removing from server is done!");
+    }
+  );
+});
