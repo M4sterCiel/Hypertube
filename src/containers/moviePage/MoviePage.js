@@ -8,7 +8,7 @@ import axios from "axios";
 import ErrorToast from "../../services/toasts/ErrorToasts";
 import { GlobalContext } from "../../context/GlobalContext";
 import CustomLanguage from "../../services/DefineLocale";
-import Player from "./player";
+import Player from "../../components/player/Player";
 
 const MoviePage = props => {
 
