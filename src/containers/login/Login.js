@@ -127,6 +127,7 @@ class Login extends Component {
                           type="text"
                           id="user-login"
                           className="form-input-fields"
+                          autoComplete="login"
                           value={this.state.login}
                           onChange={this.handleChange}
                         ></input>
@@ -142,6 +143,7 @@ class Login extends Component {
                           type="password"
                           id="user-password"
                           className="form-input-fields"
+                          autoComplete="password"
                           value={this.state.password}
                           onChange={this.handleChange}
                         ></input>
@@ -155,6 +157,7 @@ class Login extends Component {
                       <input
                         type="submit"
                         name="submit"
+                        autoComplete="submit"
                         value={lang.login[0].login}
                         className="btn btn-submit-form"
                         disabled={

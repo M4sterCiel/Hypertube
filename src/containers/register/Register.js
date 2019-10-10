@@ -151,6 +151,7 @@ class Register extends Component {
                           type="text"
                           id="username"
                           className="form-input-fields"
+                          autoComplete="username"
                           value={this.state.username}
                           onChange={this.handleChange}
                         ></input>
@@ -165,6 +166,7 @@ class Register extends Component {
                         <input
                           type="text"
                           id="firstname"
+                          autoComplete="firstname"
                           className="form-input-fields"
                           value={this.state.firstname}
                           onChange={this.handleChange}
@@ -180,6 +182,7 @@ class Register extends Component {
                         <input
                           type="text"
                           id="lastname"
+                          autoComplete="lastname"
                           className="form-input-fields"
                           value={this.state.lastname}
                           onChange={this.handleChange}
@@ -195,6 +198,7 @@ class Register extends Component {
                         <input
                           type="email"
                           id="email"
+                          autoComplete="email"
                           className="form-input-fields"
                           value={this.state.email}
                           onChange={this.handleChange}
@@ -210,6 +214,7 @@ class Register extends Component {
                         <input
                           type="password"
                           id="pwd1"
+                          autoComplete="password"
                           className="form-input-fields"
                           value={this.state.pwd1}
                           onChange={this.handleChange}
@@ -274,6 +279,7 @@ class Register extends Component {
                         <input
                           type="password"
                           id="pwd2"
+                          autoComplete="password"
                           className="form-input-fields"
                           value={this.state.pwd2}
                           onChange={this.handleChange}

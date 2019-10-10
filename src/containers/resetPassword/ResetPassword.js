@@ -98,6 +98,7 @@ class ResetPassword extends Component {
                         <input
                           type="password"
                           id="pwd1"
+                          autoComplete="password"
                           className="form-input-fields"
                           value={this.state.pwd1}
                           onChange={this.handleChange}
@@ -156,6 +157,7 @@ class ResetPassword extends Component {
                         <input
                           type="password"
                           id="pwd2"
+                          autoComplete="password"
                           className="form-input-fields"
                           value={this.state.pwd2}
                           onChange={this.handleChange}

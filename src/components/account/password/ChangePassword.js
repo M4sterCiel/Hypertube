@@ -62,6 +62,7 @@ const ChangePassword = (props) => {
         <input
           type="password"
           id="pwd1"
+          autoComplete="password"
           className="form-input-fields"
           onChange={handleChange}
           onFocus={e =>
@@ -119,6 +120,7 @@ const ChangePassword = (props) => {
         <input
           type="password"
           id="pwd2"
+          autoComplete="password"
           className="form-input-fields"
           onChange={handleChange}
         ></input>

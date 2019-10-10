@@ -1,4 +1,4 @@
-    import React, { Component } from "react";
+import React, { Component } from "react";
 import NavBar from "../../components/navbar/NavBar";
 import ValidateInput from "../../services/ValidateInput";
 import InfoToast from "../../services/toasts/InfoToasts";
@@ -76,6 +76,7 @@ class ForgotPassword extends Component {
                         <input
                           type="text"
                           id="user-login"
+                          autoComplete="login"
                           className="form-input-fields"
                           value={this.state.login}
                           onChange={this.handleChange}
@@ -88,6 +89,7 @@ class ForgotPassword extends Component {
                       <input
                         type="submit"
                         name="submit"
+                        autoComplete="submit"
                         value={lang.forgot_password[0].submit}
                         className="btn btn-submit-form"
                         disabled={!this.state.loginValid}
