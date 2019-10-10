@@ -147,29 +147,28 @@ const MoviePage = props => {
     if (commentValue) saveComment();
     return () => (isMounted = false);
   }, [commentValue]);
-
-  // GET COMMENTS
-  // ----------------------------------------------------------------------------------------------------------
-  useEffect(() => {
-    let isMounted = true;
-    const getComments = async () => {
-      let url = document.location.href;
-      let split = url.split("/");
-      let imdbId = { id: split[4] };
-      try {
-        const res =
-          isMounted && (await axios.post("/comment/loadComments", imdbId));
-        isMounted && setCommentsList({ comments: res.data });
-        if (res.data.comments.length > 0)
-          console.log("successfully fetched comments :)");
-      } catch (err) {
-        if (err.response && err.response.status === 401)
-          console.log(err.response);
-      }
-    };
-    getComments();
-    return () => (isMounted = false);
-  }, []);
+  
+    // GET COMMENTS
+    // ----------------------------------------------------------------------------------------------------------
+    useEffect(() => {
+        let isMounted = true;
+        const getComments = async () => {
+            let url = document.location.href;
+            let split = url.split("/");
+            let imdbId = {id: split[4]};
+            try {
+                const res = isMounted && await axios.post("/comment/loadComments", imdbId);
+                isMounted && setCommentsList({ comments: res.data });
+                // if (res.data.comments.length > 0)
+                //     console.log("successfully fetched comments :)");
+            } catch (err) {
+                if (err.response && err.response.status === 401)
+                    console.log(err.response);
+            }
+        };
+        getComments();
+        return () => isMounted = false;
+    }, []);
 
   // STREAMING URL CONSTRUCTOR
   // ----------------------------------------------------------------------------------------------------------

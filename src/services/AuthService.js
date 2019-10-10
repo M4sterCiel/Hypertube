@@ -30,7 +30,6 @@ export default class AuthService {
         return false;
       });
     return !!token && !this.isTokenExpired(token) && valid;
-    // return true;
   };
 
   // Checking if token exists and is still valid
