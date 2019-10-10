@@ -146,7 +146,7 @@ module.exports = {
           return res.status(400).json({ error: err.error });
         }
       }
-      User.findOneAndUpdate({ token: token }, req.body, err => {
+      User.findOneAndUpdate({ token: token }, sanitize(req.body), err => {
         if (err) return res.status(400).json({ error: "update_failed" });
       });
       return res.status(200).json({ message: "update_success" });
